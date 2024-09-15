@@ -1,5 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="15.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="packages\EntityFramework.6.4.4\build\EntityFramework.props" Condition="Exists('packages\EntityFramework.6.4.4\build\EntityFramework.props')" />
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
@@ -33,6 +34,8 @@
     <ApplicationVersion>1.0.0.%2a</ApplicationVersion>
     <UseApplicationTrust>false</UseApplicationTrust>
     <BootstrapperEnabled>true</BootstrapperEnabled>
+    <NuGetPackageImportStamp>
+    </NuGetPackageImportStamp>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -94,10 +97,96 @@
     <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="BCrypt.Net-Next, Version=4.0.3.0, Culture=neutral, PublicKeyToken=1e11be04b6288443, processorArchitecture=MSIL">
+      <HintPath>packages\BCrypt.Net-Next.4.0.3\lib\net472\BCrypt.Net-Next.dll</HintPath>
+    </Reference>
+    <Reference Include="EntityFramework, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <HintPath>packages\EntityFramework.6.4.4\lib\net45\EntityFramework.dll</HintPath>
+    </Reference>
+    <Reference Include="EntityFramework.SqlServer, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <HintPath>packages\EntityFramework.6.4.4\lib\net45\EntityFramework.SqlServer.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Bcl.AsyncInterfaces, Version=8.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
+      <HintPath>packages\Microsoft.Bcl.AsyncInterfaces.8.0.0\lib\net462\Microsoft.Bcl.AsyncInterfaces.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.ReportViewer.Common, Version=15.0.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91, processorArchitecture=MSIL">
+      <HintPath>packages\Microsoft.ReportingServices.ReportViewerControl.Winforms.150.1652.0\lib\net40\Microsoft.ReportViewer.Common.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.ReportViewer.DataVisualization, Version=15.0.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91, processorArchitecture=MSIL">
+      <HintPath>packages\Microsoft.ReportingServices.ReportViewerControl.Winforms.150.1652.0\lib\net40\Microsoft.ReportViewer.DataVisualization.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.ReportViewer.Design, Version=15.0.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91, processorArchitecture=MSIL">
+      <HintPath>packages\Microsoft.ReportingServices.ReportViewerControl.Winforms.150.1652.0\lib\net40\Microsoft.ReportViewer.Design.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.ReportViewer.ProcessingObjectModel, Version=15.0.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91, processorArchitecture=MSIL">
+      <HintPath>packages\Microsoft.ReportingServices.ReportViewerControl.Winforms.150.1652.0\lib\net40\Microsoft.ReportViewer.ProcessingObjectModel.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.ReportViewer.WebDesign, Version=15.0.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91, processorArchitecture=MSIL">
+      <HintPath>packages\Microsoft.ReportingServices.ReportViewerControl.WebForms.150.1652.0\lib\net40\Microsoft.ReportViewer.WebDesign.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.ReportViewer.WebForms, Version=15.0.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91, processorArchitecture=MSIL">
+      <HintPath>packages\Microsoft.ReportingServices.ReportViewerControl.WebForms.150.1652.0\lib\net40\Microsoft.ReportViewer.WebForms.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.ReportViewer.WinForms, Version=15.0.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91, processorArchitecture=MSIL">
+      <HintPath>packages\Microsoft.ReportingServices.ReportViewerControl.Winforms.150.1652.0\lib\net40\Microsoft.ReportViewer.WinForms.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.SqlServer.Types, Version=14.0.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91, processorArchitecture=MSIL">
+      <HintPath>packages\Microsoft.SqlServer.Types.14.0.314.76\lib\net40\Microsoft.SqlServer.Types.dll</HintPath>
+    </Reference>
+    <Reference Include="Newtonsoft.Json, Version=13.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>packages\Newtonsoft.Json.13.0.1\lib\net45\Newtonsoft.Json.dll</HintPath>
+    </Reference>
+    <Reference Include="Newtonsoft.Json.Bson, Version=1.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>packages\Newtonsoft.Json.Bson.1.0.2\lib\net45\Newtonsoft.Json.Bson.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
+    <Reference Include="System.Buffers, Version=4.0.3.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
+      <HintPath>packages\System.Buffers.4.5.1\lib\net461\System.Buffers.dll</HintPath>
+    </Reference>
+    <Reference Include="System.ComponentModel.DataAnnotations" />
+    <Reference Include="System.Configuration" />
+    <Reference Include="System.Configuration.ConfigurationManager, Version=8.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
+      <HintPath>packages\System.Configuration.ConfigurationManager.8.0.0\lib\net462\System.Configuration.ConfigurationManager.dll</HintPath>
+    </Reference>
     <Reference Include="System.Core">
       <RequiredTargetFramework>3.5</RequiredTargetFramework>
     </Reference>
+    <Reference Include="System.Data.SQLite, Version=1.0.118.0, Culture=neutral, PublicKeyToken=db937bc2d44ff139, processorArchitecture=MSIL">
+      <HintPath>packages\Stub.System.Data.SQLite.Core.NetFramework.1.0.118.0\lib\net46\System.Data.SQLite.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Data.SQLite.EF6, Version=1.0.118.0, Culture=neutral, PublicKeyToken=db937bc2d44ff139, processorArchitecture=MSIL">
+      <HintPath>packages\System.Data.SQLite.EF6.1.0.118.0\lib\net46\System.Data.SQLite.EF6.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Data.SQLite.Linq, Version=1.0.118.0, Culture=neutral, PublicKeyToken=db937bc2d44ff139, processorArchitecture=MSIL">
+      <HintPath>packages\System.Data.SQLite.Linq.1.0.118.0\lib\net46\System.Data.SQLite.Linq.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Memory, Version=4.0.1.2, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
+      <HintPath>packages\System.Memory.4.5.5\lib\net461\System.Memory.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Net.Http" />
+    <Reference Include="System.Net.Http.Formatting, Version=6.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>packages\Microsoft.AspNet.WebApi.Client.6.0.0\lib\net45\System.Net.Http.Formatting.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Numerics" />
+    <Reference Include="System.Numerics.Vectors, Version=4.1.4.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>packages\System.Numerics.Vectors.4.5.0\lib\net46\System.Numerics.Vectors.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Runtime.CompilerServices.Unsafe, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>packages\System.Runtime.CompilerServices.Unsafe.6.0.0\lib\net461\System.Runtime.CompilerServices.Unsafe.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Text.Encodings.Web, Version=8.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
+      <HintPath>packages\System.Text.Encodings.Web.8.0.0\lib\net462\System.Text.Encodings.Web.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Text.Json, Version=8.0.0.4, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
+      <HintPath>packages\System.Text.Json.8.0.4\lib\net462\System.Text.Json.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Threading.Tasks.Extensions, Version=4.2.0.1, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
+      <HintPath>packages\System.Threading.Tasks.Extensions.4.5.4\lib\net461\System.Threading.Tasks.Extensions.dll</HintPath>
+    </Reference>
+    <Reference Include="System.ValueTuple, Version=4.0.3.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
+      <HintPath>packages\System.ValueTuple.4.5.0\lib\net47\System.ValueTuple.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web" />
     <Reference Include="System.Xml.Linq">
       <RequiredTargetFramework>3.5</RequiredTargetFramework>
     </Reference>
@@ -111,34 +200,239 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Form\DataMngForm.cs">
+    <Compile Include="Add Attendance.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Add Attendance.Designer.cs">
+      <DependentUpon>Add Attendance.cs</DependentUpon>
+    </Compile>
+    <Compile Include="AddBranch.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="AddBranch.Designer.cs">
+      <DependentUpon>AddBranch.cs</DependentUpon>
+    </Compile>
+    <Compile Include="AddDepartment.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="AddDepartment.Designer.cs">
+      <DependentUpon>AddDepartment.cs</DependentUpon>
+    </Compile>
+    <Compile Include="AddEmployee.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="AddEmployee.Designer.cs">
+      <DependentUpon>AddEmployee.cs</DependentUpon>
+    </Compile>
+    <Compile Include="AddEmployee2.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="AddEmployee2.Designer.cs">
+      <DependentUpon>AddEmployee2.cs</DependentUpon>
+    </Compile>
+    <Compile Include="AddEmployee3.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="AddEmployee3.Designer.cs">
+      <DependentUpon>AddEmployee3.cs</DependentUpon>
+    </Compile>
+    <Compile Include="AddFiscalYear.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="AddFiscalYear.Designer.cs">
+      <DependentUpon>AddFiscalYear.cs</DependentUpon>
+    </Compile>
+    <Compile Include="AddHoliday.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="AddHoliday.Designer.cs">
+      <DependentUpon>AddHoliday.cs</DependentUpon>
+    </Compile>
+    <Compile Include="AddLeave.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="AddLeave.Designer.cs">
+      <DependentUpon>AddLeave.cs</DependentUpon>
+    </Compile>
+    <Compile Include="AddNewRole.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="AddNewRole.Designer.cs">
+      <DependentUpon>AddNewRole.cs</DependentUpon>
+    </Compile>
+    <Compile Include="AddRole.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="AddRole.Designer.cs">
+      <DependentUpon>AddRole.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Branch.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Branch.Designer.cs">
+      <DependentUpon>Branch.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Calendar.cs" />
+    <Compile Include="CompanyProfile.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="CompanyProfile.Designer.cs">
+      <DependentUpon>CompanyProfile.cs</DependentUpon>
+    </Compile>
+    <Compile Include="DateConverter.cs" />
+    <Compile Include="Department.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Department.Designer.cs">
+      <DependentUpon>Department.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Employees.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Employees.Designer.cs">
+      <DependentUpon>Employees.cs</DependentUpon>
+    </Compile>
+    <Compile Include="EncryptionHelper.cs" />
+    <Compile Include="FiscalYear.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="FiscalYear.Designer.cs">
+      <DependentUpon>FiscalYear.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Form\RegisterForm.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Form\RegisterForm.Designer.cs">
+      <DependentUpon>RegisterForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Holiday.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Holiday.Designer.cs">
+      <DependentUpon>Holiday.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Homepage.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Homepage.Designer.cs">
+      <DependentUpon>Homepage.cs</DependentUpon>
+    </Compile>
+    <Compile Include="ICalendar.cs" />
+    <Compile Include="IDateConverter.cs" />
+    <Compile Include="Leave.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Leave.Designer.cs">
+      <DependentUpon>Leave.cs</DependentUpon>
+    </Compile>
+    <Compile Include="LoginForm.cs">
       <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="LoginForm.Designer.cs">
+      <DependentUpon>LoginForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Form\DataMngForm.cs">
+      <SubType>UserControl</SubType>
     </Compile>
     <Compile Include="Form\DataMngForm.Designer.cs">
       <DependentUpon>DataMngForm.cs</DependentUpon>
     </Compile>
-    <Compile Include="Form\AccessMngForm.cs">
-      <SubType>Form</SubType>
+    <Compile Include="Form\UcAccessMng.cs">
+      <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="Form\AccessMngForm.Designer.cs">
-      <DependentUpon>AccessMngForm.cs</DependentUpon>
+    <Compile Include="Form\UcAccessMng.Designer.cs">
+      <DependentUpon>UcAccessMng.cs</DependentUpon>
     </Compile>
     <Compile Include="Form\OtherMngForm.cs">
-      <SubType>Form</SubType>
+      <SubType>UserControl</SubType>
     </Compile>
     <Compile Include="Form\OtherMngForm.Designer.cs">
       <DependentUpon>OtherMngForm.cs</DependentUpon>
     </Compile>
     <Compile Include="Form\PersonalizeMngForm.cs">
-      <SubType>Form</SubType>
+      <SubType>UserControl</SubType>
     </Compile>
     <Compile Include="Form\PersonalizeMngForm.Designer.cs">
       <DependentUpon>PersonalizeMngForm.cs</DependentUpon>
     </Compile>
+    <Compile Include="Helper\Email.cs" />
     <Compile Include="Helper\Punches.cs" />
     <Compile Include="Helper\Raw.cs" />
     <Compile Include="Helper\UDisk.cs" />
     <Compile Include="Helper\UDiskStruct.cs" />
+    <Compile Include="Models\AttendanceLog.cs" />
+    <Compile Include="Models\AttendanceReport.cs" />
+    <Compile Include="Models\DbCredential.cs" />
+    <Compile Include="Models\RegisterRequest.cs" />
+    <Compile Include="Models\LoginRequest.cs" />
+    <Compile Include="Form\Reports.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Form\Reports.Designer.cs">
+      <DependentUpon>Reports.cs</DependentUpon>
+    </Compile>
+    <Compile Include="MonthlyReport2.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="MonthlyReport2.Designer.cs">
+      <DependentUpon>MonthlyReport2.cs</DependentUpon>
+    </Compile>
+    <Compile Include="MonthlyReportForm.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="MonthlyReportForm.Designer.cs">
+      <DependentUpon>MonthlyReportForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="ProjectDataSet.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>ProjectDataSet.xsd</DependentUpon>
+    </Compile>
+    <Compile Include="ProjectDataSet1.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>ProjectDataSet1.xsd</DependentUpon>
+    </Compile>
+    <Compile Include="ProjectDataSet2.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>ProjectDataSet2.xsd</DependentUpon>
+    </Compile>
+    <Compile Include="ProjectDataSet3.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>ProjectDataSet3.xsd</DependentUpon>
+    </Compile>
+    <Compile Include="ProjectDataSet4.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>ProjectDataSet4.xsd</DependentUpon>
+    </Compile>
+    <Compile Include="ProjectDataSet5.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>ProjectDataSet5.xsd</DependentUpon>
+    </Compile>
+    <Compile Include="RDLC.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="RDLC.Designer.cs">
+      <DependentUpon>RDLC.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Register.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Register.Designer.cs">
+      <DependentUpon>Register.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Role.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Role.Designer.cs">
+      <DependentUpon>Role.cs</DependentUpon>
+    </Compile>
+    <Compile Include="SqlServerTypes\Loader.cs" />
+    <Compile Include="UserClaim.cs" />
     <Compile Include="UserControl\FirstMenu.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -153,8 +447,92 @@
     </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <EmbeddedResource Include="Form\AccessMngForm.resx">
-      <DependentUpon>AccessMngForm.cs</DependentUpon>
+    <Compile Include="UserProfile.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="UserProfile.Designer.cs">
+      <DependentUpon>UserProfile.cs</DependentUpon>
+    </Compile>
+    <Compile Include="UserProfile2.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="UserProfile2.Designer.cs">
+      <DependentUpon>UserProfile2.cs</DependentUpon>
+    </Compile>
+    <Compile Include="UserProfile4.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="UserProfile4.Designer.cs">
+      <DependentUpon>UserProfile4.cs</DependentUpon>
+    </Compile>
+    <EmbeddedResource Include="Add Attendance.resx">
+      <DependentUpon>Add Attendance.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="AddBranch.resx">
+      <DependentUpon>AddBranch.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="AddDepartment.resx">
+      <DependentUpon>AddDepartment.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="AddEmployee.resx">
+      <DependentUpon>AddEmployee.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="AddEmployee2.resx">
+      <DependentUpon>AddEmployee2.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="AddEmployee3.resx">
+      <DependentUpon>AddEmployee3.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="AddFiscalYear.resx">
+      <DependentUpon>AddFiscalYear.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="AddHoliday.resx">
+      <DependentUpon>AddHoliday.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="AddLeave.resx">
+      <DependentUpon>AddLeave.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="AddNewRole.resx">
+      <DependentUpon>AddNewRole.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="AddRole.resx">
+      <DependentUpon>AddRole.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Branch.resx">
+      <DependentUpon>Branch.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="CompanyProfile.resx">
+      <DependentUpon>CompanyProfile.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Department.resx">
+      <DependentUpon>Department.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Employees.resx">
+      <DependentUpon>Employees.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Final.rdlc" />
+    <EmbeddedResource Include="FiscalYear.resx">
+      <DependentUpon>FiscalYear.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Form\UcAccessMng.resx">
+      <DependentUpon>UcAccessMng.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Form\RegisterForm.resx">
+      <DependentUpon>RegisterForm.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Holiday.resx">
+      <DependentUpon>Holiday.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Homepage.resx">
+      <DependentUpon>Homepage.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Leave.resx">
+      <DependentUpon>Leave.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="LoginForm.resx">
+      <DependentUpon>LoginForm.cs</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="Form\DataMngForm.resx">
@@ -172,6 +550,29 @@
     <EmbeddedResource Include="Form\UserMngForm.resx">
       <DependentUpon>UserMngForm.cs</DependentUpon>
       <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="MonthlyReport.rdlc" />
+    <EmbeddedResource Include="MonthlyReport2.resx">
+      <DependentUpon>MonthlyReport2.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="MonthlyReportForm.resx">
+      <DependentUpon>MonthlyReportForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="RDLC.resx">
+      <DependentUpon>RDLC.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Register.resx">
+      <DependentUpon>Register.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Report2.rdlc" />
+    <EmbeddedResource Include="Form\Reports.resx">
+      <DependentUpon>Reports.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Report3.rdlc">
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Role.resx">
+      <DependentUpon>Role.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="UserControl\FirstMenu.resx">
       <DependentUpon>FirstMenu.cs</DependentUpon>
@@ -194,7 +595,90 @@
       <DependentUpon>ZKMessgeBox.cs</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
-    <None Include="app.config" />
+    <EmbeddedResource Include="UserProfile.resx">
+      <DependentUpon>UserProfile.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UserProfile2.resx">
+      <DependentUpon>UserProfile2.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UserProfile4.resx">
+      <DependentUpon>UserProfile4.cs</DependentUpon>
+    </EmbeddedResource>
+    <None Include="app.config">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="packages.config">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="ProjectDataSet.xsc">
+      <DependentUpon>ProjectDataSet.xsd</DependentUpon>
+    </None>
+    <None Include="ProjectDataSet.xsd">
+      <Generator>MSDataSetGenerator</Generator>
+      <LastGenOutput>ProjectDataSet.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="ProjectDataSet.xss">
+      <DependentUpon>ProjectDataSet.xsd</DependentUpon>
+    </None>
+    <None Include="ProjectDataSet1.xsc">
+      <DependentUpon>ProjectDataSet1.xsd</DependentUpon>
+    </None>
+    <None Include="ProjectDataSet1.xsd">
+      <Generator>MSDataSetGenerator</Generator>
+      <LastGenOutput>ProjectDataSet1.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="ProjectDataSet1.xss">
+      <DependentUpon>ProjectDataSet1.xsd</DependentUpon>
+    </None>
+    <None Include="ProjectDataSet2.xsc">
+      <DependentUpon>ProjectDataSet2.xsd</DependentUpon>
+    </None>
+    <None Include="ProjectDataSet2.xsd">
+      <Generator>MSDataSetGenerator</Generator>
+      <LastGenOutput>ProjectDataSet2.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="ProjectDataSet2.xss">
+      <DependentUpon>ProjectDataSet2.xsd</DependentUpon>
+    </None>
+    <None Include="ProjectDataSet3.xsc">
+      <DependentUpon>ProjectDataSet3.xsd</DependentUpon>
+    </None>
+    <None Include="ProjectDataSet3.xsd">
+      <Generator>MSDataSetGenerator</Generator>
+      <LastGenOutput>ProjectDataSet3.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="ProjectDataSet3.xss">
+      <DependentUpon>ProjectDataSet3.xsd</DependentUpon>
+    </None>
+    <None Include="ProjectDataSet4.xsc">
+      <DependentUpon>ProjectDataSet4.xsd</DependentUpon>
+    </None>
+    <None Include="ProjectDataSet4.xsd">
+      <Generator>MSDataSetGenerator</Generator>
+      <LastGenOutput>ProjectDataSet4.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="ProjectDataSet4.xss">
+      <DependentUpon>ProjectDataSet4.xsd</DependentUpon>
+    </None>
+    <None Include="ProjectDataSet5.xsc">
+      <DependentUpon>ProjectDataSet5.xsd</DependentUpon>
+    </None>
+    <None Include="ProjectDataSet5.xsd">
+      <Generator>MSDataSetGenerator</Generator>
+      <LastGenOutput>ProjectDataSet5.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="ProjectDataSet5.xss">
+      <DependentUpon>ProjectDataSet5.xsd</DependentUpon>
+    </None>
+    <None Include="Properties\DataSources\StandaloneSDKDemo.Models.AttendanceReport.datasource" />
+    <None Include="Properties\DataSources\StandaloneSDKDemo.Models.DbCredential.datasource" />
+    <None Include="Properties\DataSources\StandaloneSDKDemo.Models.PlannedTime.datasource" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
@@ -212,13 +696,13 @@
     <Compile Include="Helper\SDKHelper.cs" />
     <Compile Include="Helper\SearchforUSBCom.cs" />
     <Compile Include="Form\TerminalForm.cs">
-      <SubType>Form</SubType>
+      <SubType>UserControl</SubType>
     </Compile>
     <Compile Include="Form\TerminalForm.Designer.cs">
       <DependentUpon>TerminalForm.cs</DependentUpon>
     </Compile>
     <Compile Include="Form\UserMngForm.cs">
-      <SubType>Form</SubType>
+      <SubType>UserControl</SubType>
     </Compile>
     <Compile Include="Form\UserMngForm.Designer.cs">
       <DependentUpon>UserMngForm.cs</DependentUpon>
@@ -244,8 +728,28 @@
     <None Include="image\photoDel.png" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Database1.mdf">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Database1_log.ldf">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      <DependentUpon>Database1.mdf</DependentUpon>
+    </Content>
     <Content Include="image\delete-circular.png" />
     <Content Include="image\home-vector.png" />
+    <Content Include="SqlServerTypes\readme.htm" />
+    <Content Include="SqlServerTypes\x64\msvcr120.dll">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="SqlServerTypes\x64\SqlServerSpatial140.dll">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="SqlServerTypes\x86\msvcr120.dll">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="SqlServerTypes\x86\SqlServerSpatial140.dll">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
     <None Include="image\reload-vector.png" />
     <Content Include="image\remove-circular.png" />
     <Content Include="Resources\main_logo.png" />
@@ -305,4 +809,14 @@
     <PreBuildEvent>
     </PreBuildEvent>
   </PropertyGroup>
+  <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
+    <PropertyGroup>
+      <ErrorText>This project references NuGet package(s) that are missing on this computer. Use NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=322105. The missing file is {0}.</ErrorText>
+    </PropertyGroup>
+    <Error Condition="!Exists('packages\EntityFramework.6.4.4\build\EntityFramework.props')" Text="$([System.String]::Format('$(ErrorText)', 'packages\EntityFramework.6.4.4\build\EntityFramework.props'))" />
+    <Error Condition="!Exists('packages\EntityFramework.6.4.4\build\EntityFramework.targets')" Text="$([System.String]::Format('$(ErrorText)', 'packages\EntityFramework.6.4.4\build\EntityFramework.targets'))" />
+    <Error Condition="!Exists('packages\Stub.System.Data.SQLite.Core.NetFramework.1.0.118.0\build\net46\Stub.System.Data.SQLite.Core.NetFramework.targets')" Text="$([System.String]::Format('$(ErrorText)', 'packages\Stub.System.Data.SQLite.Core.NetFramework.1.0.118.0\build\net46\Stub.System.Data.SQLite.Core.NetFramework.targets'))" />
+  </Target>
+  <Import Project="packages\EntityFramework.6.4.4\build\EntityFramework.targets" Condition="Exists('packages\EntityFramework.6.4.4\build\EntityFramework.targets')" />
+  <Import Project="packages\Stub.System.Data.SQLite.Core.NetFramework.1.0.118.0\build\net46\Stub.System.Data.SQLite.Core.NetFramework.targets" Condition="Exists('packages\Stub.System.Data.SQLite.Core.NetFramework.1.0.118.0\build\net46\Stub.System.Data.SQLite.Core.NetFramework.targets')" />
 </Project>

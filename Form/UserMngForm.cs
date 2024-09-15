@@ -12,7 +12,7 @@ using System.IO;
 namespace StandaloneSDKDemo
 {
     public delegate void MessageEvent(string message);
-    public partial class UserMngForm : Form
+    public partial class UserMngForm : UserControl
     {
         public UserMngForm(Main Parent)
         {
@@ -227,7 +227,7 @@ namespace StandaloneSDKDemo
         {
             Cursor = Cursors.WaitCursor;
 
-            int ret = UserMng.SDK.sta_GetAllUserFPInfo(UserMng.lbSysOutputInfo, UserMng.PrgSTA, lvUserInfo);
+            int ret = UserMng.SDK.sta_GetAllUserFPInfo(UserMng.lbSysOutputInfo, UserMng.PrgSTA.ProgressBar, lvUserInfo);
 
             Cursor = Cursors.Default;
         }
@@ -238,11 +238,11 @@ namespace StandaloneSDKDemo
 
             if (cbBatchUpload.Checked)
             {
-                UserMng.SDK.sta_batch_SetAllUserFPInfo(UserMng.lbSysOutputInfo, UserMng.PrgSTA, lvUserInfo);
+                UserMng.SDK.sta_batch_SetAllUserFPInfo(UserMng.lbSysOutputInfo, UserMng.PrgSTA.ProgressBar, lvUserInfo);
             }
             else
             {
-                UserMng.SDK.sta_SetAllUserFPInfo(UserMng.lbSysOutputInfo, UserMng.PrgSTA, lvUserInfo);
+                UserMng.SDK.sta_SetAllUserFPInfo(UserMng.lbSysOutputInfo, UserMng.PrgSTA.ProgressBar, lvUserInfo);
             }
 
             Cursor = Cursors.Default;
@@ -254,7 +254,7 @@ namespace StandaloneSDKDemo
         {
             Cursor = Cursors.WaitCursor;
 
-            int ret = UserMng.SDK.sta_GetAllUserFaceInfo(UserMng.lbSysOutputInfo, UserMng.PrgSTA, listUserInfo);
+            int ret = UserMng.SDK.sta_GetAllUserFaceInfo(UserMng.lbSysOutputInfo, UserMng.PrgSTA.ProgressBar, listUserInfo);
 
             Cursor = Cursors.Default;
         }
@@ -263,7 +263,7 @@ namespace StandaloneSDKDemo
         {
             Cursor = Cursors.WaitCursor;
 
-            int ret = UserMng.SDK.sta_SetAllUserFaceInfo(UserMng.lbSysOutputInfo, UserMng.PrgSTA, listUserInfo);
+            int ret = UserMng.SDK.sta_SetAllUserFaceInfo(UserMng.lbSysOutputInfo, UserMng.PrgSTA.ProgressBar, listUserInfo);
 
             Cursor = Cursors.Default;
         }
@@ -1740,7 +1740,7 @@ namespace StandaloneSDKDemo
         {
             Cursor = Cursors.WaitCursor;
 
-            UserMng.SDK.sta_GetUserInfo(UserMng.lbSysOutputInfo, txtUserID, txtName, cbPrivilege, txtCardnumber, txtPassword);
+           var t= UserMng.SDK.sta_GetUserInfo(UserMng.lbSysOutputInfo, txtUserID, txtName, cbPrivilege, txtCardnumber, txtPassword);
 
             Cursor = Cursors.Default;
         }
@@ -1853,7 +1853,7 @@ namespace StandaloneSDKDemo
                 {
                     SDKHelper.BioType bioType = cmbBiometricType.SelectedItem as SDKHelper.BioType;
                     List<SDKHelper.BioTemplate> newTemplates = new List<SDKHelper.BioTemplate>();
-                    newTemplates = UserMng.SDK.sta_BatchGetBioTemplates(UserMng.PrgSTA, bioType.value);
+                    newTemplates = UserMng.SDK.sta_BatchGetBioTemplates(UserMng.PrgSTA.ProgressBar, bioType.value);
                     CountTemplate = newTemplates.Count;
                     lstBiometric.Items.Clear();
 
@@ -1944,7 +1944,42 @@ namespace StandaloneSDKDemo
             }
             Cursor = Cursors.Default;
         }
-        #endregion   
+        #endregion
+
+        private void tabPage5_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void tabPage1_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void groupBox3_Enter(object sender, EventArgs e)
+        {
+
+        }
+
+        private void groupBox14_Enter(object sender, EventArgs e)
+        {
+
+        }
+
+        private void UserMngForm_Load(object sender, EventArgs e)
+        {
+
+        }
+
+        private void label26_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void txtName_TextChanged(object sender, EventArgs e)
+        {
+
+        }
     }
     
 }

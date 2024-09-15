@@ -10,7 +10,7 @@ using System.IO;
 
 namespace StandaloneSDKDemo
 {
-    public partial class PersonalizeMngForm : Form
+    public partial class PersonalizeMngForm : UserControl
     {
         public PersonalizeMngForm(Main Parent)
         {

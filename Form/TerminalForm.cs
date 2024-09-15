@@ -13,7 +13,7 @@ using System.Management;
 
 namespace StandaloneSDKDemo
 {
-    public partial class TerminalForm : Form
+    public partial class TerminalForm : UserControl
     {
         public TerminalForm(Main Parent)
         {
@@ -261,5 +261,9 @@ namespace StandaloneSDKDemo
             getCapacityInfo();
         }
 
+        private void tabPage1_Click(object sender, EventArgs e)
+        {
+
+        }
     }
 }

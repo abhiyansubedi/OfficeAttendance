@@ -9,7 +9,7 @@ using System.Windows.Forms;
 
 namespace StandaloneSDKDemo
 {
-    public partial class OtherMngForm : Form
+    public partial class OtherMngForm : UserControl
     {
         public OtherMngForm(Main parent)
         {

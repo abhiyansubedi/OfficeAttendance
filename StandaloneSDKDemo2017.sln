@@ -5,6 +5,8 @@ VisualStudioVersion = 15.0.26730.12
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "StandaloneSDKDemo", "StandaloneSDKDemo.csproj", "{18AF2E37-B203-400B-8188-606899C00933}"
 EndProject
+Project("{54435603-DBB4-11D2-8724-00A0C9A8B90C}") = "Application", "..\Application\Application.vdproj", "{7B635C91-26E4-4D48-B7C8-E53ECD0CF63C}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -27,6 +29,12 @@ Global
 		{18AF2E37-B203-400B-8188-606899C00933}.Release|x64.Build.0 = Release|x64
 		{18AF2E37-B203-400B-8188-606899C00933}.Release|x86.ActiveCfg = Release|x86
 		{18AF2E37-B203-400B-8188-606899C00933}.Release|x86.Build.0 = Release|x86
+		{7B635C91-26E4-4D48-B7C8-E53ECD0CF63C}.Debug|Any CPU.ActiveCfg = Debug
+		{7B635C91-26E4-4D48-B7C8-E53ECD0CF63C}.Debug|x64.ActiveCfg = Debug
+		{7B635C91-26E4-4D48-B7C8-E53ECD0CF63C}.Debug|x86.ActiveCfg = Debug
+		{7B635C91-26E4-4D48-B7C8-E53ECD0CF63C}.Release|Any CPU.ActiveCfg = Release
+		{7B635C91-26E4-4D48-B7C8-E53ECD0CF63C}.Release|x64.ActiveCfg = Release
+		{7B635C91-26E4-4D48-B7C8-E53ECD0CF63C}.Release|x86.ActiveCfg = Release
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

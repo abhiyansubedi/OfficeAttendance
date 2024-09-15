@@ -8,11 +8,15 @@ using System.Text;
 using System.Windows.Forms;
 using System.IO;
 using System.Runtime.InteropServices;
+using StandaloneSDKDemo.Models;
+using System.Net.Http;
+using System.Net.Http.Headers;
 
 namespace StandaloneSDKDemo
 {
-    public partial class DataMngForm : Form
+    public partial class DataMngForm : UserControl
     {
+        static HttpClient client = new HttpClient();
         public DataMngForm(Main Parent)
         {
             InitializeComponent();
@@ -60,28 +64,64 @@ namespace StandaloneSDKDemo
                 gv_Attlog.AutoGenerateColumns = true;
                 gv_Attlog.Columns.Clear();
                 dt_periodLog.Columns.Add("User ID", System.Type.GetType("System.String"));
+                dt_periodLog.Columns.Add("User Name", System.Type.GetType("System.String"));
                 dt_periodLog.Columns.Add("Verify Date", System.Type.GetType("System.String"));
                 dt_periodLog.Columns.Add("Verify Type", System.Type.GetType("System.Int32"));
                 dt_periodLog.Columns.Add("Verify State", System.Type.GetType("System.Int32"));
                 dt_periodLog.Columns.Add("WorkCode", System.Type.GetType("System.Int32"));
+                dt_periodLog.Columns.Add("Time In", System.Type.GetType("System.String"));
+                dt_periodLog.Columns.Add("Time Out", System.Type.GetType("System.String"));
+                dt_periodLog.Columns.Add("Status", System.Type.GetType("System.String"));
                 gv_Attlog.DataSource = dt_periodLog;
-
+                //main data
                 DataMng.SDK.sta_readLogByPeriod(DataMng.lbSysOutputInfo, dt_periodLog, fromTime, toTime);
             }
+
+            else if (checkBox1.Checked == true)
+            {
+                string fromTime = dateTimePicker1.Text.Trim().ToString();
+                string datePart = fromTime.Split(' ')[0]; // Assumes the date and time are separated by a space
+
+                // Step 3: Concatenate with "23:59:59"
+                string toTime = datePart + " 23:59:59";
+                DataTable dt_periodLog = new DataTable("dt_periodLog");
+                gv_Attlog.AutoGenerateColumns = true;
+                gv_Attlog.Columns.Clear();
+                dt_periodLog.Columns.Add("User ID", System.Type.GetType("System.String"));
+                dt_periodLog.Columns.Add("User Name", System.Type.GetType("System.String"));
+
+                dt_periodLog.Columns.Add("Verify Date", System.Type.GetType("System.String"));
+                dt_periodLog.Columns.Add("Verify Type", System.Type.GetType("System.Int32"));
+                dt_periodLog.Columns.Add("Verify State", System.Type.GetType("System.Int32"));
+                dt_periodLog.Columns.Add("WorkCode", System.Type.GetType("System.Int32"));
+                dt_periodLog.Columns.Add("Time In", System.Type.GetType("System.String"));
+                dt_periodLog.Columns.Add("Time Out", System.Type.GetType("System.String"));
+                dt_periodLog.Columns.Add("Status", System.Type.GetType("System.String"));
+                gv_Attlog.DataSource = dt_periodLog;
+                DataMng.SDK.sta_readLogByPeriod(DataMng.lbSysOutputInfo, dt_periodLog, fromTime, toTime);
+            }
+
             else
             {
+
                 DataTable dt_period = new DataTable("dt_period");
                 gv_Attlog.AutoGenerateColumns = true;
                 gv_Attlog.Columns.Clear();
                 dt_period.Columns.Add("User ID", System.Type.GetType("System.String"));
+                dt_period.Columns.Add("User Name", System.Type.GetType("System.String"));
+
                 dt_period.Columns.Add("Verify Date", System.Type.GetType("System.String"));
                 dt_period.Columns.Add("Verify Type", System.Type.GetType("System.Int32"));
                 dt_period.Columns.Add("Verify State", System.Type.GetType("System.Int32"));
                 dt_period.Columns.Add("WorkCode", System.Type.GetType("System.Int32"));
+                dt_period.Columns.Add("Time In", System.Type.GetType("System.String"));
+                dt_period.Columns.Add("Time Out", System.Type.GetType("System.String"));
+                dt_period.Columns.Add("Status", System.Type.GetType("System.String"));
                 gv_Attlog.DataSource = dt_period;
 
-                DataMng.SDK.sta_readAttLog(DataMng.lbSysOutputInfo, dt_period);
+                DataMng.SDK.sta_readAttLog(DataMng.lbSysOutputInfo, dt_period );
             }
+
             Cursor = Cursors.Default;
         }
 
@@ -112,6 +152,9 @@ namespace StandaloneSDKDemo
             dt_newLog.Columns.Add("Verify Type", System.Type.GetType("System.Int32"));
             dt_newLog.Columns.Add("Verify State", System.Type.GetType("System.Int32"));
             dt_newLog.Columns.Add("WorkCode", System.Type.GetType("System.Int32"));
+            dt_newLog.Columns.Add("Time In", System.Type.GetType("System.String"));
+            dt_newLog.Columns.Add("Time Out", System.Type.GetType("System.String"));
+            dt_newLog.Columns.Add("Status", System.Type.GetType("System.String"));
             gv_Attlog.DataSource = dt_newLog;
 
             Cursor = Cursors.WaitCursor;
@@ -142,6 +185,18 @@ namespace StandaloneSDKDemo
             {
                 datetime_from.Enabled = false;
                 datetime_to.Enabled = false;
+            }
+        }
+
+        private void checkBox1_timePeriodPic_CheckedChanged(object sender, EventArgs e)
+        {
+            if (checkBox1.Checked == true)
+            {
+                dateTimePicker1.Enabled = true;
+            }
+            else
+            {
+                dateTimePicker1.Enabled = false;
             }
         }
 
@@ -257,6 +312,8 @@ namespace StandaloneSDKDemo
         #endregion
 
 
+       
+
         #region Oplog
         private void btn_GetOpLog_Click(object sender, EventArgs e)
         {
@@ -330,6 +387,8 @@ namespace StandaloneSDKDemo
             Cursor = Cursors.Default;
         }
         #endregion
+
+ 
 
         #region Import User Data From Udisk
         bool isAlgorithm10 = true;
@@ -1205,5 +1264,36 @@ namespace StandaloneSDKDemo
 
         #endregion
 
+        private async void btn_uploadAttLog_ClickAsync(object sender, EventArgs e)
+        {
+            Cursor = Cursors.WaitCursor;
+            List<AttendanceLog> attendanceLogs = new List<AttendanceLog>();
+            DataMng.SDK.sta_uploadAttLog(DataMng.lbSysOutputInfo, attendanceLogs);
+            DataMng.SDK.sta_GetUserInfoById(DataMng.lbSysOutputInfo, attendanceLogs);
+            client.BaseAddress = new Uri("http://localhost:8000");
+            client.DefaultRequestHeaders.Accept.Clear();
+            client.DefaultRequestHeaders.Accept.Add(
+                new MediaTypeWithQualityHeaderValue("application/json"));
+            client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzA4MjkxMTg2LCJpYXQiOjE3MDgyMzExODYsImp0aSI6ImEyYjY3OTE5MzBjZDQ1MjhhNzc3MmYwNzA2MDY4ZGQzIiwidXNlcl9pZCI6ImQ5NDlkOTk0LTk3YjAtNDE0Zi1iNTUxLTlmMzE1ZGY4YmY3NiJ9.Je9YNoDGAyPeAT8svN4ng0FMBhsWQpBRmOhhMALxSr0");
+            var response = await client.PostAsJsonAsync("api/device/attendance", attendanceLogs);
+            if (response.IsSuccessStatusCode)
+                DataMng.lbSysOutputInfo.Items.Add("Upload Success");
+            Cursor = Cursors.Default;
+        }
+
+        private void checkBox1_CheckedChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        private void dateTimePicker1_ValueChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        private void gv_Attlog_CellContentClick(object sender, DataGridViewCellEventArgs e)
+        {
+
+        }
     }
 }

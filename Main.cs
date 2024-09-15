@@ -1,12 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
 using System.Drawing;
-using System.Linq;
-using System.Text;
 using System.Windows.Forms;
-using System.Windows;
 
 namespace StandaloneSDKDemo
 {
@@ -60,101 +54,101 @@ namespace StandaloneSDKDemo
 
         private void firstMenu1_MouseSelected(object sender, EventArgs e)
         {
-            firstMenu2.BackColor = Color.Transparent;
-            firstMenu3.BackColor = Color.Transparent;
-            firstMenu4.BackColor = Color.Transparent;
-            firstMenu5.BackColor = Color.Transparent;
-            firstMenu6.BackColor = Color.Transparent;
+            //firstMenu2.BackColor = Color.Transparent;
+            //firstMenu3.BackColor = Color.Transparent;
+            //firstMenu4.BackColor = Color.Transparent;
+            //firstMenu5.BackColor = Color.Transparent;
+            //firstMenu6.BackColor = Color.Transparent;
 
-            firstMenu1.TextColor = Color.White;
-            firstMenu2.TextColor = Color.Black;
-            firstMenu3.TextColor = Color.Black;
-            firstMenu4.TextColor = Color.Black;
-            firstMenu5.TextColor = Color.Black;
-            firstMenu6.TextColor = Color.Black;
+            //firstMenu1.TextColor = Color.White;
+            //firstMenu2.TextColor = Color.Black;
+            //firstMenu3.TextColor = Color.Black;
+            //firstMenu4.TextColor = Color.Black;
+            //firstMenu5.TextColor = Color.Black;
+            //firstMenu6.TextColor = Color.Black;
 
-            pnlTerminal.Visible = true;
-            pnlUser.Visible = false;
-            pnlPersonalize.Visible = false;
-            pnlData.Visible = false;
-            pnlAccess.Visible = false;
-            pnlOther.Visible = false;
+            //pnlTerminal.Visible = true;
+            //pnlUser.Visible = false;
+            //pnlPersonalize.Visible = false;
+            //pnlData.Visible = false;
+            //pnlAccess.Visible = false;
+            //pnlOther.Visible = false;
 
-            pnlTerminal.Dock = DockStyle.Fill;
+            //pnlTerminal.Dock = DockStyle.Fill;
 
-            if (pnlTerminal.Controls.Count == 0)
-            {
-                TerminalForm terminalForm = new TerminalForm(this);
-                terminalForm.TopLevel = false;
-                this.pnlTerminal.Controls.Add(terminalForm);
-                terminalForm.Show();
-            }
+            //if (pnlTerminal.Controls.Count == 0)
+            //{
+            //    TerminalForm terminalForm = new TerminalForm(this);
+            //    //terminalForm.TopLevel = false;
+            //    this.pnlTerminal.Controls.Add(terminalForm);
+            //    terminalForm.Show();
+            //}
         }
 
         private void firstMenu2_MouseSelected(object sender, EventArgs e)
         {
-            firstMenu1.BackColor = Color.Transparent;
-            firstMenu3.BackColor = Color.Transparent;
-            firstMenu4.BackColor = Color.Transparent;
-            firstMenu5.BackColor = Color.Transparent;
-            firstMenu6.BackColor = Color.Transparent;
+            //firstMenu1.BackColor = Color.Transparent;
+            //firstMenu3.BackColor = Color.Transparent;
+            //firstMenu4.BackColor = Color.Transparent;
+            //firstMenu5.BackColor = Color.Transparent;
+            //firstMenu6.BackColor = Color.Transparent;
 
-            firstMenu1.TextColor = Color.Black;
-            firstMenu2.TextColor = Color.White;
-            firstMenu3.TextColor = Color.Black;
-            firstMenu4.TextColor = Color.Black;
-            firstMenu5.TextColor = Color.Black;
-            firstMenu6.TextColor = Color.Black;
+            //firstMenu1.TextColor = Color.Black;
+            //firstMenu2.TextColor = Color.White;
+            //firstMenu3.TextColor = Color.Black;
+            //firstMenu4.TextColor = Color.Black;
+            //firstMenu5.TextColor = Color.Black;
+            //firstMenu6.TextColor = Color.Black;
 
-            pnlTerminal.Visible = false;
-            pnlUser.Visible = true;
-            pnlPersonalize.Visible = false;
-            pnlData.Visible = false;
-            pnlAccess.Visible = false;
-            pnlOther.Visible = false;
+            //pnlTerminal.Visible = false;
+            //pnlUser.Visible = true;
+            //pnlPersonalize.Visible = false;
+            //pnlData.Visible = false;
+            //pnlAccess.Visible = false;
+            //pnlOther.Visible = false;
 
-            pnlUser.Dock = DockStyle.Fill;
+            //pnlUser.Dock = DockStyle.Fill;
 
-            if (pnlUser.Controls.Count == 0)
-            {
-                UserMngForm UserMng = new UserMngForm(this);
-                UserMng.TopLevel = false;
-                this.pnlUser.Controls.Add(UserMng);
-                UserMng.Show();
-            }
+            //if (pnlUser.Controls.Count == 0)
+            //{
+            //    UserMngForm UserMng = new UserMngForm(this);
+            //    UserMng.TopLevel = false;
+            //    this.pnlUser.Controls.Add(UserMng);
+            //    UserMng.Show();
+            //}
         }
 
         private void firstMenu3_MouseSelected(object sender, EventArgs e)
         {
-            firstMenu1.BackColor = Color.Transparent;
-            firstMenu2.BackColor = Color.Transparent;
-            firstMenu4.BackColor = Color.Transparent;
-            firstMenu5.BackColor = Color.Transparent;
-            firstMenu6.BackColor = Color.Transparent;
+            //firstMenu1.BackColor = Color.Transparent;
+            //firstMenu2.BackColor = Color.Transparent;
+            //firstMenu4.BackColor = Color.Transparent;
+            //firstMenu5.BackColor = Color.Transparent;
+            //firstMenu6.BackColor = Color.Transparent;
 
-            firstMenu1.TextColor = Color.Black;
-            firstMenu2.TextColor = Color.Black;
-            firstMenu3.TextColor = Color.White;
-            firstMenu4.TextColor = Color.Black;
-            firstMenu5.TextColor = Color.Black;
-            firstMenu6.TextColor = Color.Black;
+            //firstMenu1.TextColor = Color.Black;
+            //firstMenu2.TextColor = Color.Black;
+            //firstMenu3.TextColor = Color.White;
+            //firstMenu4.TextColor = Color.Black;
+            //firstMenu5.TextColor = Color.Black;
+            //firstMenu6.TextColor = Color.Black;
 
-            pnlTerminal.Visible = false;
-            pnlUser.Visible = false;
-            pnlPersonalize.Visible = true;
-            pnlData.Visible = false;
-            pnlAccess.Visible = false;
-            pnlOther.Visible = false;
+            //pnlTerminal.Visible = false;
+            //pnlUser.Visible = false;
+            //pnlPersonalize.Visible = true;
+            //pnlData.Visible = false;
+            //pnlAccess.Visible = false;
+            //pnlOther.Visible = false;
 
-            pnlPersonalize.Dock = DockStyle.Fill;
+            //pnlPersonalize.Dock = DockStyle.Fill;
 
-            if (pnlPersonalize.Controls.Count == 0)
-            {
-                PersonalizeMngForm personalizeMng = new PersonalizeMngForm(this);
-                personalizeMng.TopLevel = false;
-                this.pnlPersonalize.Controls.Add(personalizeMng);
-                personalizeMng.Show();
-            }
+            //if (pnlPersonalize.Controls.Count == 0)
+            //{
+            //    PersonalizeMngForm personalizeMng = new PersonalizeMngForm(this);
+            //    //personalizeMng.TopLevel = false;
+            //    this.pnlPersonalize.Controls.Add(personalizeMng);
+            //    personalizeMng.Show();
+            //}
         }
 
         protected override void OnFormClosing(FormClosingEventArgs e)
@@ -173,6 +167,7 @@ namespace StandaloneSDKDemo
                 if (dr == DialogResult.Cancel)
                     e.Cancel = true;
             }
+            Application.Exit();
 
         }
 
@@ -195,28 +190,28 @@ namespace StandaloneSDKDemo
 
         private void PicHome_MouseClick(object sender, MouseEventArgs e)
         {
-            firstMenu1.BackColor = Color.Transparent;
-            firstMenu2.BackColor = Color.Transparent;
-            firstMenu3.BackColor = Color.Transparent;
-            firstMenu4.BackColor = Color.Transparent;
-            firstMenu5.BackColor = Color.Transparent;
-            firstMenu6.BackColor = Color.Transparent;
+            //firstMenu1.BackColor = Color.Transparent;
+            //firstMenu2.BackColor = Color.Transparent;
+            //firstMenu3.BackColor = Color.Transparent;
+            //firstMenu4.BackColor = Color.Transparent;
+            //firstMenu5.BackColor = Color.Transparent;
+            //firstMenu6.BackColor = Color.Transparent;
 
-            firstMenu1.TextColor = Color.Black;
-            firstMenu2.TextColor = Color.Black;
-            firstMenu3.TextColor = Color.Black;
-            firstMenu4.TextColor = Color.Black;
-            firstMenu5.TextColor = Color.Black;
-            firstMenu6.TextColor = Color.Black;
+            //firstMenu1.TextColor = Color.Black;
+            //firstMenu2.TextColor = Color.Black;
+            //firstMenu3.TextColor = Color.Black;
+            //firstMenu4.TextColor = Color.Black;
+            //firstMenu5.TextColor = Color.Black;
+            //firstMenu6.TextColor = Color.Black;
 
-            pnlTerminal.Visible = false;
-            pnlUser.Visible = false;
-            pnlPersonalize.Visible = false;
-            pnlData.Visible = false;
-            pnlAccess.Visible = false;
-            pnlOther.Visible = false;
+            //pnlTerminal.Visible = false;
+            //pnlUser.Visible = false;
+            //pnlPersonalize.Visible = false;
+            //pnlData.Visible = false;
+            //pnlAccess.Visible = false;
+            //pnlOther.Visible = false;
 
-            this.PnlMiddle.Controls.Add(labAD);
+            //this.PnlMiddle.Controls.Add(labAD);
         }
 
         private void lbSysOutputInfo_DrawItem(object sender, DrawItemEventArgs e)
@@ -239,101 +234,137 @@ namespace StandaloneSDKDemo
 
         private void firstMenu4_MouseSelected(object sender, EventArgs e)
         {
-            firstMenu1.BackColor = Color.Transparent;
-            firstMenu2.BackColor = Color.Transparent;
-            firstMenu3.BackColor = Color.Transparent;
-            firstMenu5.BackColor = Color.Transparent;
-            firstMenu6.BackColor = Color.Transparent;
+            //firstMenu1.BackColor = Color.Transparent;
+            //firstMenu2.BackColor = Color.Transparent;
+            //firstMenu3.BackColor = Color.Transparent;
+            //firstMenu5.BackColor = Color.Transparent;
+            //firstMenu6.BackColor = Color.Transparent;
 
-            firstMenu1.TextColor = Color.Black;
-            firstMenu2.TextColor = Color.Black;
-            firstMenu3.TextColor = Color.Black;
-            firstMenu4.TextColor = Color.White;
-            firstMenu5.TextColor = Color.Black;
-            firstMenu6.TextColor = Color.Black;
+            //firstMenu1.TextColor = Color.Black;
+            //firstMenu2.TextColor = Color.Black;
+            //firstMenu3.TextColor = Color.Black;
+            //firstMenu4.TextColor = Color.White;
+            //firstMenu5.TextColor = Color.Black;
+            //firstMenu6.TextColor = Color.Black;
 
-            pnlTerminal.Visible = false;
-            pnlUser.Visible = false;
-            pnlPersonalize.Visible = false;
-            pnlData.Visible = true;
-            pnlAccess.Visible = false;
-            pnlOther.Visible = false;
+            //pnlTerminal.Visible = false;
+            //pnlUser.Visible = false;
+            //pnlPersonalize.Visible = false;
+            //pnlData.Visible = true;
+            //pnlAccess.Visible = false;
+            //pnlOther.Visible = false;
 
-            pnlData.Dock = DockStyle.Fill;
+            //pnlData.Dock = DockStyle.Fill;
 
-            if (pnlData.Controls.Count == 0)
-            {
-                DataMngForm dataMngFrom = new DataMngForm(this);
-                dataMngFrom.TopLevel = false;
-                this.pnlData.Controls.Add(dataMngFrom);
-                dataMngFrom.Show();
-            }
+            //if (pnlData.Controls.Count == 0)
+            //{
+            //    DataMngForm dataMngFrom = new DataMngForm(this);
+            //    //dataMngFrom.TopLevel = false;
+            //    this.pnlData.Controls.Add(dataMngFrom);
+            //    dataMngFrom.Show();
+            //}
         }
 
         private void firstMenu5_MouseSelected(object sender, EventArgs e)
         {
-            firstMenu1.BackColor = Color.Transparent;
-            firstMenu2.BackColor = Color.Transparent;
-            firstMenu3.BackColor = Color.Transparent;
-            firstMenu4.BackColor = Color.Transparent;
-            firstMenu6.BackColor = Color.Transparent;
+            //firstMenu1.BackColor = Color.Transparent;
+            //firstMenu2.BackColor = Color.Transparent;
+            //firstMenu3.BackColor = Color.Transparent;
+            //firstMenu4.BackColor = Color.Transparent;
+            //firstMenu6.BackColor = Color.Transparent;
 
-            firstMenu1.TextColor = Color.Black;
-            firstMenu2.TextColor = Color.Black;
-            firstMenu3.TextColor = Color.Black;
-            firstMenu4.TextColor = Color.Black;
-            firstMenu5.TextColor = Color.White;
-            firstMenu6.TextColor = Color.Black;
+            //firstMenu1.TextColor = Color.Black;
+            //firstMenu2.TextColor = Color.Black;
+            //firstMenu3.TextColor = Color.Black;
+            //firstMenu4.TextColor = Color.Black;
+            //firstMenu5.TextColor = Color.White;
+            //firstMenu6.TextColor = Color.Black;
 
-            pnlTerminal.Visible = false;
-            pnlUser.Visible = false;
-            pnlPersonalize.Visible = false;
-            pnlData.Visible = false;
-            pnlAccess.Visible = true;
-            pnlOther.Visible = false;
+            //pnlTerminal.Visible = false;
+            //pnlUser.Visible = false;
+            //pnlPersonalize.Visible = false;
+            //pnlData.Visible = false;
+            //pnlAccess.Visible = true;
+            //pnlOther.Visible = false;
 
-            pnlAccess.Dock = DockStyle.Fill;
+            //pnlAccess.Dock = DockStyle.Fill;
 
-            if (pnlAccess.Controls.Count == 0)
-            {
-                AccessMngForm accessMngFrom = new AccessMngForm(this);
-                accessMngFrom.TopLevel = false;
-                this.pnlAccess.Controls.Add(accessMngFrom);
-                accessMngFrom.Show();
-            }
+            //if (pnlAccess.Controls.Count == 0)
+            //{
+            //    AccessMngForm accessMngFrom = new AccessMngForm(this);
+            //    //accessMngFrom.TopLevel = false;
+            //    this.pnlAccess.Controls.Add(accessMngFrom);
+            //    accessMngFrom.Show();
+            //}
         }
 
         private void firstMenu6_MouseSelected(object sender, EventArgs e)
         {
-            firstMenu1.BackColor = Color.Transparent;
-            firstMenu2.BackColor = Color.Transparent;
-            firstMenu3.BackColor = Color.Transparent;
-            firstMenu4.BackColor = Color.Transparent;
-            firstMenu5.BackColor = Color.Transparent;
+            //firstMenu1.BackColor = Color.Transparent;
+            //firstMenu2.BackColor = Color.Transparent;
+            //firstMenu3.BackColor = Color.Transparent;
+            //firstMenu4.BackColor = Color.Transparent;
+            //firstMenu5.BackColor = Color.Transparent;
 
-            firstMenu1.TextColor = Color.Black;
-            firstMenu2.TextColor = Color.Black;
-            firstMenu3.TextColor = Color.Black;
-            firstMenu4.TextColor = Color.Black;
-            firstMenu5.TextColor = Color.Black;
-            firstMenu6.TextColor = Color.White;
+            //firstMenu1.TextColor = Color.Black;
+            //firstMenu2.TextColor = Color.Black;
+            //firstMenu3.TextColor = Color.Black;
+            //firstMenu4.TextColor = Color.Black;
+            //firstMenu5.TextColor = Color.Black;
+            //firstMenu6.TextColor = Color.White;
 
-            pnlTerminal.Visible = false;
-            pnlUser.Visible = false;
-            pnlPersonalize.Visible = false;
-            pnlData.Visible = false;
-            pnlAccess.Visible = false;
-            pnlOther.Visible = true;
+            //pnlTerminal.Visible = false;
+            //pnlUser.Visible = false;
+            //pnlPersonalize.Visible = false;
+            //pnlData.Visible = false;
+            //pnlAccess.Visible = false;
+            //pnlOther.Visible = true;
 
-            pnlOther.Dock = DockStyle.Fill;
+            //pnlOther.Dock = DockStyle.Fill;
 
-            if (pnlOther.Controls.Count == 0)
-            {
-                OtherMngForm otherMngFrom = new OtherMngForm(this);
-                otherMngFrom.TopLevel = false;
-                this.pnlOther.Controls.Add(otherMngFrom);
-                otherMngFrom.Show();
-            }
+            //if (pnlOther.Controls.Count == 0)
+            //{
+            //    OtherMngForm otherMngFrom = new OtherMngForm(this);
+            //    //otherMngFrom.TopLevel = false;
+            //    this.pnlOther.Controls.Add(otherMngFrom);
+            //    otherMngFrom.Show();
+            //}
+        }
+
+       
+        private void firstMenu8_MouseSelected(object sender, EventArgs e)
+        {
+            //firstMenu1.BackColor = Color.Transparent;
+            //firstMenu2.BackColor = Color.Transparent;
+            //firstMenu3.BackColor = Color.Transparent;
+            //firstMenu4.BackColor = Color.Transparent;
+            //firstMenu5.BackColor = Color.Transparent;
+            //firstMenu6.BackColor = Color.Transparent;
+
+            //firstMenu1.TextColor = Color.Black;
+            //firstMenu2.TextColor = Color.Black;
+            //firstMenu3.TextColor = Color.Black;
+            //firstMenu4.TextColor = Color.Black;
+            //firstMenu5.TextColor = Color.Black;
+            //firstMenu6.TextColor = Color.Black;
+            //firstMenu6.TextColor = Color.Black;
+
+            //pnlTerminal.Visible = false;
+            //pnlUser.Visible = false;
+            //pnlPersonalize.Visible = false;
+            //pnlData.Visible = false;
+            //pnlAccess.Visible = false;
+            //pnlOther.Visible = true;
+
+            //pnlOther.Dock = DockStyle.Fill;
+
+            //if (pnlOther.Controls.Count == 0)
+            //{
+            //    RegisterForm registerForm = new RegisterForm(this);
+            //    //registerForm.TopLevel = false;
+            //    this.pnlOther.Controls.Add(registerForm);
+            //    registerForm.Show();
+            //}
         }
 
         public ListBox RealTimeEventListBox()
@@ -361,12 +392,57 @@ namespace StandaloneSDKDemo
             this.lbRTOutputInfo.Items.Clear();
         }
 
-        private void PicSmall_Click(object sender, EventArgs e)
+        private void OnMainNavButtonClicked(object sender, EventArgs e)
+        {
+            var button = (Button)sender;
+            if (button == btnTerminal) LoadPags(button, new TerminalForm(this));
+            else if (button == btnUsers) LoadPags(button, new UserMngForm(this));
+            else if (button == btnSettings) LoadPags(button, new PersonalizeMngForm(this));
+            else if (button == btnPermissions) LoadPags(button, new AccessMngForm(this));
+            
+            else if (button == btnEmployees) LoadPags(button, new Employees());
+            else if (button == btnMonthlyReports) LoadPags(button, new MonthlyReport2(this));
+            else if (button == btnAttendance) LoadPags(button, new MonthlyReportForm(this));
+            else if (button == btnHomepage) LoadPags(button, new Homepage());
+            else if (button == btnLeave) LoadPags(button, new Leave());
+            else if (button == btnRole) LoadPags(button, new Role());
+
+
+            else if (button == btnReport)
+                LoadPags(button, new Reports(this));
+           
+        }
+
+     
+
+        private void LoadPags(Button sourceButton, UserControl userControl)
+        {
+            PnlMiddle.Controls.Clear();
+            userControl.Dock = DockStyle.Fill;
+            PnlMiddle.Controls.Add(userControl);
+        }
+
+        private void button1_Click(object sender, EventArgs e)
         {
 
         }
 
-        private void PicClose_Click(object sender, EventArgs e)
+        private void PnlTop_Paint(object sender, PaintEventArgs e)
+        {
+
+        }
+
+        private void PnlMiddle_Paint(object sender, PaintEventArgs e)
+        {
+
+        }
+
+        private void PnlTop_Paint_1(object sender, PaintEventArgs e)
+        {
+
+        }
+
+        private void btnAttendance_Click(object sender, EventArgs e)
         {
 
         }

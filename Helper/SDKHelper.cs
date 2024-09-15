@@ -7,6 +7,10 @@ using System.Data;
 using System.IO;
 using System.Drawing;
 using System.Text.RegularExpressions;
+using StandaloneSDKDemo.Models;
+using System.Net.Http.Headers;
+using System.Net.Http;
+using StandaloneSDKDemo.Helper;
 
 namespace StandaloneSDKDemo
 {    
@@ -140,7 +144,12 @@ namespace StandaloneSDKDemo
                 return name;
             }
         }
-    #endregion
+
+        internal void sta_readAttLog(ListBox lbSysOutputInfo, DataTable dt_period, string fromTime, string toTime)
+        {
+            throw new NotImplementedException();
+        }
+        #endregion
 
         #region ConnectDevice
 
@@ -153,6 +162,11 @@ namespace StandaloneSDKDemo
         {
             bIsConnected = state;
             //connected = state;
+        }
+
+        internal void sta_DeleteAttLogByPeriod(ListBox lbSysOutputInfo, string fromTime, string toTime, object dt_period)
+        {
+            throw new NotImplementedException();
         }
 
         public int GetMachineNumber()
@@ -654,7 +668,9 @@ namespace StandaloneSDKDemo
             string time = Year + "-" + Month + "-" + Day + " " + Hour + ":" + Minute + ":" + Second;
 
             gRealEventListBox.Items.Add("Verify OK.UserID=" + EnrollNumber + " isInvalid=" + IsInValid.ToString() + " state=" + AttState.ToString() + " verifystyle=" + VerifyMethod.ToString() + " time=" + time);
-            DialogResult dr = MessageBox.Show("Maarked Present", "Warning!", MessageBoxButtons.OKCancel, MessageBoxIcon.Information);
+            var emailHelper = new Email();
+            emailHelper.SendMail();
+            DialogResult dr = MessageBox.Show("Marked Present", "Warning!", MessageBoxButtons.OKCancel, MessageBoxIcon.Information);
 
             //throw new NotImplementedException();
         }
@@ -1061,6 +1077,71 @@ namespace StandaloneSDKDemo
                 //end by Leonard
                 lblOutputInfo.Items.Add("*Operation failed,ErrorCode=" + idwErrorCode.ToString());
             }
+            axCZKEM1.EnableDevice(iMachineNumber, true);
+
+            return 1;
+        }
+
+        public int sta_GetUserInfoById(ListBox lblOutputInfo, List<AttendanceLog> attendanceLogs)
+        {
+            if (GetConnectState() == false)
+            {
+                lblOutputInfo.Items.Add("*Please connect first!");
+                return -1024;
+            }
+            foreach (AttendanceLog attLog in attendanceLogs)
+            {
+                if (attLog.user_id.Trim() == "")
+                {
+                    lblOutputInfo.Items.Add("*Please input user id first!");
+                    return -1023;
+                }
+
+                int iPIN2Width = 0;
+                string strTemp = "";
+                axCZKEM1.GetSysOption(GetMachineNumber(), "~PIN2Width", out strTemp);
+                iPIN2Width = Convert.ToInt32(strTemp);
+
+                if (attLog.user_id.Length > iPIN2Width)
+                {
+                    lblOutputInfo.Items.Add("*User ID error! The max length is " + iPIN2Width.ToString());
+                    return -1022;
+                }
+
+                int idwErrorCode = 0;
+                int iPrivilege = 0;
+                string strName = "";
+                string strCardno = "";
+                string strPassword = "";
+                bool bEnabled = false;
+
+                axCZKEM1.EnableDevice(iMachineNumber, false);
+                if (axCZKEM1.SSR_GetUserInfo(iMachineNumber, attLog.user_id.Trim(), out strName, out strPassword, out iPrivilege, out bEnabled))//upload the user's information(card number included)
+                {
+                    axCZKEM1.GetStrCardNumber(out strCardno);
+                    if (strCardno.Equals("0"))
+                    {
+                        strCardno = "";
+                    }
+                    attLog.name = strName;
+                    attLog.card_number = strCardno;
+                    attLog.privilege = iPrivilege;
+                    attLog.is_enabled = bEnabled;
+                    lblOutputInfo.Items.Add("Get user information successfully");
+                }
+                else
+                {
+                    axCZKEM1.GetLastError(ref idwErrorCode);
+                    //modify by Leonard 2017/12/18
+                    attLog.name = " ";
+                    attLog.card_number = " ";
+                    attLog.privilege = 5;
+                    lblOutputInfo.Items.Add("The User is not exist");
+                    //end by Leonard
+                    lblOutputInfo.Items.Add("*Operation failed,ErrorCode=" + idwErrorCode.ToString());
+                }
+            }
+            
             axCZKEM1.EnableDevice(iMachineNumber, true);
 
             return 1;
@@ -3335,23 +3416,23 @@ namespace StandaloneSDKDemo
         #endregion
         #region UserBio
 
-        /*
-        public void connectDevice(string ip, int port, int commKey)
-        {
-            
-            axCZKEM1.SetCommPassword(commKey);
-            connected = axCZKEM1.Connect_Net(ip, port);
-            if (connected)
-            {
-                sta_getBiometricType();
-            }
-        }
 
-        public void disconnectDevice()
-        {
-            if (connected) axCZKEM1.Disconnect();
-        }
-        */
+        //public void connectDevice(string ip, int port, int commKey)
+        //{
+
+        //    axCZKEM1.SetCommPassword(commKey);
+        //    connected = axCZKEM1.Connect_Net(ip, port);
+        //    if (connected)
+        //    {
+        //        sta_getBiometricType();
+        //    }
+        //}
+
+        //public void disconnectDevice()
+        //{
+        //    if (connected) axCZKEM1.Disconnect();
+        //}
+
 
         private string sta_getSysOptions(string option)
         {
@@ -4110,6 +4191,123 @@ namespace StandaloneSDKDemo
 
             int ret = 0;
 
+            axCZKEM1.EnableDevice(GetMachineNumber(), false); //disable the device
+
+            string sdwEnrollNumber = "";
+            int idwVerifyMode = 0;
+            int idwInOutMode = 0;
+            int idwYear = 0;
+            int idwMonth = 0;
+            int idwDay = 0;
+            int idwHour = 0;
+            int idwMinute = 0;
+            int idwSecond = 0;
+            int idwWorkcode = 0;
+            string sdwName = "";
+            string strPassword = "";
+            int iPrivilege = 0;
+            Boolean bEnabled = true;
+
+            if (axCZKEM1.ReadGeneralLogData(GetMachineNumber()))
+            {
+                while (axCZKEM1.SSR_GetGeneralLogData(GetMachineNumber(), out sdwEnrollNumber, out idwVerifyMode,
+                            out idwInOutMode, out idwYear, out idwMonth, out idwDay, out idwHour, out idwMinute, out idwSecond, ref idwWorkcode)) //get records from the memory
+                {
+                    axCZKEM1.SSR_GetUserInfo(GetMachineNumber(), sdwEnrollNumber, out sdwName, out strPassword, out iPrivilege, out bEnabled);//upload the user's information(card number included)
+
+                    DataRow dr = dt_log.NewRow();
+                    dr["User ID"] = sdwEnrollNumber;
+                    dr["User Name"] = sdwName;
+                    dr["Verify Type"] = idwVerifyMode;
+                    dr["Verify State"] = idwInOutMode;
+                    dr["WorkCode"] = idwWorkcode;
+
+                    
+
+                    // Convert to Nepali Date
+                    DateConverter nepaliDate = DateConverter.ConvertToNepali(idwYear, idwMonth, idwDay);
+                    dr["Verify Date"] = $"{nepaliDate.Year}/{nepaliDate.Month}/{nepaliDate.Day}  " + idwHour + ":" + idwMinute + ":" + idwSecond;
+
+
+
+                    bool isLeapYear = IsLeapYear(nepaliDate.Year);
+
+                    //if ((nepaliDate.Year == int.Parse(nepaliDate.Year)) && (nepaliDate.Month == monthNumber))
+                    //{
+                    //    if (nepaliDate.Month == 12 && nepaliDate.Day == 30 && !isLeapYear)
+                    //    {
+                    //        dr.Delete();
+                    //    }
+                    //}
+                    //else
+                    //{
+                    //    dr.Delete();
+                    //    continue;
+                    //}
+
+                    TimeSpan timeIn = new TimeSpan(idwHour, idwMinute, idwSecond);
+                    TimeSpan timeOut = new TimeSpan(18, 0, 0);
+
+                    DateTime timeInDateTime = DateTime.Today.Add(timeIn);
+                    DateTime timeOutDateTime = DateTime.Today.Add(timeOut);
+
+                    string timeIn12HourFormat = timeInDateTime.ToString("hh:mm:ss tt");
+                    string timeOut12HourFormat = timeOutDateTime.ToString("hh:mm:ss tt");
+
+                    dr["Time In"] = timeIn12HourFormat;
+                    dr["Time Out"] = timeOut12HourFormat;
+
+                    TimeSpan startTime = new TimeSpan(09, 00, 00);
+                    TimeSpan endTime = timeOut;
+
+                    if (timeIn <= startTime)
+                    {
+                        dr["Status"] = "Present";
+                    }
+                    else
+                    {
+                        dr["Status"] = "Absent";
+                    }
+
+                    dt_log.Rows.Add(dr);
+                }
+                ret = 1;
+            }
+            else
+            {
+                axCZKEM1.GetLastError(ref idwErrorCode);
+                ret = idwErrorCode;
+
+                if (idwErrorCode != 0)
+                {
+                    lblOutputInfo.Items.Add("*Read attlog failed, ErrorCode: " + idwErrorCode.ToString());
+                }
+                else
+                {
+                    lblOutputInfo.Items.Add("No data from terminal returns!");
+                }
+            }
+
+            axCZKEM1.EnableDevice(GetMachineNumber(), true); //enable the device
+
+            return ret;
+        }
+
+        private bool IsLeapYear(int year)
+        {
+            return (year % 4 == 0 && year % 100 != 0) || (year % 400 == 0);
+        }
+
+        public int sta_uploadAttLog(ListBox lblOutputInfo, List<AttendanceLog> attendanceLogList)
+        {
+            if (GetConnectState() == false)
+            {
+                lblOutputInfo.Items.Add("*Please connect first!");
+                return -1024;
+            }
+
+            int ret = 0;
+
             axCZKEM1.EnableDevice(GetMachineNumber(), false);//disable the device
 
             string sdwEnrollNumber = "";
@@ -4128,13 +4326,18 @@ namespace StandaloneSDKDemo
                 while (axCZKEM1.SSR_GetGeneralLogData(GetMachineNumber(), out sdwEnrollNumber, out idwVerifyMode,
                             out idwInOutMode, out idwYear, out idwMonth, out idwDay, out idwHour, out idwMinute, out idwSecond, ref idwWorkcode))//get records from the memory
                 {
-                    DataRow dr = dt_log.NewRow();
-                    dr["User ID"] = sdwEnrollNumber;
-                    dr["Verify Date"] = idwYear + "-" + idwMonth + "-" + idwDay + " " + idwHour + ":" + idwMinute + ":" + idwSecond;
-                    dr["Verify Type"] = idwVerifyMode;
-                    dr["Verify State"] = idwInOutMode;
-                    dr["WorkCode"] = idwWorkcode;
-                    dt_log.Rows.Add(dr);
+
+
+                    AttendanceLog attendanceLog = new AttendanceLog()
+                    {
+                        user_id = sdwEnrollNumber,
+                        verify_date = idwYear + "-" + idwMonth + "-" + idwDay + " " + idwHour + ":" + idwMinute + ":" + idwSecond,
+                        verify_type = idwVerifyMode,
+                        verify_state = idwInOutMode,
+                        work_code = idwWorkcode
+                    };
+                    attendanceLogList.Add(attendanceLog);
+
                 }
                 ret = 1;
             }
@@ -4158,6 +4361,85 @@ namespace StandaloneSDKDemo
             return ret;
         }
 
+        //public int sta_readLogByTime(ListBox lblOutputInfo, DataTable dt_logPeriod, string TimePeriod)
+        //{
+        //    if (GetConnectState() == false)
+        //    {
+        //        lblOutputInfo.Items.Add("*Please connect first!");
+        //        return -1024;
+        //    }
+
+        //    int ret = 0;
+
+        //    axCZKEM1.EnableDevice(GetMachineNumber(), false); // Disable the device
+
+        //    string sdwEnrollNumber = "";
+        //    int idwVerifyMode = 0;
+        //    int idwInOutMode = 0;
+        //    int idwYear = 0;
+        //    int idwMonth = 0;
+        //    int idwDay = 0;
+        //    int idwHour = 0;
+        //    int idwMinute = 0;
+        //    int idwSecond = 0;
+        //    int idwWorkcode = 0;
+
+        //    // Call the appropriate method for reading log data
+        //    if (axCZKEM1.ReadTimePeriod(GetMachineNumber(), TimePeriod)) // Ensure the TimePeriod parameter is correctly passed
+        //    {
+        //        while (axCZKEM1.SSR_GetGeneralLogData(GetMachineNumber(), out sdwEnrollNumber, out idwVerifyMode,
+        //                    out idwInOutMode, out idwYear, out idwMonth, out idwDay, out idwHour, out idwMinute, out idwSecond, ref idwWorkcode))
+        //        {
+        //            DataRow dr = dt_logPeriod.NewRow();
+        //            dr["User ID"] = sdwEnrollNumber;
+        //            dr["Verify Date"] = idwYear + "-" + idwMonth + "-" + idwDay + " " + idwHour + ":" + idwMinute + ":" + idwSecond;
+        //            dr["Verify Type"] = idwVerifyMode;
+        //            dr["Verify State"] = idwInOutMode;
+        //            dr["WorkCode"] = idwWorkcode;
+
+        //            TimeSpan timeIn = new TimeSpan(idwHour, idwMinute, idwSecond);
+        //            TimeSpan timeOut = new TimeSpan(18, 0, 0);
+
+        //            DateTime timeInDateTime = DateTime.Today.Add(timeIn);
+        //            DateTime timeOutDateTime = DateTime.Today.Add(timeOut);
+
+        //            string timeIn12HourFormat = timeInDateTime.ToString("hh:mm:ss tt");
+        //            string timeOut12HourFormat = timeOutDateTime.ToString("hh:mm:ss tt");
+
+        //            dr["Time In"] = timeIn12HourFormat;
+        //            dr["Time Out"] = timeOut12HourFormat;
+
+        //            TimeSpan startTime = new TimeSpan(09, 00, 00);
+        //            TimeSpan endTime = timeOut;
+
+        //            dr["Status"] = timeIn <= startTime ? "Present" : "Absent";
+
+        //            dt_logPeriod.Rows.Add(dr);
+        //        }
+        //        ret = 1;
+        //    }
+        //    else
+        //    {
+        //        int idwErrorCode = 0;
+        //        axCZKEM1.GetLastError(ref idwErrorCode);
+        //        ret = idwErrorCode;
+
+        //        if (idwErrorCode != 0)
+        //        {
+        //            lblOutputInfo.Items.Add("*Read attlog by period failed, ErrorCode: " + idwErrorCode.ToString());
+        //        }
+        //        else
+        //        {
+        //            lblOutputInfo.Items.Add("No data from terminal returns!");
+        //        }
+        //    }
+
+        //    axCZKEM1.EnableDevice(GetMachineNumber(), true); // Enable the device
+
+        //    return ret;
+        //}
+
+
         public int sta_readLogByPeriod(ListBox lblOutputInfo, DataTable dt_logPeriod, string fromTime, string toTime)
         {
             if (GetConnectState() == false)
@@ -4167,10 +4449,12 @@ namespace StandaloneSDKDemo
             }
 
             int ret = 0;
+            int idwErrorCode = 0;
 
-            axCZKEM1.EnableDevice(GetMachineNumber(), false);//disable the device
+            axCZKEM1.EnableDevice(GetMachineNumber(), false); //disable the device
 
             string sdwEnrollNumber = "";
+          
             int idwVerifyMode = 0;
             int idwInOutMode = 0;
             int idwYear = 0;
@@ -4180,19 +4464,62 @@ namespace StandaloneSDKDemo
             int idwMinute = 0;
             int idwSecond = 0;
             int idwWorkcode = 0;
-
+            string sdwName = "";
+            string strPassword = "";
+            int iPrivilege = 0;
+            Boolean bEnabled = true;
 
             if (axCZKEM1.ReadTimeGLogData(GetMachineNumber(), fromTime, toTime))
             {
+
                 while (axCZKEM1.SSR_GetGeneralLogData(GetMachineNumber(), out sdwEnrollNumber, out idwVerifyMode,
-                            out idwInOutMode, out idwYear, out idwMonth, out idwDay, out idwHour, out idwMinute, out idwSecond, ref idwWorkcode))//get records from the memory
+                            out idwInOutMode, out idwYear, out idwMonth, out idwDay, out idwHour,out idwMinute, out idwSecond, ref idwWorkcode)) //get records from the memory
                 {
+                    axCZKEM1.SSR_GetUserInfo(GetMachineNumber(), sdwEnrollNumber, out sdwName, out strPassword, out iPrivilege, out bEnabled);//upload the user's information(card number included)
+
                     DataRow dr = dt_logPeriod.NewRow();
                     dr["User ID"] = sdwEnrollNumber;
-                    dr["Verify Date"] = idwYear + "-" + idwMonth + "-" + idwDay + " " + idwHour + ":" + idwMinute + ":" + idwSecond;
+                    dr["User Name"] = sdwName;
                     dr["Verify Type"] = idwVerifyMode;
                     dr["Verify State"] = idwInOutMode;
                     dr["WorkCode"] = idwWorkcode;
+
+
+
+        // Convert to Nepali Date
+        DateConverter nepaliDate = DateConverter.ConvertToNepali(idwYear, idwMonth, idwDay);
+                    dr["Verify Date"] = $"{nepaliDate.Year}/{nepaliDate.Month}/{nepaliDate.Day}  " + idwHour + ":" + idwMinute + ":" + idwSecond;
+
+
+
+                    bool isLeapYear = IsLeapYear(nepaliDate.Year);
+
+                    //dr["Nepali Date"] = $"{nepaliDate.Year}/{nepaliDate.Month}/{nepaliDate.Day}";
+
+                    TimeSpan timeIn = new TimeSpan(idwHour, idwMinute, idwSecond);
+                    TimeSpan timeOut = new TimeSpan(18, 0, 0);
+
+                    DateTime timeInDateTime = DateTime.Today.Add(timeIn);
+                    DateTime timeOutDateTime = DateTime.Today.Add(timeOut);
+
+                    string timeIn12HourFormat = timeInDateTime.ToString("hh:mm:ss tt");
+                    string timeOut12HourFormat = timeOutDateTime.ToString("hh:mm:ss tt");
+
+                    dr["Time In"] = timeIn12HourFormat;
+                    dr["Time Out"] = timeOut12HourFormat;
+
+                    TimeSpan startTime = new TimeSpan(09, 00, 00);
+                    TimeSpan endTime = timeOut;
+
+                    if (timeIn <= startTime)
+                    {
+                        dr["Status"] = "Present";
+                    }
+                    else
+                    {
+                        dr["Status"] = "Absent";
+                    }
+
                     dt_logPeriod.Rows.Add(dr);
                 }
                 ret = 1;
@@ -4212,9 +4539,8 @@ namespace StandaloneSDKDemo
                 }
             }
 
-
             //lblOutputInfo.Items.Add("[func ReadTimeGLogData]Temporarily unsupported");
-            axCZKEM1.EnableDevice(GetMachineNumber(), true);//enable the device
+            axCZKEM1.EnableDevice(GetMachineNumber(), true); //enable the device
 
             return ret;
         }
@@ -4358,6 +4684,7 @@ namespace StandaloneSDKDemo
             int idwSecond = 0;
             int idwWorkcode = 0;
 
+
             
             if (axCZKEM1.ReadNewGLogData(GetMachineNumber()))
             {
@@ -4370,6 +4697,9 @@ namespace StandaloneSDKDemo
                     dr["Verify Type"] = idwVerifyMode;
                     dr["Verify State"] = idwInOutMode;
                     dr["WorkCode"] = idwWorkcode;
+                    //dr["Time In"] = idwWorkcode;
+                    //dr["Time Out"] = idwWorkcode;
+                    
                     dt_logNew.Rows.Add(dr);
                 }
                 ret = 1;
