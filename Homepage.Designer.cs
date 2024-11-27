@@ -93,9 +93,9 @@
             this.panel2.Controls.Add(this.label5);
             this.panel2.Font = new System.Drawing.Font("Dubai", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.panel2.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(97)))), ((int)(((byte)(83)))), ((int)(((byte)(12)))));
-            this.panel2.Location = new System.Drawing.Point(332, 105);
+            this.panel2.Location = new System.Drawing.Point(332, 68);
             this.panel2.Name = "panel2";
-            this.panel2.Size = new System.Drawing.Size(269, 209);
+            this.panel2.Size = new System.Drawing.Size(290, 202);
             this.panel2.TabIndex = 16;
             // 
             // label4
@@ -125,9 +125,9 @@
             this.panel3.Controls.Add(this.label7);
             this.panel3.Font = new System.Drawing.Font("Dubai", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.panel3.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(13)))), ((int)(((byte)(57)))), ((int)(((byte)(33)))));
-            this.panel3.Location = new System.Drawing.Point(642, 105);
+            this.panel3.Location = new System.Drawing.Point(642, 68);
             this.panel3.Name = "panel3";
-            this.panel3.Size = new System.Drawing.Size(269, 209);
+            this.panel3.Size = new System.Drawing.Size(290, 202);
             this.panel3.TabIndex = 15;
             // 
             // label6
@@ -157,9 +157,9 @@
             this.panel1.Controls.Add(this.label2);
             this.panel1.Font = new System.Drawing.Font("Dubai", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.panel1.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(6)))), ((int)(((byte)(42)))), ((int)(((byte)(76)))));
-            this.panel1.Location = new System.Drawing.Point(22, 105);
+            this.panel1.Location = new System.Drawing.Point(22, 68);
             this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(269, 209);
+            this.panel1.Size = new System.Drawing.Size(290, 202);
             this.panel1.TabIndex = 14;
             // 
             // label13
@@ -189,9 +189,9 @@
             this.panel5.Controls.Add(this.label11);
             this.panel5.Font = new System.Drawing.Font("Dubai", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.panel5.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(40)))), ((int)(((byte)(48)))), ((int)(((byte)(63)))));
-            this.panel5.Location = new System.Drawing.Point(332, 361);
+            this.panel5.Location = new System.Drawing.Point(332, 296);
             this.panel5.Name = "panel5";
-            this.panel5.Size = new System.Drawing.Size(269, 209);
+            this.panel5.Size = new System.Drawing.Size(290, 202);
             this.panel5.TabIndex = 18;
             // 
             // label10
@@ -231,9 +231,9 @@
             this.panel6.Controls.Add(this.label9);
             this.panel6.Font = new System.Drawing.Font("Dubai", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.panel6.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(76)))), ((int)(((byte)(13)))), ((int)(((byte)(13)))));
-            this.panel6.Location = new System.Drawing.Point(22, 361);
+            this.panel6.Location = new System.Drawing.Point(22, 296);
             this.panel6.Name = "panel6";
-            this.panel6.Size = new System.Drawing.Size(269, 209);
+            this.panel6.Size = new System.Drawing.Size(290, 202);
             this.panel6.TabIndex = 17;
             // 
             // label9
@@ -253,15 +253,16 @@
             this.panel4.Controls.Add(this.label13);
             this.panel4.Font = new System.Drawing.Font("Dubai", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.panel4.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(87)))), ((int)(((byte)(30)))), ((int)(((byte)(108)))));
-            this.panel4.Location = new System.Drawing.Point(642, 361);
+            this.panel4.Location = new System.Drawing.Point(642, 296);
             this.panel4.Name = "panel4";
-            this.panel4.Size = new System.Drawing.Size(269, 209);
+            this.panel4.Size = new System.Drawing.Size(290, 202);
             this.panel4.TabIndex = 19;
             // 
             // Homepage
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.AutoSize = true;
             this.BackColor = System.Drawing.Color.White;
             this.Controls.Add(this.label1);
             this.Controls.Add(this.panel2);
@@ -271,7 +272,7 @@
             this.Controls.Add(this.panel6);
             this.Controls.Add(this.panel4);
             this.Name = "Homepage";
-            this.Size = new System.Drawing.Size(1365, 708);
+            this.Size = new System.Drawing.Size(1365, 629);
             this.panel2.ResumeLayout(false);
             this.panel2.PerformLayout();
             this.panel3.ResumeLayout(false);

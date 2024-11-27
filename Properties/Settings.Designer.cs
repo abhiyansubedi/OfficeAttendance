@@ -44,5 +44,16 @@ namespace StandaloneSDKDemo.Properties {
                 return ((string)(this["ProjectConnectionString"]));
             }
         }
+        
+        [global::System.Configuration.ApplicationScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.SpecialSettingAttribute(global::System.Configuration.SpecialSetting.ConnectionString)]
+        [global::System.Configuration.DefaultSettingValueAttribute("Data Source=DESKTOP-82VS1OF\\SQLEXPRESS;Initial Catalog=Attendance;Integrated Secu" +
+            "rity=True")]
+        public string AttendanceConnectionString {
+            get {
+                return ((string)(this["AttendanceConnectionString"]));
+            }
+        }
     }
 }

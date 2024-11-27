@@ -623,6 +623,7 @@
             this.label50.TabIndex = 143;
             this.label50.Text = "Personal Information";
             this.label50.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            this.label50.Click += new System.EventHandler(this.label50_Click);
             // 
             // label2
             // 

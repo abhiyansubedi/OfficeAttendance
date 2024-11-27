@@ -138,6 +138,7 @@ namespace StandaloneSDKDemo
             // 
             this.TabTerminal.Controls.Add(this.pDeviceInfo);
             this.TabTerminal.Dock = System.Windows.Forms.DockStyle.Top;
+            this.TabTerminal.Font = new System.Drawing.Font("Corbel", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.TabTerminal.ImeMode = System.Windows.Forms.ImeMode.NoControl;
             this.TabTerminal.Location = new System.Drawing.Point(0, 0);
             this.TabTerminal.Name = "TabTerminal";
@@ -147,12 +148,11 @@ namespace StandaloneSDKDemo
             // 
             // pDeviceInfo
             // 
-            this.pDeviceInfo.Controls.Add(this.tabControl1);
             this.pDeviceInfo.Controls.Add(this.groupBox2);
             this.pDeviceInfo.ImageIndex = 1;
-            this.pDeviceInfo.Location = new System.Drawing.Point(4, 25);
+            this.pDeviceInfo.Location = new System.Drawing.Point(4, 33);
             this.pDeviceInfo.Name = "pDeviceInfo";
-            this.pDeviceInfo.Size = new System.Drawing.Size(1421, 991);
+            this.pDeviceInfo.Size = new System.Drawing.Size(1421, 983);
             this.pDeviceInfo.TabIndex = 0;
             this.pDeviceInfo.Text = "DeviceInfo";
             this.pDeviceInfo.UseVisualStyleBackColor = true;
@@ -161,10 +161,11 @@ namespace StandaloneSDKDemo
             // 
             this.tabControl1.Controls.Add(this.tabPage1);
             this.tabControl1.Controls.Add(this.tabPage2);
-            this.tabControl1.Location = new System.Drawing.Point(-5, 149);
+            this.tabControl1.Font = new System.Drawing.Font("Corbel", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.tabControl1.Location = new System.Drawing.Point(15, 211);
             this.tabControl1.Name = "tabControl1";
             this.tabControl1.SelectedIndex = 0;
-            this.tabControl1.Size = new System.Drawing.Size(1418, 652);
+            this.tabControl1.Size = new System.Drawing.Size(1402, 627);
             this.tabControl1.TabIndex = 84;
             // 
             // tabPage1
@@ -188,10 +189,10 @@ namespace StandaloneSDKDemo
             this.tabPage1.Controls.Add(this.txtFirmwareVer);
             this.tabPage1.Controls.Add(this.txtManufactureTime);
             this.tabPage1.Controls.Add(this.label14);
-            this.tabPage1.Location = new System.Drawing.Point(4, 25);
+            this.tabPage1.Location = new System.Drawing.Point(4, 33);
             this.tabPage1.Name = "tabPage1";
             this.tabPage1.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage1.Size = new System.Drawing.Size(1410, 623);
+            this.tabPage1.Size = new System.Drawing.Size(1394, 590);
             this.tabPage1.TabIndex = 0;
             this.tabPage1.Text = "Device Info";
             this.tabPage1.UseVisualStyleBackColor = true;
@@ -199,156 +200,187 @@ namespace StandaloneSDKDemo
             // 
             // btnGetSystemInfo
             // 
+            this.btnGetSystemInfo.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(72)))), ((int)(((byte)(86)))), ((int)(((byte)(160)))));
             this.btnGetSystemInfo.Enabled = false;
-            this.btnGetSystemInfo.Location = new System.Drawing.Point(744, 124);
+            this.btnGetSystemInfo.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnGetSystemInfo.Font = new System.Drawing.Font("Corbel", 10.8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btnGetSystemInfo.ForeColor = System.Drawing.Color.White;
+            this.btnGetSystemInfo.Location = new System.Drawing.Point(975, 167);
             this.btnGetSystemInfo.Name = "btnGetSystemInfo";
-            this.btnGetSystemInfo.Size = new System.Drawing.Size(128, 30);
+            this.btnGetSystemInfo.Size = new System.Drawing.Size(183, 35);
             this.btnGetSystemInfo.TabIndex = 18;
             this.btnGetSystemInfo.Text = "GetDeviceInfo";
-            this.btnGetSystemInfo.UseVisualStyleBackColor = true;
+            this.btnGetSystemInfo.UseVisualStyleBackColor = false;
             this.btnGetSystemInfo.Click += new System.EventHandler(this.btnGetSystemInfo_Click);
             // 
             // txtFaceAlg
             // 
-            this.txtFaceAlg.Location = new System.Drawing.Point(721, 58);
+            this.txtFaceAlg.BackColor = System.Drawing.Color.White;
+            this.txtFaceAlg.Font = new System.Drawing.Font("Corbel", 10.8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.txtFaceAlg.Location = new System.Drawing.Point(975, 61);
             this.txtFaceAlg.Name = "txtFaceAlg";
-            this.txtFaceAlg.Size = new System.Drawing.Size(151, 22);
+            this.txtFaceAlg.Size = new System.Drawing.Size(218, 29);
             this.txtFaceAlg.TabIndex = 17;
             // 
             // label3
             // 
             this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(621, 64);
+            this.label3.Font = new System.Drawing.Font("Corbel", 10.8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label3.Location = new System.Drawing.Point(804, 64);
             this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(102, 17);
+            this.label3.Size = new System.Drawing.Size(135, 23);
             this.label3.TabIndex = 16;
             this.label3.Text = "Face Algorithm";
             // 
             // txtPlatForm
             // 
-            this.txtPlatForm.Location = new System.Drawing.Point(401, 20);
+            this.txtPlatForm.BackColor = System.Drawing.Color.White;
+            this.txtPlatForm.Font = new System.Drawing.Font("Symbol", 8.25F);
+            this.txtPlatForm.Location = new System.Drawing.Point(533, 20);
             this.txtPlatForm.Name = "txtPlatForm";
-            this.txtPlatForm.Size = new System.Drawing.Size(151, 22);
+            this.txtPlatForm.Size = new System.Drawing.Size(217, 24);
             this.txtPlatForm.TabIndex = 3;
             // 
             // label1
             // 
             this.label1.AutoSize = true;
+            this.label1.Font = new System.Drawing.Font("Corbel", 10.8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label1.Location = new System.Drawing.Point(26, 23);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(92, 17);
+            this.label1.Size = new System.Drawing.Size(119, 23);
             this.label1.TabIndex = 0;
             this.label1.Text = "Device Name";
             // 
             // txtMac
             // 
-            this.txtMac.Location = new System.Drawing.Point(401, 55);
+            this.txtMac.BackColor = System.Drawing.Color.White;
+            this.txtMac.Font = new System.Drawing.Font("Corbel", 10.8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.txtMac.Location = new System.Drawing.Point(533, 55);
             this.txtMac.Name = "txtMac";
-            this.txtMac.Size = new System.Drawing.Size(151, 22);
+            this.txtMac.Size = new System.Drawing.Size(217, 29);
             this.txtMac.TabIndex = 15;
             // 
             // txtDeviceName
             // 
-            this.txtDeviceName.Location = new System.Drawing.Point(115, 20);
+            this.txtDeviceName.BackColor = System.Drawing.Color.White;
+            this.txtDeviceName.Font = new System.Drawing.Font("Corbel", 10.8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.txtDeviceName.Location = new System.Drawing.Point(171, 23);
             this.txtDeviceName.Name = "txtDeviceName";
-            this.txtDeviceName.Size = new System.Drawing.Size(153, 22);
+            this.txtDeviceName.Size = new System.Drawing.Size(190, 29);
             this.txtDeviceName.TabIndex = 1;
             // 
             // label21
             // 
             this.label21.AutoSize = true;
-            this.label21.Location = new System.Drawing.Point(352, 61);
+            this.label21.Font = new System.Drawing.Font("Corbel", 10.8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label21.Location = new System.Drawing.Point(445, 58);
             this.label21.Name = "label21";
-            this.label21.Size = new System.Drawing.Size(37, 17);
+            this.label21.Size = new System.Drawing.Size(49, 23);
             this.label21.TabIndex = 14;
             this.label21.Text = "MAC";
             // 
             // label2
             // 
             this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(331, 23);
+            this.label2.Font = new System.Drawing.Font("Corbel", 10.8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label2.Location = new System.Drawing.Point(424, 20);
             this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(68, 17);
+            this.label2.Size = new System.Drawing.Size(91, 23);
             this.label2.TabIndex = 2;
             this.label2.Text = "Plat Form";
             // 
             // txtSerialNumber
             // 
-            this.txtSerialNumber.Location = new System.Drawing.Point(115, 96);
+            this.txtSerialNumber.BackColor = System.Drawing.Color.White;
+            this.txtSerialNumber.Font = new System.Drawing.Font("Corbel", 10.8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.txtSerialNumber.Location = new System.Drawing.Point(171, 99);
             this.txtSerialNumber.Name = "txtSerialNumber";
-            this.txtSerialNumber.Size = new System.Drawing.Size(153, 22);
+            this.txtSerialNumber.Size = new System.Drawing.Size(190, 29);
             this.txtSerialNumber.TabIndex = 13;
             // 
             // label4
             // 
             this.label4.AutoSize = true;
-            this.label4.Location = new System.Drawing.Point(621, 23);
+            this.label4.Font = new System.Drawing.Font("Corbel", 10.8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label4.Location = new System.Drawing.Point(804, 23);
             this.label4.Name = "label4";
-            this.label4.Size = new System.Drawing.Size(88, 17);
+            this.label4.Size = new System.Drawing.Size(118, 23);
             this.label4.TabIndex = 4;
             this.label4.Text = "FP Algorithm";
             // 
             // label20
             // 
             this.label20.AutoSize = true;
+            this.label20.Font = new System.Drawing.Font("Corbel", 10.8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label20.Location = new System.Drawing.Point(28, 99);
             this.label20.Name = "label20";
-            this.label20.Size = new System.Drawing.Size(94, 17);
+            this.label20.Size = new System.Drawing.Size(126, 23);
             this.label20.TabIndex = 12;
             this.label20.Text = "SerialNumber";
             // 
             // txtFPAlg
             // 
-            this.txtFPAlg.Location = new System.Drawing.Point(721, 20);
+            this.txtFPAlg.BackColor = System.Drawing.Color.White;
+            this.txtFPAlg.Font = new System.Drawing.Font("Corbel", 10.8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.txtFPAlg.Location = new System.Drawing.Point(975, 23);
             this.txtFPAlg.Name = "txtFPAlg";
-            this.txtFPAlg.Size = new System.Drawing.Size(151, 22);
+            this.txtFPAlg.Size = new System.Drawing.Size(218, 29);
             this.txtFPAlg.TabIndex = 5;
             // 
             // txtManufacturer
             // 
-            this.txtManufacturer.Location = new System.Drawing.Point(401, 96);
+            this.txtManufacturer.BackColor = System.Drawing.Color.White;
+            this.txtManufacturer.Font = new System.Drawing.Font("Corbel", 10.8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.txtManufacturer.Location = new System.Drawing.Point(533, 96);
             this.txtManufacturer.Name = "txtManufacturer";
-            this.txtManufacturer.Size = new System.Drawing.Size(151, 22);
+            this.txtManufacturer.Size = new System.Drawing.Size(217, 29);
             this.txtManufacturer.TabIndex = 11;
             // 
             // label13
             // 
             this.label13.AutoSize = true;
+            this.label13.Font = new System.Drawing.Font("Corbel", 10.8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label13.Location = new System.Drawing.Point(11, 64);
             this.label13.Name = "label13";
-            this.label13.Size = new System.Drawing.Size(117, 17);
+            this.label13.Size = new System.Drawing.Size(155, 23);
             this.label13.TabIndex = 6;
             this.label13.Text = "Firmware Version";
             // 
             // label19
             // 
             this.label19.AutoSize = true;
-            this.label19.Location = new System.Drawing.Point(312, 99);
+            this.label19.Font = new System.Drawing.Font("Corbel", 10.8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label19.Location = new System.Drawing.Point(405, 96);
             this.label19.Name = "label19";
-            this.label19.Size = new System.Drawing.Size(92, 17);
+            this.label19.Size = new System.Drawing.Size(122, 23);
             this.label19.TabIndex = 10;
             this.label19.Text = "Manufacturer";
             // 
             // txtFirmwareVer
             // 
-            this.txtFirmwareVer.Location = new System.Drawing.Point(115, 58);
+            this.txtFirmwareVer.BackColor = System.Drawing.Color.White;
+            this.txtFirmwareVer.Font = new System.Drawing.Font("Corbel", 10.8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.txtFirmwareVer.Location = new System.Drawing.Point(171, 61);
             this.txtFirmwareVer.Name = "txtFirmwareVer";
-            this.txtFirmwareVer.Size = new System.Drawing.Size(153, 22);
+            this.txtFirmwareVer.Size = new System.Drawing.Size(190, 29);
             this.txtFirmwareVer.TabIndex = 7;
             // 
             // txtManufactureTime
             // 
-            this.txtManufactureTime.Location = new System.Drawing.Point(721, 96);
+            this.txtManufactureTime.BackColor = System.Drawing.Color.White;
+            this.txtManufactureTime.Font = new System.Drawing.Font("Corbel", 10.8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.txtManufactureTime.Location = new System.Drawing.Point(975, 99);
             this.txtManufactureTime.Name = "txtManufactureTime";
-            this.txtManufactureTime.Size = new System.Drawing.Size(151, 22);
+            this.txtManufactureTime.Size = new System.Drawing.Size(218, 29);
             this.txtManufactureTime.TabIndex = 9;
             // 
             // label14
             // 
             this.label14.AutoSize = true;
-            this.label14.Location = new System.Drawing.Point(605, 99);
+            this.label14.Font = new System.Drawing.Font("Corbel", 10.8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label14.Location = new System.Drawing.Point(788, 99);
             this.label14.Name = "label14";
-            this.label14.Size = new System.Drawing.Size(122, 17);
+            this.label14.Size = new System.Drawing.Size(160, 23);
             this.label14.TabIndex = 8;
             this.label14.Text = "Manufacture Time";
             // 
@@ -369,23 +401,26 @@ namespace StandaloneSDKDemo
             this.tabPage2.Controls.Add(this.txtAttLogCnt);
             this.tabPage2.Controls.Add(this.txtFPCnt);
             this.tabPage2.Controls.Add(this.label29);
-            this.tabPage2.Location = new System.Drawing.Point(4, 25);
+            this.tabPage2.Location = new System.Drawing.Point(4, 33);
             this.tabPage2.Name = "tabPage2";
             this.tabPage2.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage2.Size = new System.Drawing.Size(1410, 623);
+            this.tabPage2.Size = new System.Drawing.Size(1394, 590);
             this.tabPage2.TabIndex = 1;
             this.tabPage2.Text = "Device Capacity";
             this.tabPage2.UseVisualStyleBackColor = true;
             // 
             // btnGetDataInfo
             // 
+            this.btnGetDataInfo.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(72)))), ((int)(((byte)(86)))), ((int)(((byte)(160)))));
             this.btnGetDataInfo.Enabled = false;
-            this.btnGetDataInfo.Location = new System.Drawing.Point(678, 111);
+            this.btnGetDataInfo.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnGetDataInfo.ForeColor = System.Drawing.Color.White;
+            this.btnGetDataInfo.Location = new System.Drawing.Point(953, 151);
             this.btnGetDataInfo.Name = "btnGetDataInfo";
-            this.btnGetDataInfo.Size = new System.Drawing.Size(147, 29);
+            this.btnGetDataInfo.Size = new System.Drawing.Size(192, 37);
             this.btnGetDataInfo.TabIndex = 26;
             this.btnGetDataInfo.Text = "GetDeviceCapacity";
-            this.btnGetDataInfo.UseVisualStyleBackColor = true;
+            this.btnGetDataInfo.UseVisualStyleBackColor = false;
             this.btnGetDataInfo.Click += new System.EventHandler(this.btnGetDataInfo_Click);
             // 
             // label9
@@ -393,22 +428,24 @@ namespace StandaloneSDKDemo
             this.label9.AutoSize = true;
             this.label9.Location = new System.Drawing.Point(46, 111);
             this.label9.Name = "label9";
-            this.label9.Size = new System.Drawing.Size(80, 17);
+            this.label9.Size = new System.Drawing.Size(105, 24);
             this.label9.TabIndex = 25;
             this.label9.Text = "Face Count";
             // 
             // txtFaceCnt
             // 
-            this.txtFaceCnt.Location = new System.Drawing.Point(137, 108);
+            this.txtFaceCnt.BackColor = System.Drawing.Color.White;
+            this.txtFaceCnt.Location = new System.Drawing.Point(188, 108);
             this.txtFaceCnt.Name = "txtFaceCnt";
-            this.txtFaceCnt.Size = new System.Drawing.Size(123, 22);
+            this.txtFaceCnt.Size = new System.Drawing.Size(201, 32);
             this.txtFaceCnt.TabIndex = 24;
             // 
             // txtAdminCnt
             // 
-            this.txtAdminCnt.Location = new System.Drawing.Point(405, 31);
+            this.txtAdminCnt.BackColor = System.Drawing.Color.White;
+            this.txtAdminCnt.Location = new System.Drawing.Point(597, 26);
             this.txtAdminCnt.Name = "txtAdminCnt";
-            this.txtAdminCnt.Size = new System.Drawing.Size(121, 22);
+            this.txtAdminCnt.Size = new System.Drawing.Size(202, 32);
             this.txtAdminCnt.TabIndex = 15;
             // 
             // label24
@@ -416,47 +453,50 @@ namespace StandaloneSDKDemo
             this.label24.AutoSize = true;
             this.label24.Location = new System.Drawing.Point(48, 31);
             this.label24.Name = "label24";
-            this.label24.Size = new System.Drawing.Size(79, 17);
+            this.label24.Size = new System.Drawing.Size(105, 24);
             this.label24.TabIndex = 12;
             this.label24.Text = "User Count";
             // 
             // txtUserCnt
             // 
-            this.txtUserCnt.Location = new System.Drawing.Point(137, 31);
+            this.txtUserCnt.BackColor = System.Drawing.Color.White;
+            this.txtUserCnt.Location = new System.Drawing.Point(188, 31);
             this.txtUserCnt.Name = "txtUserCnt";
-            this.txtUserCnt.Size = new System.Drawing.Size(123, 22);
+            this.txtUserCnt.Size = new System.Drawing.Size(201, 32);
             this.txtUserCnt.TabIndex = 13;
             // 
             // label25
             // 
             this.label25.AutoSize = true;
-            this.label25.Location = new System.Drawing.Point(323, 34);
+            this.label25.Location = new System.Drawing.Point(458, 29);
             this.label25.Name = "label25";
-            this.label25.Size = new System.Drawing.Size(88, 17);
+            this.label25.Size = new System.Drawing.Size(123, 24);
             this.label25.TabIndex = 14;
             this.label25.Text = "Admin Count";
             // 
             // label26
             // 
             this.label26.AutoSize = true;
-            this.label26.Location = new System.Drawing.Point(594, 31);
+            this.label26.Location = new System.Drawing.Point(925, 29);
             this.label26.Name = "label26";
-            this.label26.Size = new System.Drawing.Size(75, 17);
+            this.label26.Size = new System.Drawing.Size(104, 24);
             this.label26.TabIndex = 16;
             this.label26.Text = "Pwd Count";
             // 
             // txtPWDCnt
             // 
-            this.txtPWDCnt.Location = new System.Drawing.Point(678, 28);
+            this.txtPWDCnt.BackColor = System.Drawing.Color.White;
+            this.txtPWDCnt.Location = new System.Drawing.Point(1076, 21);
             this.txtPWDCnt.Name = "txtPWDCnt";
-            this.txtPWDCnt.Size = new System.Drawing.Size(121, 22);
+            this.txtPWDCnt.Size = new System.Drawing.Size(190, 32);
             this.txtPWDCnt.TabIndex = 17;
             // 
             // txtOpLogCnt
             // 
-            this.txtOpLogCnt.Location = new System.Drawing.Point(678, 68);
+            this.txtOpLogCnt.BackColor = System.Drawing.Color.White;
+            this.txtOpLogCnt.Location = new System.Drawing.Point(1076, 62);
             this.txtOpLogCnt.Name = "txtOpLogCnt";
-            this.txtOpLogCnt.Size = new System.Drawing.Size(121, 22);
+            this.txtOpLogCnt.Size = new System.Drawing.Size(190, 32);
             this.txtOpLogCnt.TabIndex = 23;
             // 
             // label27
@@ -464,48 +504,51 @@ namespace StandaloneSDKDemo
             this.label27.AutoSize = true;
             this.label27.Location = new System.Drawing.Point(39, 73);
             this.label27.Name = "label27";
-            this.label27.Size = new System.Drawing.Size(90, 17);
+            this.label27.Size = new System.Drawing.Size(128, 24);
             this.label27.TabIndex = 18;
             this.label27.Text = "AttLog Count";
             // 
             // label28
             // 
             this.label28.AutoSize = true;
-            this.label28.Location = new System.Drawing.Point(587, 72);
+            this.label28.Location = new System.Drawing.Point(918, 70);
             this.label28.Name = "label28";
-            this.label28.Size = new System.Drawing.Size(87, 17);
+            this.label28.Size = new System.Drawing.Size(119, 24);
             this.label28.TabIndex = 22;
             this.label28.Text = "Oplog Count";
             // 
             // txtAttLogCnt
             // 
-            this.txtAttLogCnt.Location = new System.Drawing.Point(137, 70);
+            this.txtAttLogCnt.BackColor = System.Drawing.Color.White;
+            this.txtAttLogCnt.Location = new System.Drawing.Point(188, 70);
             this.txtAttLogCnt.Name = "txtAttLogCnt";
-            this.txtAttLogCnt.Size = new System.Drawing.Size(123, 22);
+            this.txtAttLogCnt.Size = new System.Drawing.Size(201, 32);
             this.txtAttLogCnt.TabIndex = 19;
             // 
             // txtFPCnt
             // 
-            this.txtFPCnt.Location = new System.Drawing.Point(405, 69);
+            this.txtFPCnt.BackColor = System.Drawing.Color.White;
+            this.txtFPCnt.Location = new System.Drawing.Point(597, 64);
             this.txtFPCnt.Name = "txtFPCnt";
-            this.txtFPCnt.Size = new System.Drawing.Size(121, 22);
+            this.txtFPCnt.Size = new System.Drawing.Size(202, 32);
             this.txtFPCnt.TabIndex = 21;
             // 
             // label29
             // 
             this.label29.AutoSize = true;
-            this.label29.Location = new System.Drawing.Point(339, 72);
+            this.label29.Location = new System.Drawing.Point(474, 67);
             this.label29.Name = "label29";
-            this.label29.Size = new System.Drawing.Size(66, 17);
+            this.label29.Size = new System.Drawing.Size(88, 24);
             this.label29.TabIndex = 20;
             this.label29.Text = "FP Count";
             // 
             // groupBox2
             // 
+            this.groupBox2.Controls.Add(this.tabControl1);
             this.groupBox2.Controls.Add(this.tabControl2);
             this.groupBox2.Location = new System.Drawing.Point(1, 0);
             this.groupBox2.Name = "groupBox2";
-            this.groupBox2.Size = new System.Drawing.Size(1690, 597);
+            this.groupBox2.Size = new System.Drawing.Size(1375, 827);
             this.groupBox2.TabIndex = 83;
             this.groupBox2.TabStop = false;
             this.groupBox2.Text = "Communication with Device";
@@ -515,10 +558,11 @@ namespace StandaloneSDKDemo
             this.tabControl2.Controls.Add(this.tabPage5);
             this.tabControl2.Controls.Add(this.tabPage6);
             this.tabControl2.Controls.Add(this.tabPage7);
-            this.tabControl2.Location = new System.Drawing.Point(11, 20);
+            this.tabControl2.Font = new System.Drawing.Font("Corbel", 10.8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.tabControl2.Location = new System.Drawing.Point(11, 31);
             this.tabControl2.Name = "tabControl2";
             this.tabControl2.SelectedIndex = 0;
-            this.tabControl2.Size = new System.Drawing.Size(930, 117);
+            this.tabControl2.Size = new System.Drawing.Size(1305, 181);
             this.tabControl2.TabIndex = 21;
             // 
             // tabPage5
@@ -530,51 +574,60 @@ namespace StandaloneSDKDemo
             this.tabPage5.Controls.Add(this.labPort);
             this.tabPage5.Controls.Add(this.txtIP);
             this.tabPage5.Controls.Add(this.labIP);
-            this.tabPage5.Location = new System.Drawing.Point(4, 25);
+            this.tabPage5.ForeColor = System.Drawing.Color.White;
+            this.tabPage5.Location = new System.Drawing.Point(4, 31);
             this.tabPage5.Name = "tabPage5";
             this.tabPage5.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage5.Size = new System.Drawing.Size(922, 88);
+            this.tabPage5.Size = new System.Drawing.Size(1297, 146);
             this.tabPage5.TabIndex = 0;
             this.tabPage5.Text = "TCP/IP";
             this.tabPage5.UseVisualStyleBackColor = true;
             // 
             // txtCommKey1
             // 
-            this.txtCommKey1.Location = new System.Drawing.Point(533, 25);
+            this.txtCommKey1.BackColor = System.Drawing.Color.White;
+            this.txtCommKey1.Font = new System.Drawing.Font("Corbel", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.txtCommKey1.Location = new System.Drawing.Point(662, 25);
             this.txtCommKey1.MaxLength = 6;
             this.txtCommKey1.Name = "txtCommKey1";
-            this.txtCommKey1.Size = new System.Drawing.Size(59, 22);
+            this.txtCommKey1.Size = new System.Drawing.Size(93, 32);
             this.txtCommKey1.TabIndex = 17;
             this.txtCommKey1.Text = "0";
             this.txtCommKey1.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.txtCommKey1_KeyPress);
             // 
             // btnTCPConnect
             // 
-            this.btnTCPConnect.Location = new System.Drawing.Point(329, 59);
+            this.btnTCPConnect.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(72)))), ((int)(((byte)(86)))), ((int)(((byte)(160)))));
+            this.btnTCPConnect.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnTCPConnect.Font = new System.Drawing.Font("Corbel", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btnTCPConnect.Location = new System.Drawing.Point(432, 93);
             this.btnTCPConnect.Name = "btnTCPConnect";
-            this.btnTCPConnect.Size = new System.Drawing.Size(113, 23);
+            this.btnTCPConnect.Size = new System.Drawing.Size(119, 38);
             this.btnTCPConnect.TabIndex = 0;
             this.btnTCPConnect.Text = "Connect";
-            this.btnTCPConnect.UseVisualStyleBackColor = true;
+            this.btnTCPConnect.UseVisualStyleBackColor = false;
             this.btnTCPConnect.Click += new System.EventHandler(this.btnTCPConnect_Click);
             // 
             // label15
             // 
             this.label15.AutoSize = true;
+            this.label15.Font = new System.Drawing.Font("Corbel", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label15.ForeColor = System.Drawing.Color.Black;
-            this.label15.Location = new System.Drawing.Point(467, 28);
+            this.label15.Location = new System.Drawing.Point(556, 28);
             this.label15.Name = "label15";
-            this.label15.Size = new System.Drawing.Size(71, 17);
+            this.label15.Size = new System.Drawing.Size(100, 24);
             this.label15.TabIndex = 16;
             this.label15.Text = "CommKey";
             // 
             // txtPort
             // 
+            this.txtPort.BackColor = System.Drawing.Color.White;
+            this.txtPort.Font = new System.Drawing.Font("Corbel", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.txtPort.ImeMode = System.Windows.Forms.ImeMode.Close;
-            this.txtPort.Location = new System.Drawing.Point(340, 25);
+            this.txtPort.Location = new System.Drawing.Point(402, 25);
             this.txtPort.MaxLength = 5;
             this.txtPort.Name = "txtPort";
-            this.txtPort.Size = new System.Drawing.Size(53, 22);
+            this.txtPort.Size = new System.Drawing.Size(93, 32);
             this.txtPort.TabIndex = 13;
             this.txtPort.Text = "4370";
             this.txtPort.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.txtPort_KeyPress);
@@ -582,26 +635,30 @@ namespace StandaloneSDKDemo
             // labPort
             // 
             this.labPort.AutoSize = true;
-            this.labPort.Location = new System.Drawing.Point(289, 28);
+            this.labPort.Font = new System.Drawing.Font("Corbel", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.labPort.Location = new System.Drawing.Point(351, 28);
             this.labPort.Name = "labPort";
-            this.labPort.Size = new System.Drawing.Size(34, 17);
+            this.labPort.Size = new System.Drawing.Size(47, 24);
             this.labPort.TabIndex = 15;
             this.labPort.Text = "Port";
             // 
             // txtIP
             // 
+            this.txtIP.BackColor = System.Drawing.Color.White;
+            this.txtIP.Font = new System.Drawing.Font("Corbel", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.txtIP.Location = new System.Drawing.Point(132, 25);
             this.txtIP.Name = "txtIP";
-            this.txtIP.Size = new System.Drawing.Size(95, 22);
+            this.txtIP.Size = new System.Drawing.Size(136, 32);
             this.txtIP.TabIndex = 12;
             this.txtIP.Text = "192.168.1.201";
             // 
             // labIP
             // 
             this.labIP.AutoSize = true;
+            this.labIP.Font = new System.Drawing.Font("Corbel", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.labIP.Location = new System.Drawing.Point(88, 28);
             this.labIP.Name = "labIP";
-            this.labIP.Size = new System.Drawing.Size(20, 17);
+            this.labIP.Size = new System.Drawing.Size(28, 24);
             this.labIP.TabIndex = 14;
             this.labIP.Text = "IP";
             // 
@@ -616,20 +673,21 @@ namespace StandaloneSDKDemo
             this.tabPage6.Controls.Add(this.txtDeviceID1);
             this.tabPage6.Controls.Add(this.cbSerialPort);
             this.tabPage6.Controls.Add(this.labRate);
-            this.tabPage6.Location = new System.Drawing.Point(4, 25);
+            this.tabPage6.Location = new System.Drawing.Point(4, 31);
             this.tabPage6.Name = "tabPage6";
             this.tabPage6.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage6.Size = new System.Drawing.Size(922, 88);
+            this.tabPage6.Size = new System.Drawing.Size(1297, 146);
             this.tabPage6.TabIndex = 1;
             this.tabPage6.Text = "RS232/RS485";
             this.tabPage6.UseVisualStyleBackColor = true;
             // 
             // txtCommKey2
             // 
-            this.txtCommKey2.Location = new System.Drawing.Point(707, 25);
+            this.txtCommKey2.BackColor = System.Drawing.Color.White;
+            this.txtCommKey2.Location = new System.Drawing.Point(1068, 28);
             this.txtCommKey2.MaxLength = 6;
             this.txtCommKey2.Name = "txtCommKey2";
-            this.txtCommKey2.Size = new System.Drawing.Size(100, 22);
+            this.txtCommKey2.Size = new System.Drawing.Size(133, 29);
             this.txtCommKey2.TabIndex = 23;
             this.txtCommKey2.Text = "0";
             this.txtCommKey2.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.txtCommKey2_KeyPress);
@@ -637,24 +695,28 @@ namespace StandaloneSDKDemo
             // label7
             // 
             this.label7.AutoSize = true;
-            this.label7.Location = new System.Drawing.Point(647, 29);
+            this.label7.Location = new System.Drawing.Point(951, 28);
             this.label7.Name = "label7";
-            this.label7.Size = new System.Drawing.Size(71, 17);
+            this.label7.Size = new System.Drawing.Size(96, 23);
             this.label7.TabIndex = 22;
             this.label7.Text = "CommKey";
             // 
             // btnRSConnect
             // 
-            this.btnRSConnect.Location = new System.Drawing.Point(329, 59);
+            this.btnRSConnect.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(72)))), ((int)(((byte)(86)))), ((int)(((byte)(160)))));
+            this.btnRSConnect.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnRSConnect.ForeColor = System.Drawing.Color.White;
+            this.btnRSConnect.Location = new System.Drawing.Point(413, 93);
             this.btnRSConnect.Name = "btnRSConnect";
-            this.btnRSConnect.Size = new System.Drawing.Size(113, 23);
+            this.btnRSConnect.Size = new System.Drawing.Size(125, 36);
             this.btnRSConnect.TabIndex = 21;
             this.btnRSConnect.Text = "Connect";
-            this.btnRSConnect.UseVisualStyleBackColor = true;
+            this.btnRSConnect.UseVisualStyleBackColor = false;
             this.btnRSConnect.Click += new System.EventHandler(this.btnRSConnect_Click);
             // 
             // cbBaudRate
             // 
+            this.cbBaudRate.BackColor = System.Drawing.Color.White;
             this.cbBaudRate.FormattingEnabled = true;
             this.cbBaudRate.Items.AddRange(new object[] {
             "1200",
@@ -665,42 +727,44 @@ namespace StandaloneSDKDemo
             "38400",
             "57600",
             "115200"});
-            this.cbBaudRate.Location = new System.Drawing.Point(498, 25);
+            this.cbBaudRate.Location = new System.Drawing.Point(739, 28);
             this.cbBaudRate.Name = "cbBaudRate";
-            this.cbBaudRate.Size = new System.Drawing.Size(65, 24);
+            this.cbBaudRate.Size = new System.Drawing.Size(126, 30);
             this.cbBaudRate.TabIndex = 6;
             this.cbBaudRate.Text = "115200";
             // 
             // label5
             // 
             this.label5.AutoSize = true;
-            this.label5.Location = new System.Drawing.Point(24, 32);
+            this.label5.Location = new System.Drawing.Point(30, 31);
             this.label5.Name = "label5";
-            this.label5.Size = new System.Drawing.Size(68, 17);
+            this.label5.Size = new System.Drawing.Size(87, 23);
             this.label5.TabIndex = 20;
             this.label5.Text = "Device ID";
             // 
             // labSerialPort
             // 
             this.labSerialPort.AutoSize = true;
-            this.labSerialPort.Location = new System.Drawing.Point(226, 32);
+            this.labSerialPort.Location = new System.Drawing.Point(303, 34);
             this.labSerialPort.Name = "labSerialPort";
-            this.labSerialPort.Size = new System.Drawing.Size(74, 17);
+            this.labSerialPort.Size = new System.Drawing.Size(97, 23);
             this.labSerialPort.TabIndex = 7;
             this.labSerialPort.Text = "Serial Port";
             // 
             // txtDeviceID1
             // 
-            this.txtDeviceID1.Location = new System.Drawing.Point(89, 25);
+            this.txtDeviceID1.BackColor = System.Drawing.Color.White;
+            this.txtDeviceID1.Location = new System.Drawing.Point(142, 29);
             this.txtDeviceID1.MaxLength = 3;
             this.txtDeviceID1.Name = "txtDeviceID1";
-            this.txtDeviceID1.Size = new System.Drawing.Size(94, 22);
+            this.txtDeviceID1.Size = new System.Drawing.Size(94, 29);
             this.txtDeviceID1.TabIndex = 19;
             this.txtDeviceID1.Text = "1";
             this.txtDeviceID1.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.txtDeviceID1_KeyPress);
             // 
             // cbSerialPort
             // 
+            this.cbSerialPort.BackColor = System.Drawing.Color.White;
             this.cbSerialPort.FormattingEnabled = true;
             this.cbSerialPort.Items.AddRange(new object[] {
             "COM1",
@@ -712,18 +776,18 @@ namespace StandaloneSDKDemo
             "COM7",
             "COM8",
             "COM9"});
-            this.cbSerialPort.Location = new System.Drawing.Point(303, 25);
+            this.cbSerialPort.Location = new System.Drawing.Point(421, 28);
             this.cbSerialPort.Name = "cbSerialPort";
-            this.cbSerialPort.Size = new System.Drawing.Size(56, 24);
+            this.cbSerialPort.Size = new System.Drawing.Size(142, 30);
             this.cbSerialPort.TabIndex = 5;
             this.cbSerialPort.Text = "COM1";
             // 
             // labRate
             // 
             this.labRate.AutoSize = true;
-            this.labRate.Location = new System.Drawing.Point(439, 32);
+            this.labRate.Location = new System.Drawing.Point(632, 31);
             this.labRate.Name = "labRate";
-            this.labRate.Size = new System.Drawing.Size(71, 17);
+            this.labRate.Size = new System.Drawing.Size(92, 23);
             this.labRate.TabIndex = 8;
             this.labRate.Text = "BaudRate";
             // 
@@ -736,9 +800,9 @@ namespace StandaloneSDKDemo
             this.tabPage7.Controls.Add(this.label8);
             this.tabPage7.Controls.Add(this.txtDeviceID2);
             this.tabPage7.Controls.Add(this.label6);
-            this.tabPage7.Location = new System.Drawing.Point(4, 25);
+            this.tabPage7.Location = new System.Drawing.Point(4, 31);
             this.tabPage7.Name = "tabPage7";
-            this.tabPage7.Size = new System.Drawing.Size(922, 88);
+            this.tabPage7.Size = new System.Drawing.Size(1297, 146);
             this.tabPage7.TabIndex = 2;
             this.tabPage7.Text = "USB";
             this.tabPage7.UseVisualStyleBackColor = true;
@@ -749,7 +813,7 @@ namespace StandaloneSDKDemo
             this.rbVUSB.Checked = true;
             this.rbVUSB.Location = new System.Drawing.Point(22, 25);
             this.rbVUSB.Name = "rbVUSB";
-            this.rbVUSB.Size = new System.Drawing.Size(136, 21);
+            this.rbVUSB.Size = new System.Drawing.Size(175, 27);
             this.rbVUSB.TabIndex = 3;
             this.rbVUSB.TabStop = true;
             this.rbVUSB.Text = "Virtual USBClient";
@@ -758,29 +822,33 @@ namespace StandaloneSDKDemo
             // rbUSB
             // 
             this.rbUSB.AutoSize = true;
-            this.rbUSB.Location = new System.Drawing.Point(22, 47);
+            this.rbUSB.Location = new System.Drawing.Point(22, 58);
             this.rbUSB.Name = "rbUSB";
-            this.rbUSB.Size = new System.Drawing.Size(92, 21);
+            this.rbUSB.Size = new System.Drawing.Size(116, 27);
             this.rbUSB.TabIndex = 21;
             this.rbUSB.Text = "USBClient";
             this.rbUSB.UseVisualStyleBackColor = true;
             // 
             // btnUSBConnect
             // 
-            this.btnUSBConnect.Location = new System.Drawing.Point(329, 59);
+            this.btnUSBConnect.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(72)))), ((int)(((byte)(86)))), ((int)(((byte)(160)))));
+            this.btnUSBConnect.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnUSBConnect.ForeColor = System.Drawing.Color.White;
+            this.btnUSBConnect.Location = new System.Drawing.Point(403, 95);
             this.btnUSBConnect.Name = "btnUSBConnect";
-            this.btnUSBConnect.Size = new System.Drawing.Size(113, 23);
+            this.btnUSBConnect.Size = new System.Drawing.Size(127, 35);
             this.btnUSBConnect.TabIndex = 4;
             this.btnUSBConnect.Text = "Connect";
-            this.btnUSBConnect.UseVisualStyleBackColor = true;
+            this.btnUSBConnect.UseVisualStyleBackColor = false;
             this.btnUSBConnect.Click += new System.EventHandler(this.btnUSBConnect_Click);
             // 
             // txtCommKey3
             // 
-            this.txtCommKey3.Location = new System.Drawing.Point(677, 31);
+            this.txtCommKey3.BackColor = System.Drawing.Color.White;
+            this.txtCommKey3.Location = new System.Drawing.Point(723, 31);
             this.txtCommKey3.MaxLength = 6;
             this.txtCommKey3.Name = "txtCommKey3";
-            this.txtCommKey3.Size = new System.Drawing.Size(100, 22);
+            this.txtCommKey3.Size = new System.Drawing.Size(150, 29);
             this.txtCommKey3.TabIndex = 3;
             this.txtCommKey3.Text = "0";
             this.txtCommKey3.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.txtCommKey3_KeyPress);
@@ -790,16 +858,17 @@ namespace StandaloneSDKDemo
             this.label8.AutoSize = true;
             this.label8.Location = new System.Drawing.Point(607, 34);
             this.label8.Name = "label8";
-            this.label8.Size = new System.Drawing.Size(71, 17);
+            this.label8.Size = new System.Drawing.Size(96, 23);
             this.label8.TabIndex = 2;
             this.label8.Text = "CommKey";
             // 
             // txtDeviceID2
             // 
-            this.txtDeviceID2.Location = new System.Drawing.Point(396, 31);
+            this.txtDeviceID2.BackColor = System.Drawing.Color.White;
+            this.txtDeviceID2.Location = new System.Drawing.Point(430, 31);
             this.txtDeviceID2.MaxLength = 3;
             this.txtDeviceID2.Name = "txtDeviceID2";
-            this.txtDeviceID2.Size = new System.Drawing.Size(100, 22);
+            this.txtDeviceID2.Size = new System.Drawing.Size(100, 29);
             this.txtDeviceID2.TabIndex = 1;
             this.txtDeviceID2.Text = "1";
             this.txtDeviceID2.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.txtDeviceID2_KeyPress);
@@ -809,7 +878,7 @@ namespace StandaloneSDKDemo
             this.label6.AutoSize = true;
             this.label6.Location = new System.Drawing.Point(317, 34);
             this.label6.Name = "label6";
-            this.label6.Size = new System.Drawing.Size(68, 17);
+            this.label6.Size = new System.Drawing.Size(87, 23);
             this.label6.TabIndex = 0;
             this.label6.Text = "Device ID";
             // 
@@ -920,10 +989,10 @@ namespace StandaloneSDKDemo
             // tabPage3
             // 
             this.tabPage3.Controls.Add(this.dataGridView5);
-            this.tabPage3.Location = new System.Drawing.Point(4, 22);
+            this.tabPage3.Location = new System.Drawing.Point(4, 25);
             this.tabPage3.Name = "tabPage3";
             this.tabPage3.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage3.Size = new System.Drawing.Size(310, 343);
+            this.tabPage3.Size = new System.Drawing.Size(310, 340);
             this.tabPage3.TabIndex = 0;
             this.tabPage3.Text = "NMS Param";
             this.tabPage3.UseVisualStyleBackColor = true;
@@ -931,10 +1000,10 @@ namespace StandaloneSDKDemo
             // tabPage4
             // 
             this.tabPage4.Controls.Add(this.dataGridView6);
-            this.tabPage4.Location = new System.Drawing.Point(4, 22);
+            this.tabPage4.Location = new System.Drawing.Point(4, 25);
             this.tabPage4.Name = "tabPage4";
             this.tabPage4.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage4.Size = new System.Drawing.Size(310, 343);
+            this.tabPage4.Size = new System.Drawing.Size(310, 340);
             this.tabPage4.TabIndex = 1;
             this.tabPage4.Text = "Main Param";
             this.tabPage4.UseVisualStyleBackColor = true;

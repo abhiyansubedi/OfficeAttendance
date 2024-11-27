@@ -2113,7 +2113,7 @@
             this.label26.Location = new System.Drawing.Point(316, 37);
             this.label26.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label26.Name = "label26";
-            this.label26.Size = new System.Drawing.Size(48, 22);
+            this.label26.Size = new System.Drawing.Size(61, 22);
             this.label26.TabIndex = 64;
             this.label26.Text = "Name";
             this.label26.Click += new System.EventHandler(this.label26_Click);
@@ -2568,6 +2568,7 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.AutoSize = true;
             this.Controls.Add(this.tabControl1);
             this.DoubleBuffered = true;
             this.Margin = new System.Windows.Forms.Padding(4);

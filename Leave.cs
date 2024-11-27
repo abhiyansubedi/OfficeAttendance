@@ -24,7 +24,7 @@ namespace StandaloneSDKDemo
             addLeaveControl.Dock = DockStyle.Fill; // Optional: make the control fill the form
             hostForm.Controls.Add(addLeaveControl);
             hostForm.Text = "Add Leave";
-            hostForm.Size = new Size(214, 23); // Set the size of the form
+            hostForm.Size = new Size(1444, 809); // Set the size of the form
             hostForm.Show();
         }
     }

@@ -41,8 +41,41 @@ namespace AccessKeyDemo
             }
         }
 
+        //public static UserClaim Decrypt(string cipherText)
+        //{
+        //    using (var aes = Aes.Create())
+        //    {
+        //        aes.Key = Key;
+        //        aes.IV = IV;
+
+        //        using (var decryptor = aes.CreateDecryptor(aes.Key, aes.IV))
+        //        {
+        //            using (var ms = new MemoryStream(Convert.FromBase64String(cipherText)))
+        //            {
+        //                using (var cs = new CryptoStream(ms, decryptor, CryptoStreamMode.Read))
+        //                {
+        //                    using (var sr = new StreamReader(cs))
+        //                    {
+        //                        string decryptedText = sr.ReadToEnd();
+        //                        return JsonSerializer.Deserialize<UserClaim>(decryptedText);
+        //                    }
+        //                }
+        //            }
+        //        }
+        //    }
+
+        //}
         public static UserClaim Decrypt(string cipherText)
         {
+            // Clean up and ensure the Base64 string has proper padding
+            string cleanedCipherText = cipherText.Trim();
+            switch (cleanedCipherText.Length % 4)
+            {
+                case 2: cleanedCipherText += "=="; break;
+                case 3: cleanedCipherText += "="; break;
+            }
+
+            // Begin decryption process
             using (var aes = Aes.Create())
             {
                 aes.Key = Key;
@@ -50,7 +83,7 @@ namespace AccessKeyDemo
 
                 using (var decryptor = aes.CreateDecryptor(aes.Key, aes.IV))
                 {
-                    using (var ms = new MemoryStream(Convert.FromBase64String(cipherText)))
+                    using (var ms = new MemoryStream(Convert.FromBase64String(cleanedCipherText)))
                     {
                         using (var cs = new CryptoStream(ms, decryptor, CryptoStreamMode.Read))
                         {
@@ -63,7 +96,7 @@ namespace AccessKeyDemo
                     }
                 }
             }
-
         }
+
     }
 }

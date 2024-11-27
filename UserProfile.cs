@@ -16,5 +16,10 @@ namespace StandaloneSDKDemo
         {
             InitializeComponent();
         }
+
+        private void label50_Click(object sender, EventArgs e)
+        {
+
+        }
     }
 }

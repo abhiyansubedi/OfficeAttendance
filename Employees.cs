@@ -24,7 +24,7 @@ namespace StandaloneSDKDemo
             addEmployeeControl.Dock = DockStyle.Fill; // Optional: make the control fill the form
             hostForm.Controls.Add(addEmployeeControl);
             hostForm.Text = "Add Employee";
-            hostForm.Size = new Size(214, 23); // Set the size of the form
+            hostForm.Size = new Size(1739, 790); // Set the size of the form
             hostForm.Show();
         }
     }

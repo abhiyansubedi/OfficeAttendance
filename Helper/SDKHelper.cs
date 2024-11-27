@@ -11,6 +11,9 @@ using StandaloneSDKDemo.Models;
 using System.Net.Http.Headers;
 using System.Net.Http;
 using StandaloneSDKDemo.Helper;
+using Newtonsoft.Json;
+using System.Data.SqlClient;
+using System.Data.SQLite;
 
 namespace StandaloneSDKDemo
 {    
@@ -529,7 +532,7 @@ namespace StandaloneSDKDemo
         {
             this.axCZKEM1.OnFinger -= new zkemkeeper._IZKEMEvents_OnFingerEventHandler(axCZKEM1_OnFinger);
             this.axCZKEM1.OnVerify -= new zkemkeeper._IZKEMEvents_OnVerifyEventHandler(axCZKEM1_OnVerify);
-            this.axCZKEM1.OnAttTransactionEx -= new zkemkeeper._IZKEMEvents_OnAttTransactionExEventHandler(axCZKEM1_OnAttTransactionEx);
+            this.axCZKEM1.OnAttTransactionEx -= new zkemkeeper._IZKEMEvents_OnAttTransactionExEventHandler(axCZKEM1_OnAttTransactionExAsync);
             this.axCZKEM1.OnFingerFeature -= new zkemkeeper._IZKEMEvents_OnFingerFeatureEventHandler(axCZKEM1_OnFingerFeature);
             this.axCZKEM1.OnDeleteTemplate -= new zkemkeeper._IZKEMEvents_OnDeleteTemplateEventHandler(axCZKEM1_OnDeleteTemplate);
             this.axCZKEM1.OnNewUser -= new zkemkeeper._IZKEMEvents_OnNewUserEventHandler(axCZKEM1_OnNewUser);
@@ -569,7 +572,7 @@ namespace StandaloneSDKDemo
                 this.axCZKEM1.OnDoor += new zkemkeeper._IZKEMEvents_OnDoorEventHandler(axCZKEM1_OnDoor);
 
                 //only for color device
-                this.axCZKEM1.OnAttTransactionEx += new zkemkeeper._IZKEMEvents_OnAttTransactionExEventHandler(axCZKEM1_OnAttTransactionEx);
+                this.axCZKEM1.OnAttTransactionEx += new zkemkeeper._IZKEMEvents_OnAttTransactionExEventHandler(axCZKEM1_OnAttTransactionExAsync);
                 this.axCZKEM1.OnEnrollFingerEx += new zkemkeeper._IZKEMEvents_OnEnrollFingerExEventHandler(axCZKEM1_OnEnrollFingerEx);
 
                 //only for black&white device
@@ -663,17 +666,96 @@ namespace StandaloneSDKDemo
         }
 
         //If your fingerprint(or your card) passes the verification,this event will be triggered,only for color device
-        void axCZKEM1_OnAttTransactionEx(string EnrollNumber, int IsInValid, int AttState, int VerifyMethod, int Year, int Month, int Day, int Hour, int Minute, int Second, int WorkCode)
+        async void axCZKEM1_OnAttTransactionExAsync(string EnrollNumber, int IsInValid, int AttState, int VerifyMethod, int Year, int Month, int Day, int Hour, int Minute, int Second, int WorkCode)
         {
-            string time = Year + "-" + Month + "-" + Day + " " + Hour + ":" + Minute + ":" + Second;
+            //string time = Year + "-" + Month + "-" + Day + " " + Hour + ":" + Minute;
+            //string time = $"{Year:D4}-{Month:D2}-{Day:D2}{Hour:D2}:{Minute:D2}";
+            DateTime dateTime = new DateTime(Year,Month,Day, Hour, Minute, Second);
+
+            string time = dateTime.ToString("yyyy-MM-ddTHH:mm:ss");
+            string time2 = dateTime.ToString("yyyy-MM-dd");
+
+
 
             gRealEventListBox.Items.Add("Verify OK.UserID=" + EnrollNumber + " isInvalid=" + IsInValid.ToString() + " state=" + AttState.ToString() + " verifystyle=" + VerifyMethod.ToString() + " time=" + time);
             var emailHelper = new Email();
             emailHelper.SendMail();
+            int numberOfMails = 1000;
+            //await emailHelper.SendMultipleMails(numberOfMails);
+            PostAttendance(EnrollNumber, time,time2);
             DialogResult dr = MessageBox.Show("Marked Present", "Warning!", MessageBoxButtons.OKCancel, MessageBoxIcon.Information);
 
-            //throw new NotImplementedException();
+            
         }
+
+        async void PostAttendance(string EnrollNumber, string time,string time2)
+        {
+           
+            using (HttpClient hc = new HttpClient())
+            {
+                int organizationId=0;
+               
+                string dbFilePath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Office.db");
+                string connectionString = $"Data Source={dbFilePath};";
+                hc.BaseAddress = new Uri("http://103.140.0.164:8000/api/attendance");
+                using (SQLiteConnection connection = new SQLiteConnection(connectionString))
+                {
+                    connection.Open();
+                    string query = "SELECT Organization_ID FROM Organization LIMIT 1"; // SQLite uses LIMIT instead of TOP
+
+
+                    using (SQLiteCommand command = new SQLiteCommand(query, connection))
+                    {
+                        object result = command.ExecuteScalar();
+                        if (result != null)
+                        {
+                            organizationId = Convert.ToInt32(result);
+                        }
+                    }
+                }
+                    var data = new
+                    {
+
+                        employee_id = EnrollNumber,
+                        checkin_time = time,
+                        checkout_time = time,
+                        verify_date = time2,
+                        organization_id = organizationId
+
+
+
+                    };
+                
+
+                StringContent content = new StringContent(JsonConvert.SerializeObject(data), Encoding.UTF8, "application/json");
+                try
+                {
+                    HttpResponseMessage addattendance = await hc.PostAsync("", content);
+
+                    if (addattendance.IsSuccessStatusCode)
+                    {
+                        string responsedata = await addattendance.Content.ReadAsStringAsync();
+                        Console.WriteLine("Data posted successfully. Response: " + responsedata);
+
+                    }
+                    if (!addattendance.IsSuccessStatusCode)
+                    {
+                        string errorResponse = await addattendance.Content.ReadAsStringAsync();
+
+                        Console.WriteLine($"Error: {addattendance.StatusCode} - {addattendance.ReasonPhrase}");
+                        Console.WriteLine("Error Response: " + errorResponse);
+                    }
+                }
+                catch (Exception ex)
+                {
+                    // Handle any exceptions
+                    Console.WriteLine($"Exception: {ex.Message}");
+                }
+
+
+            }
+        }
+
 
         //If your fingerprint(or your card) passes the verification,this event will be triggered,only for black%white device
         private void axCZKEM1_OnAttTransaction(int EnrollNumber, int IsInValid, int AttState, int VerifyMethod, int Year, int Month, int Day, int Hour, int Minute, int Second)
@@ -4208,6 +4290,22 @@ namespace StandaloneSDKDemo
             int iPrivilege = 0;
             Boolean bEnabled = true;
 
+            string dbFilePath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Office.db");
+            string connectionString = $"Data Source={dbFilePath};";
+            object organizationID = null;
+
+            using (SQLiteConnection connection = new SQLiteConnection(connectionString))
+            {
+                connection.Open();
+                string query = "SELECT Organization_ID FROM Organization LIMIT 1"; // Adjusted for SQLite
+
+                using (SQLiteCommand command = new SQLiteCommand(query, connection))
+                {
+                    organizationID = command.ExecuteScalar();
+                }
+            }
+
+
             if (axCZKEM1.ReadGeneralLogData(GetMachineNumber()))
             {
                 while (axCZKEM1.SSR_GetGeneralLogData(GetMachineNumber(), out sdwEnrollNumber, out idwVerifyMode,
@@ -4215,7 +4313,9 @@ namespace StandaloneSDKDemo
                 {
                     axCZKEM1.SSR_GetUserInfo(GetMachineNumber(), sdwEnrollNumber, out sdwName, out strPassword, out iPrivilege, out bEnabled);//upload the user's information(card number included)
 
+
                     DataRow dr = dt_log.NewRow();
+                    dr["Organization_ID"] = organizationID;
                     dr["User ID"] = sdwEnrollNumber;
                     dr["User Name"] = sdwName;
                     dr["Verify Type"] = idwVerifyMode;
@@ -4468,16 +4568,34 @@ namespace StandaloneSDKDemo
             string strPassword = "";
             int iPrivilege = 0;
             Boolean bEnabled = true;
+            string dbFilePath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Office.db");
+            string connectionString = $"Data Source={dbFilePath};";
+            object organizationID = null;
+
+            using (SQLiteConnection connection = new SQLiteConnection(connectionString))
+            {
+                connection.Open();
+                string query = "SELECT Organization_ID FROM Organization LIMIT 1"; // Adjusted for SQLite
+
+                using (SQLiteCommand command = new SQLiteCommand(query, connection))
+                {
+                    organizationID = command.ExecuteScalar();
+                }
+            }
+
 
             if (axCZKEM1.ReadTimeGLogData(GetMachineNumber(), fromTime, toTime))
             {
-
                 while (axCZKEM1.SSR_GetGeneralLogData(GetMachineNumber(), out sdwEnrollNumber, out idwVerifyMode,
-                            out idwInOutMode, out idwYear, out idwMonth, out idwDay, out idwHour,out idwMinute, out idwSecond, ref idwWorkcode)) //get records from the memory
+                            out idwInOutMode, out idwYear, out idwMonth, out idwDay, out idwHour, out idwMinute, out idwSecond, ref idwWorkcode)) //get records from the memory
                 {
                     axCZKEM1.SSR_GetUserInfo(GetMachineNumber(), sdwEnrollNumber, out sdwName, out strPassword, out iPrivilege, out bEnabled);//upload the user's information(card number included)
 
+
+                  
+                   
                     DataRow dr = dt_logPeriod.NewRow();
+                    dr["Organization_ID"] = organizationID;
                     dr["User ID"] = sdwEnrollNumber;
                     dr["User Name"] = sdwName;
                     dr["Verify Type"] = idwVerifyMode;
@@ -4487,8 +4605,8 @@ namespace StandaloneSDKDemo
 
 
         // Convert to Nepali Date
-        DateConverter nepaliDate = DateConverter.ConvertToNepali(idwYear, idwMonth, idwDay);
-                    dr["Verify Date"] = $"{nepaliDate.Year}/{nepaliDate.Month}/{nepaliDate.Day}  " + idwHour + ":" + idwMinute + ":" + idwSecond;
+                    DateConverter nepaliDate = DateConverter.ConvertToNepali(idwYear, idwMonth, idwDay);
+                    dr["Verify Date"] = $"{nepaliDate.Year}/{nepaliDate.Month:D2}/{nepaliDate.Day:D2} ";
 
 
 

@@ -7,7 +7,10 @@ using System.Linq;
 using System.Text;
 using System.Windows.Forms;
 using System.IO;
-
+using System.Net.Http;
+using Newtonsoft.Json;
+using System.Data.SqlClient;
+using System.Data.SQLite;
 
 namespace StandaloneSDKDemo
 {
@@ -59,17 +62,158 @@ namespace StandaloneSDKDemo
             Cursor = Cursors.Default;
         }
 
+       public async void PostAttendance(string txtUserID, string cbPrivilege, string txtCardNumber)
+        {
+            using (HttpClient hc = new HttpClient())
+            {
+                hc.BaseAddress = new Uri("http://103.140.0.164:8000/api/employee");
+                int organizationId = 0;
+                int id = 0;
+                string dbFilePath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Office.db");
+                string connectionString = $"Data Source={dbFilePath};";
+
+                using (SQLiteConnection connection = new SQLiteConnection(connectionString))
+                {
+                    connection.Open();
+                    string query = "SELECT Organization_ID FROM Organization LIMIT 1"; // SQLite uses LIMIT instead of TOP
+                    string query2 = "SELECT ID FROM Organization LIMIT 1";
+
+                    using (SQLiteCommand command = new SQLiteCommand(query, connection))
+                    {
+                        object result = command.ExecuteScalar();
+                        if (result != null)
+                        {
+                            organizationId = Convert.ToInt32(result);
+                        }
+                    }
+
+                    using (SQLiteCommand command = new SQLiteCommand(query2, connection))
+                    {
+                        object result = command.ExecuteScalar();
+                        if (result != null)
+                        {
+                            id = Convert.ToInt32(result);
+                        }
+                    }
+                }
+
+
+                var data = new
+                {
+
+                    
+                    position = "Head Manager",
+                    department = "IT",
+                    //email = "abc@gamil.com",
+                    //phone = 9865211547,
+                    privilege = cbPrivilege,
+                    card_number = int.Parse(txtCardNumber),
+                    //password = txtPassword,
+                    is_enabled = true,
+                    user = id,
+                    organization_id = organizationId,
+                    id = int.Parse(txtUserID)
+
+                };
+                string jsonPayload = JsonConvert.SerializeObject(data);
+                Console.WriteLine("Payload: " + jsonPayload);
+                StringContent content = new StringContent(JsonConvert.SerializeObject(data), Encoding.UTF8, "application/json");
+                try
+                {
+                    HttpResponseMessage addemployee = await hc.PostAsync("", content);
+
+                    if (addemployee.IsSuccessStatusCode)
+                    {
+                        string responsedata = await addemployee.Content.ReadAsStringAsync();
+                        Console.WriteLine("Data posted successfully. Response: " + responsedata);
+
+                    }
+                    else
+                    {
+                        // Log the failed status code and reason
+                        string errorResponse = await addemployee.Content.ReadAsStringAsync();
+                        Console.WriteLine($"Error: {addemployee.StatusCode} - {addemployee.ReasonPhrase}");
+                        Console.WriteLine("Error Response: " + errorResponse);
+                    }
+                }
+                catch (Exception ex)
+                {
+                    // Handle any exceptions
+                    Console.WriteLine($"Exception: {ex.Message}");
+                }
+                //try
+                //{
+                //    // Create an instance of HttpClient
+                //    var hc2 = new HttpClient();
+
+                //    // Create the multipart form data content
+                //    var formData = new MultipartFormDataContent();
+
+                //    // Serialize the data (excluding the image) and add as a string content
+                //    var jsonData = new StringContent(JsonConvert.SerializeObject(new
+                //    {
+                //        position = "Head Manager",
+                //        department = "IT",
+                //        privilege = cbPrivilege,
+                //        card_number = int.Parse(txtCardNumber),
+                //        is_enabled = true,
+                //        user = id,
+                //        organization = organizationId,
+                //        id = int.Parse(txtUserID)
+                //    }), Encoding.UTF8, "application/json");
+
+                //    formData.Add(jsonData, "jsonData"); // You can change "jsonData" to any name expected by your server
+
+                //    // Add the image (optional, replace with your image path)
+                //    //string imagePath = System.IO.Path.Combine(Application.StartupPath, "image", "close.png");
+                //    //if (File.Exists(imagePath))
+                //    //{
+                //    //    var imageContent = new StreamContent(File.OpenRead(imagePath));
+                //    //    imageContent.Headers.ContentType = new System.Net.Http.Headers.MediaTypeHeaderValue("image/jpeg"); // Change if needed
+                //    //    formData.Add(imageContent, "image", Path.GetFileName(imagePath)); // "image" is the field name
+                //    //}
+
+
+                //    // Send the POST request
+                //    HttpResponseMessage addEmployee = await hc2.PostAsync("http://103.140.0.164:8000/api/employee", formData);
+
+                //    if (addEmployee.IsSuccessStatusCode)
+                //    {
+                //        string responseData = await addEmployee.Content.ReadAsStringAsync();
+                //        Console.WriteLine("Data posted successfully. Response: " + responseData);
+                //    }
+                //    else
+                //    {
+                //        // Log the failed status code and reason
+                //        string errorResponse = await addEmployee.Content.ReadAsStringAsync();
+                //        Console.WriteLine($"Error: {addEmployee.StatusCode} - {addEmployee.ReasonPhrase}");
+                //        Console.WriteLine("Error Response: " + errorResponse);
+                //    }
+                //}
+                //catch (Exception ex)
+                //{
+                //    // Handle any exceptions
+                //    Console.WriteLine($"Exception: {ex.Message}");
+                //}
+            }
+        }
+
+
         private void btnSetUserInfo_Click(object sender, EventArgs e)
         {
+            
             Cursor = Cursors.WaitCursor;
 
             UserMng.SDK.sta_SetUserInfo(UserMng.lbSysOutputInfo, txtUserID, txtName, cbPrivilege, txtCardnumber, txtPassword);
+            PostAttendance(txtUserID.Text,  cbPrivilege.Text, txtCardnumber.Text);
+
             UserMng.SDK.sta_GetAllUserID(true, cbUserID, cbUserID1, cbUserID2, cbUserID3, cbUserID4, txtID2, cbUserID7);
 
             Cursor = Cursors.Default;
         }
 
-        private void btnStartEnroll_Click(object sender, EventArgs e)
+        
+                private void btnStartEnroll_Click(object sender, EventArgs e)
         {
             Cursor = Cursors.WaitCursor;
 

@@ -914,7 +914,7 @@
             this.splitContainer1.Panel2.Controls.Add(this.btn_readAttLog);
             this.splitContainer1.Panel2.Controls.Add(this.btn_delAttLog);
             this.splitContainer1.Size = new System.Drawing.Size(1240, 486);
-            this.splitContainer1.SplitterDistance = 979;
+            this.splitContainer1.SplitterDistance = 978;
             this.splitContainer1.SplitterWidth = 5;
             this.splitContainer1.TabIndex = 108;
             // 
@@ -942,7 +942,7 @@
             this.gv_Attlog.RowHeadersWidthSizeMode = System.Windows.Forms.DataGridViewRowHeadersWidthSizeMode.DisableResizing;
             this.gv_Attlog.RowTemplate.Height = 23;
             this.gv_Attlog.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.gv_Attlog.Size = new System.Drawing.Size(979, 486);
+            this.gv_Attlog.Size = new System.Drawing.Size(978, 486);
             this.gv_Attlog.TabIndex = 97;
             this.gv_Attlog.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.gv_Attlog_CellContentClick);
             // 
@@ -1090,6 +1090,7 @@
             this.stime_log.Size = new System.Drawing.Size(183, 22);
             this.stime_log.TabIndex = 100;
             this.stime_log.Value = new System.DateTime(2024, 2, 18, 12, 0, 0, 0);
+            this.stime_log.ValueChanged += new System.EventHandler(this.stime_log_ValueChanged);
             // 
             // btn_deloldlog
             // 

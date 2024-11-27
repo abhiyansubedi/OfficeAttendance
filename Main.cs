@@ -7,7 +7,7 @@ namespace StandaloneSDKDemo
     public partial class Main : Form
     {
         String demoVersion = "1.1.15";//Please set correct demo version when code be changed; 
-
+       
         public Main()
         {
             InitializeComponent();
@@ -15,6 +15,10 @@ namespace StandaloneSDKDemo
             SDK.axCZKEM1.GetSDKVersion(ref ver);
             lbVer.Text = "Demo Version:" + demoVersion + "  SDK Version:" + ver;
         }
+              
+
+
+
 
         //public bool connected = false;
         public SDKHelper SDK = new SDKHelper();
@@ -394,13 +398,15 @@ namespace StandaloneSDKDemo
 
         private void OnMainNavButtonClicked(object sender, EventArgs e)
         {
+          
+
             var button = (Button)sender;
             if (button == btnTerminal) LoadPags(button, new TerminalForm(this));
             else if (button == btnUsers) LoadPags(button, new UserMngForm(this));
             else if (button == btnSettings) LoadPags(button, new PersonalizeMngForm(this));
-            else if (button == btnPermissions) LoadPags(button, new AccessMngForm(this));
             
-            else if (button == btnEmployees) LoadPags(button, new Employees());
+            
+            else if (button == btnEmployees) LoadPags(button, new UserMngForm(this));
             else if (button == btnMonthlyReports) LoadPags(button, new MonthlyReport2(this));
             else if (button == btnAttendance) LoadPags(button, new MonthlyReportForm(this));
             else if (button == btnHomepage) LoadPags(button, new Homepage());
@@ -408,14 +414,13 @@ namespace StandaloneSDKDemo
             else if (button == btnRole) LoadPags(button, new Role());
 
 
-            else if (button == btnReport)
-                LoadPags(button, new Reports(this));
+            
            
         }
 
      
 
-        private void LoadPags(Button sourceButton, UserControl userControl)
+        public void LoadPags(Button sourceButton, UserControl userControl)
         {
             PnlMiddle.Controls.Clear();
             userControl.Dock = DockStyle.Fill;
@@ -443,6 +448,16 @@ namespace StandaloneSDKDemo
         }
 
         private void btnAttendance_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void lbSysOutputInfo_SelectedIndexChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        private void PnlMiddle_AutoSizeChanged(object sender, EventArgs e)
         {
 
         }

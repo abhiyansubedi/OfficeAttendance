@@ -1295,5 +1295,10 @@ namespace StandaloneSDKDemo
         {
 
         }
+
+        private void stime_log_ValueChanged(object sender, EventArgs e)
+        {
+
+        }
     }
 }
