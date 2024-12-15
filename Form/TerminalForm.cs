@@ -10,6 +10,8 @@ using System.Windows.Forms;
 //using System.Data.SQLite;
 using System.Threading;
 using System.Management;
+using System.IO;
+using System.Data.SQLite;
 
 namespace StandaloneSDKDemo
 {
@@ -19,9 +21,15 @@ namespace StandaloneSDKDemo
         {
             InitializeComponent();
             Terminal = Parent;
+            MonthlyReport = Parent;
         }
-
+        private Main MonthlyReport;
+        DataTable test;
         private Main Terminal;
+        public zkemkeeper.CZKEMClass axCZKEM1 = new zkemkeeper.CZKEMClass();
+        private static int iMachineNumber = 1;
+        
+
 
         #region ConnetDevice
         /********************************************************************************************************************************************
@@ -87,7 +95,7 @@ namespace StandaloneSDKDemo
                 Terminal.SDK.sta_getBiometricType();
             }
             if (ret == 1)
-            {        
+            {
                 this.txtIP.ReadOnly = true;
                 this.txtPort.ReadOnly = true;
                 this.txtCommKey1.ReadOnly = true;
@@ -103,7 +111,7 @@ namespace StandaloneSDKDemo
 
                 btnTCPConnect.Text = "DisConnect";
                 btnTCPConnect.Refresh();
-               
+
             }
             else if (ret == -2)
             {
@@ -203,7 +211,7 @@ namespace StandaloneSDKDemo
 
         private void txtPort_KeyPress(object sender, KeyPressEventArgs e)
         {
-            if(e.KeyChar!='\b' && !Char.IsDigit(e.KeyChar))
+            if (e.KeyChar != '\b' && !Char.IsDigit(e.KeyChar))
             {
                 e.Handled = true;
             }
@@ -211,7 +219,7 @@ namespace StandaloneSDKDemo
 
         private void txtCommKey1_KeyPress(object sender, KeyPressEventArgs e)
         {
-            if(e.KeyChar!='\b' && !Char.IsDigit(e.KeyChar))
+            if (e.KeyChar != '\b' && !Char.IsDigit(e.KeyChar))
             {
                 e.Handled = true;
             }
@@ -219,7 +227,7 @@ namespace StandaloneSDKDemo
 
         private void txtDeviceID1_KeyPress(object sender, KeyPressEventArgs e)
         {
-            if(e.KeyChar!='\b' && !Char.IsDigit(e.KeyChar))
+            if (e.KeyChar != '\b' && !Char.IsDigit(e.KeyChar))
             {
                 e.Handled = true;
             }
@@ -227,7 +235,7 @@ namespace StandaloneSDKDemo
 
         private void txtCommKey2_KeyPress(object sender, KeyPressEventArgs e)
         {
-            if(e.KeyChar!='\b' && !Char.IsDigit(e.KeyChar))
+            if (e.KeyChar != '\b' && !Char.IsDigit(e.KeyChar))
             {
                 e.Handled = true;
             }
@@ -235,7 +243,7 @@ namespace StandaloneSDKDemo
 
         private void txtDeviceID2_KeyPress(object sender, KeyPressEventArgs e)
         {
-            if(e.KeyChar!='\b' && !Char.IsDigit(e.KeyChar))
+            if (e.KeyChar != '\b' && !Char.IsDigit(e.KeyChar))
             {
                 e.Handled = true;
             }
@@ -243,7 +251,7 @@ namespace StandaloneSDKDemo
 
         private void txtCommKey3_KeyPress(object sender, KeyPressEventArgs e)
         {
-            if(e.KeyChar!='\b' && !Char.IsDigit(e.KeyChar))
+            if (e.KeyChar != '\b' && !Char.IsDigit(e.KeyChar))
             {
                 e.Handled = true;
             }
@@ -265,5 +273,125 @@ namespace StandaloneSDKDemo
         {
 
         }
+        public int GetMachineNumber()
+        {
+            return iMachineNumber;
+        }
+
+        private void btnAttendance_Click(object sender, EventArgs e)
+        {
+            Cursor = Cursors.WaitCursor;
+
+            DataTable dt_periodLog = new DataTable("dt_periodLog");
+
+            dt_periodLog.Columns.Add("Organization_ID", System.Type.GetType("System.Int32"));
+            dt_periodLog.Columns.Add("User ID", System.Type.GetType("System.String"));
+            dt_periodLog.Columns.Add("User Name", System.Type.GetType("System.String"));
+
+            dt_periodLog.Columns.Add("Verify Date", System.Type.GetType("System.String"));
+            dt_periodLog.Columns.Add("Verify Type", System.Type.GetType("System.Int32"));
+            dt_periodLog.Columns.Add("Verify State", System.Type.GetType("System.Int32"));
+            dt_periodLog.Columns.Add("WorkCode", System.Type.GetType("System.Int32"));
+            dt_periodLog.Columns.Add("Time In", System.Type.GetType("System.String"));
+            dt_periodLog.Columns.Add("Time Out", System.Type.GetType("System.String"));
+            dt_periodLog.Columns.Add("Status", System.Type.GetType("System.String"));
+
+
+            MonthlyReport.SDK.sta_readAttLog(MonthlyReport.lbSysOutputInfo, dt_periodLog);
+
+            SaveAttendanceToDB(dt_periodLog);
+
+            Cursor = Cursors.Default;
+
+
+        }
+
+
+        public void SaveAttendanceToDB(DataTable dt_periodLog)
+        {
+            string dbFilePath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Office.db");
+            string connectionString = $"Data Source={dbFilePath};";
+            int organization_id = 0;
+
+            using (SQLiteConnection connection = new SQLiteConnection(connectionString))
+            {
+                connection.Open();
+                string query = "SELECT Organization_ID FROM Organization LIMIT 1"; // SQLite uses LIMIT instead of TOP
+
+                using (SQLiteCommand command = new SQLiteCommand(query, connection))
+                {
+                    object result = command.ExecuteScalar();
+                    if (result != null)
+                    {
+                        organization_id = Convert.ToInt32(result);
+                    }
+                }
+            }
+
+            using (SQLiteConnection connection = new SQLiteConnection(connectionString))
+            {
+                connection.Open();
+
+                foreach (DataRow row in dt_periodLog.Rows)
+                {
+                    using (SQLiteCommand command = new SQLiteCommand("INSERT INTO Attendance (organization_id,employee_id,checkin_time,checkout_time,verify_date,Posted_Date_Time) VALUES (@organization_id,@employee_id,@checkin_time,@checkout_time,@verify_date,@Posted_Date_Time)", connection))
+                    {
+                        command.Parameters.AddWithValue("@organization_id", organization_id);
+                        if (row["User ID"] != null && int.TryParse(row["User ID"].ToString(), out int employeeId))
+                        {
+                            command.Parameters.AddWithValue("@employee_id", employeeId);
+                        }
+
+                        command.Parameters.AddWithValue("@verify_date", row["Verify Date"].ToString());
+                        command.Parameters.AddWithValue("@checkin_time", row["Time In"].ToString());
+                        command.Parameters.AddWithValue("@checkout_time", row["Time Out"].ToString());
+                        command.Parameters.AddWithValue("@Posted_Date_Time", DateTime.Now.ToString());
+
+                        command.ExecuteNonQuery();
+                    }
+                }
+            }
+        }
     }
 }
+
+
+
+
+
+
+
+
+
+
+
+        //int machineNumber = 1; // Replace with your device's machine number
+        //string enrollNumber;
+        //int verifyMode, inOutMode, year, month, day, hour, minute, second, workCode = 0, mask, helmetHat;
+        //string temperature;
+
+
+//try
+//{
+//    // Loop through attendance logs
+//    while (axCZKEM1.SSR_GetGeneralLogData(
+//        machineNumber,
+//        out enrollNumber,
+//        out verifyMode,
+//        out inOutMode,
+//        out year,
+//        out month,
+//        out day,
+//        out hour,
+//        out minute,
+//        out second,
+//        ref workCode,
+//        out mask,
+//        out temperature
+//        ))
+//    {
+//        // Combine date and time components into a DateTime object
+
+
+
+

@@ -16,7 +16,18 @@ namespace StandaloneSDKDemo
 {
     public delegate void MessageEvent(string message);
     public partial class UserMngForm : UserControl
+
     {
+        public zkemkeeper.CZKEMClass axCZKEM1 = new zkemkeeper.CZKEMClass();
+        public static event MessageEvent onMessage;
+        private static int iMachineNumber = 1;
+        //axCZKEM1.GetUserInfo(int dwMachineNumber, int dwEnrollNumber, ref string Name, ref string Password, ref int Privilege, ref bool Enabled);
+        //private static int dwMachineNumber;
+        //private static int dwEnrollNumber;
+        //private static string Name;
+        //private static string Password;
+        //private static int Privileges;
+        //private static bool Enabled;
         public UserMngForm(Main Parent)
         {
             InitializeComponent();
@@ -34,6 +45,8 @@ namespace StandaloneSDKDemo
             SDKHelper.onMessage += SDKHelper_onMessage;
         }
         private Main UserMng;
+        private object attendanceDevice;
+
         void SDKHelper_onMessage(string msg)
         {
             if (!string.IsNullOrEmpty(msg))
@@ -61,8 +74,8 @@ namespace StandaloneSDKDemo
 
             Cursor = Cursors.Default;
         }
-
-       public async void PostAttendance(string txtUserID, string cbPrivilege, string txtCardNumber)
+        //PostEmployee(txtUserID.Text, txtName.Text, cbPrivilege.Text, txtCardnumber.Text, txtPosition.Text, txtDepartment.Text );
+        public async void PostEmployee(string txtUserID, string txtName, string cbPrivilege, string txtCardnumber, string txtPosition, string txtDepartment, string txtEmployeeID)
         {
             using (HttpClient hc = new HttpClient())
             {
@@ -101,18 +114,24 @@ namespace StandaloneSDKDemo
                 var data = new
                 {
 
-                    
-                    position = "Head Manager",
-                    department = "IT",
-                    //email = "abc@gamil.com",
-                    //phone = 9865211547,
+                    employee_id = int.Parse(txtEmployeeID),
+
+                    position = txtPosition,
+                    department = txtDepartment,
+                    //name = txtName,
+                    //email = txtEmail,
+                    //phone = txtPhone,
                     privilege = cbPrivilege,
-                    card_number = int.Parse(txtCardNumber),
+                    card_number = int.Parse(txtCardnumber),
                     //password = txtPassword,
-                    is_enabled = true,
                     user = id,
+
+                    is_enabled = true,
+                    id = int.Parse(txtUserID),
+
+
+
                     organization_id = organizationId,
-                    id = int.Parse(txtUserID)
 
                 };
                 string jsonPayload = JsonConvert.SerializeObject(data);
@@ -141,79 +160,28 @@ namespace StandaloneSDKDemo
                     // Handle any exceptions
                     Console.WriteLine($"Exception: {ex.Message}");
                 }
-                //try
-                //{
-                //    // Create an instance of HttpClient
-                //    var hc2 = new HttpClient();
 
-                //    // Create the multipart form data content
-                //    var formData = new MultipartFormDataContent();
-
-                //    // Serialize the data (excluding the image) and add as a string content
-                //    var jsonData = new StringContent(JsonConvert.SerializeObject(new
-                //    {
-                //        position = "Head Manager",
-                //        department = "IT",
-                //        privilege = cbPrivilege,
-                //        card_number = int.Parse(txtCardNumber),
-                //        is_enabled = true,
-                //        user = id,
-                //        organization = organizationId,
-                //        id = int.Parse(txtUserID)
-                //    }), Encoding.UTF8, "application/json");
-
-                //    formData.Add(jsonData, "jsonData"); // You can change "jsonData" to any name expected by your server
-
-                //    // Add the image (optional, replace with your image path)
-                //    //string imagePath = System.IO.Path.Combine(Application.StartupPath, "image", "close.png");
-                //    //if (File.Exists(imagePath))
-                //    //{
-                //    //    var imageContent = new StreamContent(File.OpenRead(imagePath));
-                //    //    imageContent.Headers.ContentType = new System.Net.Http.Headers.MediaTypeHeaderValue("image/jpeg"); // Change if needed
-                //    //    formData.Add(imageContent, "image", Path.GetFileName(imagePath)); // "image" is the field name
-                //    //}
-
-
-                //    // Send the POST request
-                //    HttpResponseMessage addEmployee = await hc2.PostAsync("http://103.140.0.164:8000/api/employee", formData);
-
-                //    if (addEmployee.IsSuccessStatusCode)
-                //    {
-                //        string responseData = await addEmployee.Content.ReadAsStringAsync();
-                //        Console.WriteLine("Data posted successfully. Response: " + responseData);
-                //    }
-                //    else
-                //    {
-                //        // Log the failed status code and reason
-                //        string errorResponse = await addEmployee.Content.ReadAsStringAsync();
-                //        Console.WriteLine($"Error: {addEmployee.StatusCode} - {addEmployee.ReasonPhrase}");
-                //        Console.WriteLine("Error Response: " + errorResponse);
-                //    }
-                //}
-                //catch (Exception ex)
-                //{
-                //    // Handle any exceptions
-                //    Console.WriteLine($"Exception: {ex.Message}");
-                //}
             }
         }
 
 
         private void btnSetUserInfo_Click(object sender, EventArgs e)
         {
-            
+
             Cursor = Cursors.WaitCursor;
 
-            UserMng.SDK.sta_SetUserInfo(UserMng.lbSysOutputInfo, txtUserID, txtName, cbPrivilege, txtCardnumber, txtPassword);
-            PostAttendance(txtUserID.Text,  cbPrivilege.Text, txtCardnumber.Text);
+            /*UserMng.SDK.sta_SetUserInfo(UserMng.lbSysOutputInfo, txtUserID, txtName, cbPrivilege, txtCardnumber, txtPassword);
+            PostAttendance(txtUserID.Text,  cbPrivilege.Text, txtCardnumber.Text,txtName.Text);*/
+            UserMng.SDK.sta_SetUserInfo(UserMng.lbSysOutputInfo, txtEmployeeID, txtName, cbPrivilege, txtCardnumber, txtPassword, txtDepartment, txtEmail, txtPhone, txtPosition, txtUserID);
+            PostEmployee(txtUserID.Text, txtName.Text, cbPrivilege.Text, txtCardnumber.Text, txtPosition.Text, txtDepartment.Text, txtEmployeeID.Text);
 
             UserMng.SDK.sta_GetAllUserID(true, cbUserID, cbUserID1, cbUserID2, cbUserID3, cbUserID4, txtID2, cbUserID7);
 
             Cursor = Cursors.Default;
         }
 
-        
-                private void btnStartEnroll_Click(object sender, EventArgs e)
+
+        private void btnStartEnroll_Click(object sender, EventArgs e)
         {
             Cursor = Cursors.WaitCursor;
 
@@ -637,7 +605,7 @@ namespace StandaloneSDKDemo
 
         private void txtSMSID_KeyPress(object sender, KeyPressEventArgs e)
         {
-            if(e.KeyChar!='\b' && !Char.IsDigit(e.KeyChar))
+            if (e.KeyChar != '\b' && !Char.IsDigit(e.KeyChar))
             {
                 e.Handled = true;
             }
@@ -645,7 +613,7 @@ namespace StandaloneSDKDemo
 
         private void txtValidMins_KeyPress(object sender, KeyPressEventArgs e)
         {
-            if(e.KeyChar!='\b' && !Char.IsDigit(e.KeyChar))
+            if (e.KeyChar != '\b' && !Char.IsDigit(e.KeyChar))
             {
                 e.Handled = true;
             }
@@ -653,7 +621,7 @@ namespace StandaloneSDKDemo
 
         private void txtSMSID1_KeyPress(object sender, KeyPressEventArgs e)
         {
-            if(e.KeyChar!='\b' && !Char.IsDigit(e.KeyChar))
+            if (e.KeyChar != '\b' && !Char.IsDigit(e.KeyChar))
             {
                 e.Handled = true;
             }
@@ -661,7 +629,7 @@ namespace StandaloneSDKDemo
 
         private void txtSMSID2_KeyPress(object sender, KeyPressEventArgs e)
         {
-            if(e.KeyChar!='\b' && !Char.IsDigit(e.KeyChar))
+            if (e.KeyChar != '\b' && !Char.IsDigit(e.KeyChar))
             {
                 e.Handled = true;
             }
@@ -707,7 +675,7 @@ namespace StandaloneSDKDemo
 
         private void txtWorkcodeID_KeyPress(object sender, KeyPressEventArgs e)
         {
-            if(e.KeyChar!='\b' && !Char.IsDigit(e.KeyChar))
+            if (e.KeyChar != '\b' && !Char.IsDigit(e.KeyChar))
             {
                 e.Handled = true;
             }
@@ -1494,7 +1462,7 @@ namespace StandaloneSDKDemo
             {
                 if (iAppState[i] == 1)
                 {
-                    clbMenu.SetItemCheckState(i,CheckState.Checked);
+                    clbMenu.SetItemCheckState(i, CheckState.Checked);
                 }
                 else
                 {
@@ -1506,7 +1474,7 @@ namespace StandaloneSDKDemo
             {
                 if (iFunUserMng[i] == 1)
                 {
-                    clbUserMgt.SetItemCheckState(i, CheckState.Checked);     
+                    clbUserMgt.SetItemCheckState(i, CheckState.Checked);
                 }
                 else
                 {
@@ -1518,7 +1486,7 @@ namespace StandaloneSDKDemo
             {
                 if (iFunAccess[i] == 1)
                 {
-                    clbAccessControl.SetItemCheckState(i, CheckState.Checked); 
+                    clbAccessControl.SetItemCheckState(i, CheckState.Checked);
                 }
                 else
                 {
@@ -1530,7 +1498,7 @@ namespace StandaloneSDKDemo
             {
                 if (iFunICCard[i] == 1)
                 {
-                    clbICCard.SetItemCheckState(i, CheckState.Checked); 
+                    clbICCard.SetItemCheckState(i, CheckState.Checked);
                 }
                 else
                 {
@@ -1542,7 +1510,7 @@ namespace StandaloneSDKDemo
             {
                 if (iFunComm[i] == 1)
                 {
-                    clbComm.SetItemCheckState(i, CheckState.Checked); 
+                    clbComm.SetItemCheckState(i, CheckState.Checked);
                 }
                 else
                 {
@@ -1554,7 +1522,7 @@ namespace StandaloneSDKDemo
             {
                 if (iFunSystem[i] == 1)
                 {
-                    clbSystem.SetItemCheckState(i, CheckState.Checked); 
+                    clbSystem.SetItemCheckState(i, CheckState.Checked);
                 }
                 else
                 {
@@ -1602,7 +1570,7 @@ namespace StandaloneSDKDemo
             {
                 if (iFunAttSearch[i] == 1)
                 {
-                    clbAttendanceSearch.SetItemCheckState(i, CheckState.Checked); 
+                    clbAttendanceSearch.SetItemCheckState(i, CheckState.Checked);
                 }
                 else
                 {
@@ -1884,7 +1852,7 @@ namespace StandaloneSDKDemo
         {
             Cursor = Cursors.WaitCursor;
 
-           var t= UserMng.SDK.sta_GetUserInfo(UserMng.lbSysOutputInfo, txtUserID, txtName, cbPrivilege, txtCardnumber, txtPassword);
+            var t = UserMng.SDK.sta_GetUserInfo(UserMng.lbSysOutputInfo, txtEmployeeID, txtName, cbPrivilege, txtCardnumber, txtPassword);
 
             Cursor = Cursors.Default;
         }
@@ -1892,7 +1860,7 @@ namespace StandaloneSDKDemo
         #region UserBio
 
         //vs2008版本过低只能通过调用自己所写的接口实现string类的IsNullOrWhiteSpace
-        public static bool IsNullOrWhiteSpace(string value) 
+        public static bool IsNullOrWhiteSpace(string value)
         {
             if (value != null)
             {
@@ -1906,61 +1874,61 @@ namespace StandaloneSDKDemo
             }
             return true;
         }
-/*
-        private void btnConnect_Click(object sender, EventArgs e)
-        {
-            if (sdk == null) return;
-
-            if (Convert.ToInt32(btnConnect.Tag) == 0)
-            {
-                //Connect to device
-                string ip = txtIP.Text;
-                int port = Convert.ToInt32(txtPort.Text);
-                int commKey = 0;
-                if (!IsNullOrWhiteSpace(txtCommKey.Text)) commKey = Convert.ToInt32(txtCommKey.Text);
-
-                sdk.connectDevice(ip, port, commKey);
-
-                if (sdk.isConnected)
+        /*
+                private void btnConnect_Click(object sender, EventArgs e)
                 {
-                    btnConnect.Tag = 1;
-                    btnConnect.Text = "Disconnect";
-                    cmbBiometricType.Items.Clear();
-                    for (int i = 0; i < sdk.biometricType.Length; i++)
+                    if (sdk == null) return;
+
+                    if (Convert.ToInt32(btnConnect.Tag) == 0)
                     {
-                        if (sdk.biometricType[i] == '1')
+                        //Connect to device
+                        string ip = txtIP.Text;
+                        int port = Convert.ToInt32(txtPort.Text);
+                        int commKey = 0;
+                        if (!IsNullOrWhiteSpace(txtCommKey.Text)) commKey = Convert.ToInt32(txtCommKey.Text);
+
+                        sdk.connectDevice(ip, port, commKey);
+
+                        if (sdk.isConnected)
                         {
-                            cmbBiometricType.Items.Add(new BioType() { name = biometricTypes[i], value = i });
+                            btnConnect.Tag = 1;
+                            btnConnect.Text = "Disconnect";
+                            cmbBiometricType.Items.Clear();
+                            for (int i = 0; i < sdk.biometricType.Length; i++)
+                            {
+                                if (sdk.biometricType[i] == '1')
+                                {
+                                    cmbBiometricType.Items.Add(new BioType() { name = biometricTypes[i], value = i });
+                                }
+                            }
+                        }
+                    }
+                    else
+                    {
+                        //Disconnect device
+                        if (sdk.isConnected)
+                        {
+                            sdk.disconnectDevice();
+                            btnConnect.Tag = 0;
+                            btnConnect.Text = "Connect";
+                            cmbBiometricType.Items.Clear();
                         }
                     }
                 }
-            }
-            else
-            {
-                //Disconnect device
-                if (sdk.isConnected)
-                {
-                    sdk.disconnectDevice();
-                    btnConnect.Tag = 0;
-                    btnConnect.Text = "Connect";
-                    cmbBiometricType.Items.Clear();
-                }
-            }
-        }
-*/
+        */
         private void btnDownloadUser_Click(object sender, EventArgs e)
         {
             Cursor = Cursors.WaitCursor;
             if (UserMng.SDK == null) return;
-       
+
             if (UserMng.SDK.GetConnectState())
-            {  
+            {
                 cmbBiometricType.Items.Clear();
                 for (int i = 0; i < UserMng.SDK.biometricType.Length; i++)
                 {
                     if (UserMng.SDK.biometricType[i] == '1')
                     {
-                        cmbBiometricType.Items.Add(new SDKHelper.BioType() { name = UserMng.SDK.biometricTypes[i],value = i });
+                        cmbBiometricType.Items.Add(new SDKHelper.BioType() { name = UserMng.SDK.biometricTypes[i], value = i });
                     }
                 }
                 UserMng.SDK.employeeList = UserMng.SDK.sta_getEmployees();
@@ -1993,7 +1961,7 @@ namespace StandaloneSDKDemo
             if (UserMng.SDK == null) return;
             if (UserMng.SDK.GetConnectState())
             {
-                if (cmbBiometricType.SelectedItem != null)       
+                if (cmbBiometricType.SelectedItem != null)
                 {
                     SDKHelper.BioType bioType = cmbBiometricType.SelectedItem as SDKHelper.BioType;
                     List<SDKHelper.BioTemplate> newTemplates = new List<SDKHelper.BioTemplate>();
@@ -2052,7 +2020,7 @@ namespace StandaloneSDKDemo
         private void btnClear_Click(object sender, EventArgs e)
         {
             Cursor = Cursors.WaitCursor;
-//          UserMng.SDK.bioTemplateList.Clear();
+            //          UserMng.SDK.bioTemplateList.Clear();
             lstBiometric.Items.Clear();     //modify 2017/11/23
             Cursor = Cursors.Default;
         }
@@ -2124,6 +2092,150 @@ namespace StandaloneSDKDemo
         {
 
         }
+
+        private void btnSubmit_Click(object sender, EventArgs e)
+        {
+            //Cursor = Cursors.WaitCursor;
+
+            ///*UserMng.SDK.sta_SetUserInfo(UserMng.lbSysOutputInfo, txtUserID, txtName, cbPrivilege, txtCardnumber, txtPassword);
+            //PostAttendance(txtUserID.Text,  cbPrivilege.Text, txtCardnumber.Text,txtName.Text);*/
+            //UserMng.SDK.sta_SetUserInfo(UserMng.lbSysOutputInfo, txtEmployeeID, txtName, cbPrivilege, txtCardnumber, txtPassword, txtDepartment, txtEmail, txtPhone, txtPosition, txtUserID);
+            //PostMultipleEmployees(txtUserID.Text, txtName.Text, cbPrivilege.Text, txtCardnumber.Text, txtPosition.Text, txtDepartment.Text, txtEmployeeID.Text);
+
+            //UserMng.SDK.sta_GetAllUserID(true, cbUserID, cbUserID1, cbUserID2, cbUserID3, cbUserID4, txtID2, cbUserID7);
+
+            //Cursor = Cursors.Default;
+            
+        }
+
+
+        
+
+
     }
+
+
+        //public async void PostMultipleEmployees(string txtUserID, string txtName, string cbPrivilege, string txtCardnumber, string txtPosition, string txtDepartment, string txtEmployeeID)
+        //{
+        //    using (HttpClient hc = new HttpClient())
+        //    {
+        //        hc.BaseAddress = new Uri("http://103.140.0.164:8000/api/employee");
+        //        int organizationId = 0;
+        //        int id = 0;
+        //        string dbFilePath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Office.db");
+        //        string connectionString = $"Data Source={dbFilePath};";
+
+        //        using (SQLiteConnection connection = new SQLiteConnection(connectionString))
+        //        {
+        //            connection.Open();
+        //            string orgQuery = "SELECT Organization_ID FROM Organization LIMIT 1";
+        //            string idQuery = "SELECT ID FROM Organization LIMIT 1";
+
+        //            using (SQLiteCommand command = new SQLiteCommand(orgQuery, connection))
+        //            {
+        //                object result = command.ExecuteScalar();
+        //                if (result != null)
+        //                {
+        //                    organizationId = Convert.ToInt32(result);
+        //                }
+        //            }
+
+        //            using (SQLiteCommand command = new SQLiteCommand(idQuery, connection))
+        //            {
+        //                object result = command.ExecuteScalar();
+        //                if (result != null)
+        //                {
+        //                    id = Convert.ToInt32(result);
+        //                }
+        //            }
+        //        }
+
+                 
+        //        List<dynamic> terminalData = new List<dynamic>();
+        //        try
+        //        {
+        //            axCZKEM1.EnableDevice(iMachineNumber, false);
+        //            axCZKEM1.ReadAllUserID(iMachineNumber);
+        //            //axCZKEM1.GetUserInfo(dwMachineNumber, dwEnrollNumber, Name, Password, Privileges, Enabled);
+
+        //            string enrollNumber;
+        //            string name;
+        //            string password;
+        //            int privilege;
+
+        //            bool enabled;
+
+        //            while (axCZKEM1.SSR_GetAllUserInfo(iMachineNumber, out enrollNumber, out name, out password, out privilege, out enabled))
+        //            {
+        //                terminalData.Add(new
+        //                {
+        //                    employee_id = int.Parse(enrollNumber),
+        //                    position = "Manager", 
+        //                    department = "IT",  
+        //                    privilege = privilege.ToString(),
+        //                    card_number = int.Parse(enrollNumber), 
+        //                    id = id ,
+        //                    user =id,
+        //                    is_enabled = true,
+        //                    organization_id = organizationId,
+
+        //                });
+        //            }
+
+        //            axCZKEM1.EnableDevice(iMachineNumber, true);
+
+        //            foreach (var record in terminalData)
+        //            {
+        //                var data = new
+        //                {
+        //                    employee_id = record.employee_id,
+        //                    position = record.position,
+        //                    department = record.department,
+        //                    privilege = record.privilege,
+        //                    card_number = record.card_number,
+        //                    user = id,
+        //                    is_enabled = true,
+        //                    id = record.id,
+        //                    organization_id = organizationId
+        //                };
+
+        //                string jsonPayload = JsonConvert.SerializeObject(data);
+        //                Console.WriteLine("Payload: " + jsonPayload);
+        //                StringContent content = new StringContent(jsonPayload, Encoding.UTF8, "application/json");
+
+        //                try
+        //                {
+        //                    HttpResponseMessage response = await hc.PostAsync("", content);
+
+        //                    if (response.IsSuccessStatusCode)
+        //                    {
+        //                        string responseData = await response.Content.ReadAsStringAsync();
+        //                        Console.WriteLine("Data posted successfully. Response: " + responseData);
+        //                    }
+        //                    else
+        //                    {
+        //                        string errorResponse = await response.Content.ReadAsStringAsync();
+        //                        Console.WriteLine($"Error: {response.StatusCode} - {response.ReasonPhrase}");
+        //                        Console.WriteLine("Error Response: " + errorResponse);
+        //                    }
+        //                }
+        //                catch (Exception ex)
+        //                {
+        //                    Console.WriteLine($"Exception: {ex.Message}");
+        //                }
+        //            }
+        //        }
+        //        catch(Exception ex)
+        //        {
+        //            Console.WriteLine($"Exception: {ex.Message}");
+        //        }
+
+        //    }
+        //}
+    }
+
+
+
+     
+
     
-}

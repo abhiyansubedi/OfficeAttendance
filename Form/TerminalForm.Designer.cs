@@ -34,6 +34,7 @@ namespace StandaloneSDKDemo
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(TerminalForm));
             this.TabTerminal = new System.Windows.Forms.TabControl();
             this.pDeviceInfo = new System.Windows.Forms.TabPage();
+            this.groupBox2 = new System.Windows.Forms.GroupBox();
             this.tabControl1 = new System.Windows.Forms.TabControl();
             this.tabPage1 = new System.Windows.Forms.TabPage();
             this.btnGetSystemInfo = new System.Windows.Forms.Button();
@@ -71,7 +72,6 @@ namespace StandaloneSDKDemo
             this.txtAttLogCnt = new System.Windows.Forms.TextBox();
             this.txtFPCnt = new System.Windows.Forms.TextBox();
             this.label29 = new System.Windows.Forms.Label();
-            this.groupBox2 = new System.Windows.Forms.GroupBox();
             this.tabControl2 = new System.Windows.Forms.TabControl();
             this.tabPage5 = new System.Windows.Forms.TabPage();
             this.txtCommKey1 = new System.Windows.Forms.TextBox();
@@ -117,12 +117,13 @@ namespace StandaloneSDKDemo
             this.dataGridViewCheckBoxColumn5 = new System.Windows.Forms.DataGridViewCheckBoxColumn();
             this.dataGridViewTextBoxColumn9 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.dataGridViewTextBoxColumn10 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.btnAttendance = new System.Windows.Forms.Button();
             this.TabTerminal.SuspendLayout();
             this.pDeviceInfo.SuspendLayout();
+            this.groupBox2.SuspendLayout();
             this.tabControl1.SuspendLayout();
             this.tabPage1.SuspendLayout();
             this.tabPage2.SuspendLayout();
-            this.groupBox2.SuspendLayout();
             this.tabControl2.SuspendLayout();
             this.tabPage5.SuspendLayout();
             this.tabPage6.SuspendLayout();
@@ -156,6 +157,17 @@ namespace StandaloneSDKDemo
             this.pDeviceInfo.TabIndex = 0;
             this.pDeviceInfo.Text = "DeviceInfo";
             this.pDeviceInfo.UseVisualStyleBackColor = true;
+            // 
+            // groupBox2
+            // 
+            this.groupBox2.Controls.Add(this.tabControl1);
+            this.groupBox2.Controls.Add(this.tabControl2);
+            this.groupBox2.Location = new System.Drawing.Point(1, 0);
+            this.groupBox2.Name = "groupBox2";
+            this.groupBox2.Size = new System.Drawing.Size(1375, 827);
+            this.groupBox2.TabIndex = 83;
+            this.groupBox2.TabStop = false;
+            this.groupBox2.Text = "Communication with Device";
             // 
             // tabControl1
             // 
@@ -542,17 +554,6 @@ namespace StandaloneSDKDemo
             this.label29.TabIndex = 20;
             this.label29.Text = "FP Count";
             // 
-            // groupBox2
-            // 
-            this.groupBox2.Controls.Add(this.tabControl1);
-            this.groupBox2.Controls.Add(this.tabControl2);
-            this.groupBox2.Location = new System.Drawing.Point(1, 0);
-            this.groupBox2.Name = "groupBox2";
-            this.groupBox2.Size = new System.Drawing.Size(1375, 827);
-            this.groupBox2.TabIndex = 83;
-            this.groupBox2.TabStop = false;
-            this.groupBox2.Text = "Communication with Device";
-            // 
             // tabControl2
             // 
             this.tabControl2.Controls.Add(this.tabPage5);
@@ -567,6 +568,7 @@ namespace StandaloneSDKDemo
             // 
             // tabPage5
             // 
+            this.tabPage5.Controls.Add(this.btnAttendance);
             this.tabPage5.Controls.Add(this.txtCommKey1);
             this.tabPage5.Controls.Add(this.btnTCPConnect);
             this.tabPage5.Controls.Add(this.label15);
@@ -1043,6 +1045,19 @@ namespace StandaloneSDKDemo
             this.dataGridViewTextBoxColumn10.HeaderText = "Value";
             this.dataGridViewTextBoxColumn10.Name = "dataGridViewTextBoxColumn10";
             // 
+            // btnAttendance
+            // 
+            this.btnAttendance.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(72)))), ((int)(((byte)(86)))), ((int)(((byte)(160)))));
+            this.btnAttendance.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnAttendance.Font = new System.Drawing.Font("Corbel", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btnAttendance.Location = new System.Drawing.Point(606, 93);
+            this.btnAttendance.Name = "btnAttendance";
+            this.btnAttendance.Size = new System.Drawing.Size(148, 38);
+            this.btnAttendance.TabIndex = 18;
+            this.btnAttendance.Text = "Attendance";
+            this.btnAttendance.UseVisualStyleBackColor = false;
+            this.btnAttendance.Click += new System.EventHandler(this.btnAttendance_Click);
+            // 
             // TerminalForm
             // 
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.None;
@@ -1052,12 +1067,12 @@ namespace StandaloneSDKDemo
             this.Size = new System.Drawing.Size(1429, 863);
             this.TabTerminal.ResumeLayout(false);
             this.pDeviceInfo.ResumeLayout(false);
+            this.groupBox2.ResumeLayout(false);
             this.tabControl1.ResumeLayout(false);
             this.tabPage1.ResumeLayout(false);
             this.tabPage1.PerformLayout();
             this.tabPage2.ResumeLayout(false);
             this.tabPage2.PerformLayout();
-            this.groupBox2.ResumeLayout(false);
             this.tabControl2.ResumeLayout(false);
             this.tabPage5.ResumeLayout(false);
             this.tabPage5.PerformLayout();
@@ -1161,5 +1176,6 @@ namespace StandaloneSDKDemo
         private System.Windows.Forms.Button btnGetDataInfo;
         private System.Windows.Forms.RadioButton rbUSB;
         private System.Windows.Forms.RadioButton rbVUSB;
+        private Button btnAttendance;
     }
 }

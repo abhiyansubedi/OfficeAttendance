@@ -49,7 +49,7 @@ namespace StandaloneSDKDemo
             //string[] dbDetails = File.ReadAllText(configFile).Split(',');
             //string serverName = dbDetails[0];
             //string databaseName = dbDetails[1];
-            string Organization_ID = textBox1.Text;
+            string organization_id = textBox1.Text;
             string username = UsernameTextBox.Text;
             string password = passwordTextBox.Text;
             string confirmpassword = cpasswordtextbox.Text;
@@ -57,8 +57,9 @@ namespace StandaloneSDKDemo
             DateTime issuedate = DateTime.Now;
             UserClaim decryptedClaim = EncryptionHelper.Decrypt(licensekey);
             DateTime expiresdate = decryptedClaim.ExpirationDate.Value;
-            PostLicenseKey(Organization_ID, issuedate, expiresdate,licensekey);
+            string expires_date = expiresdate.ToString("yyyy-MM-dd");
 
+            PostLicenseKey(organization_id, expires_date, licensekey);
 
             //if (string.IsNullOrEmpty(serverName) || string.IsNullOrEmpty(databaseName))
             //{
@@ -72,7 +73,7 @@ namespace StandaloneSDKDemo
                 return;
             }
 
-            if (string.IsNullOrEmpty(Organization_ID) || string.IsNullOrEmpty(username) || string.IsNullOrEmpty(password) || string.IsNullOrEmpty(licensekey))
+            if (string.IsNullOrEmpty(organization_id) || string.IsNullOrEmpty(username) || string.IsNullOrEmpty(password) || string.IsNullOrEmpty(licensekey))
             {
                 MessageBox.Show("All fields are required.");
                 return;
@@ -88,7 +89,7 @@ namespace StandaloneSDKDemo
 
                     string query = "INSERT INTO Organization (Organization_ID,Username, Password,LicenseKey) VALUES (@Organization_ID,@Username, @Password, @LicenseKey)";
                     SQLiteCommand command = new SQLiteCommand(query, conn);
-                    command.Parameters.AddWithValue("Organization_ID", Organization_ID);
+                    command.Parameters.AddWithValue("Organization_ID", organization_id);
                     command.Parameters.AddWithValue("@Username", username);
                     command.Parameters.AddWithValue("@Password", password);
                     command.Parameters.AddWithValue("LicenseKey", licensekey);
@@ -97,6 +98,7 @@ namespace StandaloneSDKDemo
                     MessageBox.Show("User registered successfully!");
                     new LoginForm().Show();
                     this.Hide();
+                   
                 }
                 catch (Exception ex)
                 {
@@ -107,23 +109,29 @@ namespace StandaloneSDKDemo
             
         }
 
-        public async void PostLicenseKey(string Organization_ID, DateTime issuedate, DateTime expiresdate,string licensekey)
+        public async void  PostLicenseKey(string organization_id, string expires_date,string licensekey)
         {
             using (HttpClient hc = new HttpClient())
             {
-                hc.BaseAddress = new Uri("http://103.140.0.164:8000/api/license");
+                hc.BaseAddress = new Uri("http://103.140.0.164:8000/api/licenses");
                 var data = new
                 {
-                  organization = int.Parse(Organization_ID),
-                  issue_date= issuedate,
-                  expires_date=expiresdate,
-                  licensekey
-                };
 
+                    organization_id,
+                    //issue_date= issuedate.ToString("yyyy-MM-dd"),
+                    expires_date,
+               
+                    licensekey
+                };
+                string jsonPayload = JsonConvert.SerializeObject(data);
+                Console.WriteLine("Payload: " + jsonPayload);
                 StringContent content = new StringContent(JsonConvert.SerializeObject(data), Encoding.UTF8, "application/json");
+
                 try
                 {
                     HttpResponseMessage addlicense = await hc.PostAsync("", content);
+                    Console.WriteLine(addlicense);
+
 
                     if (addlicense.IsSuccessStatusCode)
                     {

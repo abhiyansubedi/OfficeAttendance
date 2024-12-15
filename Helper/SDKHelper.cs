@@ -33,6 +33,7 @@ namespace StandaloneSDKDemo
         private static int iDeviceTpye = 1;
         bool bAddControl = true;        //Get all user's ID
 
+
         #region UserBioTypeClass
 
         private string _biometricType = string.Empty;
@@ -990,7 +991,7 @@ namespace StandaloneSDKDemo
             return 1;
         }
 
-        public int sta_SetUserInfo(ListBox lblOutputInfo, TextBox txtUserID, TextBox txtName, ComboBox cbPrivilege, TextBox txtCardnumber, TextBox txtPassword)
+        public int sta_SetUserInfo(ListBox lblOutputInfo, TextBox txtUserID, TextBox txtName, ComboBox cbPrivilege, TextBox txtCardnumber, TextBox txtPassword,TextBox txtDepartment,TextBox txtEmployeeID,TextBox txtEmail,TextBox txtPhone,TextBox txtPosition)
         {
             if (GetConnectState() == false)
             {

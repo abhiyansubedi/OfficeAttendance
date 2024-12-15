@@ -189,8 +189,18 @@
             this.label8 = new System.Windows.Forms.Label();
             this.label4 = new System.Windows.Forms.Label();
             this.groupBox3 = new System.Windows.Forms.GroupBox();
-            this.GetUserInfo = new System.Windows.Forms.Button();
+            this.txtDepartment = new System.Windows.Forms.TextBox();
+            this.label41 = new System.Windows.Forms.Label();
             this.txtUserID = new System.Windows.Forms.TextBox();
+            this.label42 = new System.Windows.Forms.Label();
+            this.txtPosition = new System.Windows.Forms.TextBox();
+            this.label31 = new System.Windows.Forms.Label();
+            this.txtPhone = new System.Windows.Forms.TextBox();
+            this.label29 = new System.Windows.Forms.Label();
+            this.txtEmail = new System.Windows.Forms.TextBox();
+            this.label28 = new System.Windows.Forms.Label();
+            this.GetUserInfo = new System.Windows.Forms.Button();
+            this.txtEmployeeID = new System.Windows.Forms.TextBox();
             this.txtName = new System.Windows.Forms.TextBox();
             this.label1 = new System.Windows.Forms.Label();
             this.label26 = new System.Windows.Forms.Label();
@@ -229,6 +239,7 @@
             this.txtUserID1 = new System.Windows.Forms.TextBox();
             this.label30 = new System.Windows.Forms.Label();
             this.tabControl1 = new System.Windows.Forms.TabControl();
+            this.btnSubmit = new System.Windows.Forms.Button();
             this.tabPage4.SuspendLayout();
             this.tabControl3.SuspendLayout();
             this.tabPageUser.SuspendLayout();
@@ -1779,7 +1790,7 @@
             this.groupBox14.Controls.Add(this.cbVerifyStyle);
             this.groupBox14.Controls.Add(this.btSetUserVerifyStyl);
             this.groupBox14.Controls.Add(this.btGetUserVerifyStyle);
-            this.groupBox14.Location = new System.Drawing.Point(4, 227);
+            this.groupBox14.Location = new System.Drawing.Point(4, 317);
             this.groupBox14.Margin = new System.Windows.Forms.Padding(4);
             this.groupBox14.Name = "groupBox14";
             this.groupBox14.Padding = new System.Windows.Forms.Padding(4);
@@ -1884,7 +1895,7 @@
             this.groupBox9.Controls.Add(this.btnSetVD);
             this.groupBox9.Controls.Add(this.label8);
             this.groupBox9.Controls.Add(this.label4);
-            this.groupBox9.Location = new System.Drawing.Point(601, 0);
+            this.groupBox9.Location = new System.Drawing.Point(597, 4);
             this.groupBox9.Margin = new System.Windows.Forms.Padding(4);
             this.groupBox9.Name = "groupBox9";
             this.groupBox9.Padding = new System.Windows.Forms.Padding(4);
@@ -2044,8 +2055,19 @@
             // 
             // groupBox3
             // 
-            this.groupBox3.Controls.Add(this.GetUserInfo);
+            this.groupBox3.Controls.Add(this.btnSubmit);
+            this.groupBox3.Controls.Add(this.txtDepartment);
+            this.groupBox3.Controls.Add(this.label41);
             this.groupBox3.Controls.Add(this.txtUserID);
+            this.groupBox3.Controls.Add(this.label42);
+            this.groupBox3.Controls.Add(this.txtPosition);
+            this.groupBox3.Controls.Add(this.label31);
+            this.groupBox3.Controls.Add(this.txtPhone);
+            this.groupBox3.Controls.Add(this.label29);
+            this.groupBox3.Controls.Add(this.txtEmail);
+            this.groupBox3.Controls.Add(this.label28);
+            this.groupBox3.Controls.Add(this.GetUserInfo);
+            this.groupBox3.Controls.Add(this.txtEmployeeID);
             this.groupBox3.Controls.Add(this.txtName);
             this.groupBox3.Controls.Add(this.label1);
             this.groupBox3.Controls.Add(this.label26);
@@ -2060,15 +2082,110 @@
             this.groupBox3.Margin = new System.Windows.Forms.Padding(4);
             this.groupBox3.Name = "groupBox3";
             this.groupBox3.Padding = new System.Windows.Forms.Padding(4);
-            this.groupBox3.Size = new System.Drawing.Size(584, 207);
+            this.groupBox3.Size = new System.Drawing.Size(584, 309);
             this.groupBox3.TabIndex = 81;
             this.groupBox3.TabStop = false;
             this.groupBox3.Text = "Upload the Card Number(part of users information)";
             this.groupBox3.Enter += new System.EventHandler(this.groupBox3_Enter);
             // 
+            // txtDepartment
+            // 
+            this.txtDepartment.Location = new System.Drawing.Point(411, 205);
+            this.txtDepartment.Margin = new System.Windows.Forms.Padding(4);
+            this.txtDepartment.MaxLength = 24;
+            this.txtDepartment.Name = "txtDepartment";
+            this.txtDepartment.Size = new System.Drawing.Size(151, 22);
+            this.txtDepartment.TabIndex = 78;
+            // 
+            // label41
+            // 
+            this.label41.AutoSize = true;
+            this.label41.Location = new System.Drawing.Point(316, 210);
+            this.label41.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            this.label41.Name = "label41";
+            this.label41.Size = new System.Drawing.Size(82, 17);
+            this.label41.TabIndex = 79;
+            this.label41.Text = "Department";
+            // 
+            // txtUserID
+            // 
+            this.txtUserID.Location = new System.Drawing.Point(122, 205);
+            this.txtUserID.Margin = new System.Windows.Forms.Padding(4);
+            this.txtUserID.MaxLength = 24;
+            this.txtUserID.Name = "txtUserID";
+            this.txtUserID.Size = new System.Drawing.Size(162, 22);
+            this.txtUserID.TabIndex = 76;
+            // 
+            // label42
+            // 
+            this.label42.AutoSize = true;
+            this.label42.Location = new System.Drawing.Point(13, 210);
+            this.label42.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            this.label42.Name = "label42";
+            this.label42.Size = new System.Drawing.Size(38, 17);
+            this.label42.TabIndex = 77;
+            this.label42.Text = "User";
+            // 
+            // txtPosition
+            // 
+            this.txtPosition.Location = new System.Drawing.Point(411, 156);
+            this.txtPosition.Margin = new System.Windows.Forms.Padding(4);
+            this.txtPosition.MaxLength = 24;
+            this.txtPosition.Name = "txtPosition";
+            this.txtPosition.Size = new System.Drawing.Size(151, 22);
+            this.txtPosition.TabIndex = 74;
+            // 
+            // label31
+            // 
+            this.label31.AutoSize = true;
+            this.label31.Location = new System.Drawing.Point(316, 161);
+            this.label31.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            this.label31.Name = "label31";
+            this.label31.Size = new System.Drawing.Size(58, 17);
+            this.label31.TabIndex = 75;
+            this.label31.Text = "Position";
+            // 
+            // txtPhone
+            // 
+            this.txtPhone.Location = new System.Drawing.Point(122, 156);
+            this.txtPhone.Margin = new System.Windows.Forms.Padding(4);
+            this.txtPhone.MaxLength = 24;
+            this.txtPhone.Name = "txtPhone";
+            this.txtPhone.Size = new System.Drawing.Size(162, 22);
+            this.txtPhone.TabIndex = 72;
+            // 
+            // label29
+            // 
+            this.label29.AutoSize = true;
+            this.label29.Location = new System.Drawing.Point(13, 161);
+            this.label29.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            this.label29.Name = "label29";
+            this.label29.Size = new System.Drawing.Size(75, 17);
+            this.label29.TabIndex = 73;
+            this.label29.Text = "Phone No.";
+            // 
+            // txtEmail
+            // 
+            this.txtEmail.Location = new System.Drawing.Point(411, 110);
+            this.txtEmail.Margin = new System.Windows.Forms.Padding(4);
+            this.txtEmail.MaxLength = 24;
+            this.txtEmail.Name = "txtEmail";
+            this.txtEmail.Size = new System.Drawing.Size(151, 22);
+            this.txtEmail.TabIndex = 70;
+            // 
+            // label28
+            // 
+            this.label28.AutoSize = true;
+            this.label28.Location = new System.Drawing.Point(316, 115);
+            this.label28.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            this.label28.Name = "label28";
+            this.label28.Size = new System.Drawing.Size(42, 17);
+            this.label28.TabIndex = 71;
+            this.label28.Text = "Email";
+            // 
             // GetUserInfo
             // 
-            this.GetUserInfo.Location = new System.Drawing.Point(319, 147);
+            this.GetUserInfo.Location = new System.Drawing.Point(248, 270);
             this.GetUserInfo.Margin = new System.Windows.Forms.Padding(4);
             this.GetUserInfo.Name = "GetUserInfo";
             this.GetUserInfo.Size = new System.Drawing.Size(129, 31);
@@ -2077,20 +2194,20 @@
             this.GetUserInfo.UseVisualStyleBackColor = true;
             this.GetUserInfo.Click += new System.EventHandler(this.GetUserInfo_Click);
             // 
-            // txtUserID
+            // txtEmployeeID
             // 
-            this.txtUserID.Location = new System.Drawing.Point(96, 31);
-            this.txtUserID.Margin = new System.Windows.Forms.Padding(4);
-            this.txtUserID.MaxLength = 24;
-            this.txtUserID.Name = "txtUserID";
-            this.txtUserID.Size = new System.Drawing.Size(188, 22);
-            this.txtUserID.TabIndex = 56;
-            this.txtUserID.TextChanged += new System.EventHandler(this.txtUserID_TextChanged);
-            this.txtUserID.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.txtUserID_KeyPress);
+            this.txtEmployeeID.Location = new System.Drawing.Point(122, 31);
+            this.txtEmployeeID.Margin = new System.Windows.Forms.Padding(4);
+            this.txtEmployeeID.MaxLength = 24;
+            this.txtEmployeeID.Name = "txtEmployeeID";
+            this.txtEmployeeID.Size = new System.Drawing.Size(162, 22);
+            this.txtEmployeeID.TabIndex = 56;
+            this.txtEmployeeID.TextChanged += new System.EventHandler(this.txtUserID_TextChanged);
+            this.txtEmployeeID.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.txtUserID_KeyPress);
             // 
             // txtName
             // 
-            this.txtName.Location = new System.Drawing.Point(411, 31);
+            this.txtName.Location = new System.Drawing.Point(411, 28);
             this.txtName.Margin = new System.Windows.Forms.Padding(4);
             this.txtName.MaxLength = 24;
             this.txtName.Name = "txtName";
@@ -2104,13 +2221,13 @@
             this.label1.Location = new System.Drawing.Point(11, 37);
             this.label1.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(83, 24);
+            this.label1.Size = new System.Drawing.Size(109, 24);
             this.label1.TabIndex = 63;
-            this.label1.Text = "User ID";
+            this.label1.Text = "Employee Id";
             // 
             // label26
             // 
-            this.label26.Location = new System.Drawing.Point(316, 37);
+            this.label26.Location = new System.Drawing.Point(316, 34);
             this.label26.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label26.Name = "label26";
             this.label26.Size = new System.Drawing.Size(61, 22);
@@ -2120,17 +2237,17 @@
             // 
             // txtPassword
             // 
-            this.txtPassword.Location = new System.Drawing.Point(96, 111);
+            this.txtPassword.Location = new System.Drawing.Point(122, 111);
             this.txtPassword.Margin = new System.Windows.Forms.Padding(4);
             this.txtPassword.MaxLength = 8;
             this.txtPassword.Name = "txtPassword";
-            this.txtPassword.Size = new System.Drawing.Size(88, 22);
+            this.txtPassword.Size = new System.Drawing.Size(162, 22);
             this.txtPassword.TabIndex = 58;
             this.txtPassword.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.txtPassword_KeyPress);
             // 
             // btnSetUserInfo
             // 
-            this.btnSetUserInfo.Location = new System.Drawing.Point(156, 147);
+            this.btnSetUserInfo.Location = new System.Drawing.Point(85, 270);
             this.btnSetUserInfo.Margin = new System.Windows.Forms.Padding(4);
             this.btnSetUserInfo.Name = "btnSetUserInfo";
             this.btnSetUserInfo.Size = new System.Drawing.Size(129, 31);
@@ -2150,15 +2267,15 @@
             "3-Super Admin",
             "4-User Defined Role3",
             "5-Undefine"});
-            this.cbPrivilege.Location = new System.Drawing.Point(96, 70);
+            this.cbPrivilege.Location = new System.Drawing.Point(122, 70);
             this.cbPrivilege.Margin = new System.Windows.Forms.Padding(4);
             this.cbPrivilege.Name = "cbPrivilege";
-            this.cbPrivilege.Size = new System.Drawing.Size(188, 24);
+            this.cbPrivilege.Size = new System.Drawing.Size(162, 24);
             this.cbPrivilege.TabIndex = 59;
             // 
             // txtCardnumber
             // 
-            this.txtCardnumber.Location = new System.Drawing.Point(411, 69);
+            this.txtCardnumber.Location = new System.Drawing.Point(411, 66);
             this.txtCardnumber.Margin = new System.Windows.Forms.Padding(4);
             this.txtCardnumber.MaxLength = 24;
             this.txtCardnumber.Name = "txtCardnumber";
@@ -2178,7 +2295,7 @@
             // label55
             // 
             this.label55.AutoSize = true;
-            this.label55.Location = new System.Drawing.Point(316, 80);
+            this.label55.Location = new System.Drawing.Point(315, 71);
             this.label55.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label55.Name = "label55";
             this.label55.Size = new System.Drawing.Size(88, 17);
@@ -2564,6 +2681,17 @@
             this.tabControl1.Size = new System.Drawing.Size(1229, 622);
             this.tabControl1.TabIndex = 0;
             // 
+            // btnSubmit
+            // 
+            this.btnSubmit.Location = new System.Drawing.Point(395, 270);
+            this.btnSubmit.Margin = new System.Windows.Forms.Padding(4);
+            this.btnSubmit.Name = "btnSubmit";
+            this.btnSubmit.Size = new System.Drawing.Size(129, 31);
+            this.btnSubmit.TabIndex = 80;
+            this.btnSubmit.Text = "Submit";
+            this.btnSubmit.UseVisualStyleBackColor = true;
+            this.btnSubmit.Click += new System.EventHandler(this.btnSubmit_Click);
+            // 
             // UserMngForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
@@ -2787,7 +2915,7 @@
         private System.Windows.Forms.Label label4;
         private System.Windows.Forms.GroupBox groupBox3;
         private System.Windows.Forms.Button GetUserInfo;
-        private System.Windows.Forms.TextBox txtUserID;
+        private System.Windows.Forms.TextBox txtEmployeeID;
         private System.Windows.Forms.TextBox txtName;
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.Label label26;
@@ -2826,5 +2954,16 @@
         private System.Windows.Forms.TextBox txtUserID1;
         private System.Windows.Forms.Label label30;
         private System.Windows.Forms.TabControl tabControl1;
+        private System.Windows.Forms.TextBox txtEmail;
+        private System.Windows.Forms.Label label28;
+        private System.Windows.Forms.TextBox txtPhone;
+        private System.Windows.Forms.Label label29;
+        private System.Windows.Forms.TextBox txtPosition;
+        private System.Windows.Forms.Label label31;
+        private System.Windows.Forms.TextBox txtDepartment;
+        private System.Windows.Forms.Label label41;
+        private System.Windows.Forms.TextBox txtUserID;
+        private System.Windows.Forms.Label label42;
+        private System.Windows.Forms.Button btnSubmit;
     }
 }
