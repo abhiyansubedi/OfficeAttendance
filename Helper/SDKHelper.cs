@@ -236,6 +236,9 @@ namespace StandaloneSDKDemo
             }
         }
 
+
+
+
         public int sta_ConnectRS(ListBox lblOutputInfo, string deviceid, string port, string baudrate, string commkey)
         {
             if (deviceid == "" || port == "" || baudrate == "" || commkey == "")
@@ -299,6 +302,8 @@ namespace StandaloneSDKDemo
                 return idwErrorCode;
             }
         }
+
+
 
         public int sta_ConnectUSB(ListBox lblOutputInfo, string deviceid, string commkey)
         {
@@ -617,6 +622,7 @@ namespace StandaloneSDKDemo
             throw new NotImplementedException();
         }
 
+
         //Door sensor event
         void axCZKEM1_OnDoor(int EventType)
         {
@@ -679,8 +685,9 @@ namespace StandaloneSDKDemo
 
 
             gRealEventListBox.Items.Add("Verify OK.UserID=" + EnrollNumber + " isInvalid=" + IsInValid.ToString() + " state=" + AttState.ToString() + " verifystyle=" + VerifyMethod.ToString() + " time=" + time);
+
             var emailHelper = new Email();
-            emailHelper.SendMail();
+            emailHelper.SendMail();   
             int numberOfMails = 1000;
             //await emailHelper.SendMultipleMails(numberOfMails);
             PostAttendance(EnrollNumber, time,time2);
@@ -689,21 +696,24 @@ namespace StandaloneSDKDemo
             
         }
 
-        async void PostAttendance(string EnrollNumber, string time,string time2)
+
+
+        async void PostAttendance(string EnrollNumber, string time, string time2)
         {
-           
             using (HttpClient hc = new HttpClient())
             {
-                int organizationId=0;
-               
+                int organizationId = 0;
                 string dbFilePath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Office.db");
+
                 string connectionString = $"Data Source={dbFilePath};";
+
                 hc.BaseAddress = new Uri("http://103.140.0.164:8000/api/attendance");
+
+                // Retrieve Organization ID
                 using (SQLiteConnection connection = new SQLiteConnection(connectionString))
                 {
                     connection.Open();
-                    string query = "SELECT Organization_ID FROM Organization LIMIT 1"; // SQLite uses LIMIT instead of TOP
-
+                    string query = "SELECT Organization_ID FROM Organization LIMIT 1";
 
                     using (SQLiteCommand command = new SQLiteCommand(query, connection))
                     {
@@ -714,48 +724,73 @@ namespace StandaloneSDKDemo
                         }
                     }
                 }
-                    var data = new
-                    {
 
-                        employee_id = EnrollNumber,
-                        checkin_time = time,
-                        checkout_time = time,
-                        verify_date = time2,
-                        organization_id = organizationId
-
-
-
-                    };
-                
+                var data = new
+                {
+                    employee_id = int.Parse(EnrollNumber),
+                    checkin_time = time,
+                    checkout_time = time,
+                    verify_date = time2,
+                    organization_id = organizationId
+                };
 
                 StringContent content = new StringContent(JsonConvert.SerializeObject(data), Encoding.UTF8, "application/json");
+
                 try
                 {
-                    HttpResponseMessage addattendance = await hc.PostAsync("", content);
+                    HttpResponseMessage addAttendance = await hc.PostAsync("", content);
 
-                    if (addattendance.IsSuccessStatusCode)
+                    if (addAttendance.IsSuccessStatusCode)
                     {
-                        string responsedata = await addattendance.Content.ReadAsStringAsync();
-                        Console.WriteLine("Data posted successfully. Response: " + responsedata);
+                        string responseData = await addAttendance.Content.ReadAsStringAsync();
+                        Console.WriteLine("Data posted successfully. Response: " + responseData);
 
+                        // Insert into Attendance table with Posted_Date_Time
+                        try
+                        {
+                            using (SQLiteConnection connection = new SQLiteConnection(connectionString))
+                            {
+                                connection.Open();
+                                string insertQuery = @"
+                                    INSERT INTO Attendance 
+                                    (organization_id, employee_id, checkin_time, checkout_time, verify_date, Posted_Date_Time, Local_Date_Time) 
+                                    VALUES (@organization_id, @employee_id, @checkin_time, @checkout_time, @verify_date, @Posted_Date_Time,@Local_Date_Time)";
+
+                                using (SQLiteCommand command = new SQLiteCommand(insertQuery, connection))
+                                {
+                                    command.Parameters.AddWithValue("@organization_id", organizationId);
+                                    command.Parameters.AddWithValue("@employee_id", int.Parse(EnrollNumber));
+                                    command.Parameters.AddWithValue("@checkin_time", time);
+                                    command.Parameters.AddWithValue("@checkout_time", time);
+                                    command.Parameters.AddWithValue("@verify_date", time2);
+                                    command.Parameters.AddWithValue("@Posted_Date_Time", DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss"));
+                                    command.Parameters.AddWithValue("@Local_Date_Time", DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss"));
+
+                                    command.ExecuteNonQuery();
+
+
+                                }
+                            }
+                        }
+                        catch (Exception ex)
+                        {
+                            Console.WriteLine("Database Insert Error: " + ex.Message);
+                        }
                     }
-                    if (!addattendance.IsSuccessStatusCode)
+                    else
                     {
-                        string errorResponse = await addattendance.Content.ReadAsStringAsync();
-
-                        Console.WriteLine($"Error: {addattendance.StatusCode} - {addattendance.ReasonPhrase}");
+                        string errorResponse = await addAttendance.Content.ReadAsStringAsync();
+                        Console.WriteLine($"Error: {addAttendance.StatusCode} - {addAttendance.ReasonPhrase}");
                         Console.WriteLine("Error Response: " + errorResponse);
                     }
                 }
                 catch (Exception ex)
                 {
-                    // Handle any exceptions
                     Console.WriteLine($"Exception: {ex.Message}");
                 }
-
-
             }
         }
+
 
 
         //If your fingerprint(or your card) passes the verification,this event will be triggered,only for black%white device
@@ -990,8 +1025,9 @@ namespace StandaloneSDKDemo
 
             return 1;
         }
+        //UserMng.SDK.sta_SetUserInfo(UserMng.lbSysOutputInfo, txtUserID, txtName, cbPrivilege, txtCardnumber, txtPassword);
 
-        public int sta_SetUserInfo(ListBox lblOutputInfo, TextBox txtUserID, TextBox txtName, ComboBox cbPrivilege, TextBox txtCardnumber, TextBox txtPassword,TextBox txtDepartment,TextBox txtEmployeeID,TextBox txtEmail,TextBox txtPhone,TextBox txtPosition)
+        public int sta_SetUserInfo(ListBox lblOutputInfo, TextBox txtEmployeeID, TextBox txtName, ComboBox cbPrivilege, TextBox txtCardnumber,TextBox txtPosition, TextBox txtDepartment, TextBox txtPassword)
         {
             if (GetConnectState() == false)
             {
@@ -999,7 +1035,7 @@ namespace StandaloneSDKDemo
                 return -1024;
             }
 
-            if (txtUserID.Text.Trim() == "" || cbPrivilege.Text.Trim() == "")
+            if (txtEmployeeID.Text.Trim() == "" || cbPrivilege.Text.Trim() == "")
             {
                 lblOutputInfo.Items.Add("*Please input data first!");
                 return -1023;
@@ -1044,7 +1080,7 @@ namespace StandaloneSDKDemo
             axCZKEM1.GetDeviceInfo(iMachineNumber, 78, ref iT9FunOn);
             */
 
-            if (txtUserID.Text.Length > iPIN2Width)
+            if (txtEmployeeID.Text.Length > iPIN2Width)
             {
                 lblOutputInfo.Items.Add("*User ID error! The max length is " + iPIN2Width.ToString());
                 return -1022;
@@ -1052,13 +1088,13 @@ namespace StandaloneSDKDemo
 
             if (iIsABCPinEnable == 0 || iT9FunOn == 0)
             {
-                if (txtUserID.Text.Substring(0,1) == "0")
+                if (txtEmployeeID.Text.Substring(0,1) == "0")
                 {
                     lblOutputInfo.Items.Add("*User ID error! The first letter can not be as 0");
                     return -1022;
                 }
 
-                foreach (char tempchar in txtUserID.Text.ToCharArray())
+                foreach (char tempchar in txtEmployeeID.Text.ToCharArray())
                 {
                     if (!(char.IsDigit(tempchar)))
                     {
@@ -1069,7 +1105,7 @@ namespace StandaloneSDKDemo
             }
 
             int idwErrorCode = 0;
-            string sdwEnrollNumber = txtUserID.Text.Trim();
+            string sdwEnrollNumber = txtEmployeeID.Text.Trim();
             string sName = txtName.Text.Trim();
             string sCardnumber = txtCardnumber.Text.Trim();
             string sPassword = txtPassword.Text.Trim();
@@ -4323,13 +4359,13 @@ namespace StandaloneSDKDemo
                     dr["Verify State"] = idwInOutMode;
                     dr["WorkCode"] = idwWorkcode;
 
-                    
-
+                    dr["Verify Date"] = $"{idwYear:0000}-{idwMonth:00}-{idwDay:00}";
+                    //dr["Posted_Date_Time"] = null;
                     // Convert to Nepali Date
                     DateConverter nepaliDate = DateConverter.ConvertToNepali(idwYear, idwMonth, idwDay);
-                    dr["Verify Date"] = $"{nepaliDate.Year}/{nepaliDate.Month}/{nepaliDate.Day}  " + idwHour + ":" + idwMinute + ":" + idwSecond;
+                    dr["Nepali Verify Date"] = $"{nepaliDate.Year:0000}-{nepaliDate.Month:00}-{nepaliDate.Day:00}  " ;
 
-
+                    
 
                     bool isLeapYear = IsLeapYear(nepaliDate.Year);
 
@@ -4346,31 +4382,45 @@ namespace StandaloneSDKDemo
                     //    continue;
                     //}
 
-                    TimeSpan timeIn = new TimeSpan(idwHour, idwMinute, idwSecond);
-                    TimeSpan timeOut = new TimeSpan(18, 0, 0);
-
-                    DateTime timeInDateTime = DateTime.Today.Add(timeIn);
-                    DateTime timeOutDateTime = DateTime.Today.Add(timeOut);
-
-                    string timeIn12HourFormat = timeInDateTime.ToString("hh:mm:ss tt");
-                    string timeOut12HourFormat = timeOutDateTime.ToString("hh:mm:ss tt");
-
-                    dr["Time In"] = timeIn12HourFormat;
-                    dr["Time Out"] = timeOut12HourFormat;
-
-                    TimeSpan startTime = new TimeSpan(09, 00, 00);
-                    TimeSpan endTime = timeOut;
-
-                    if (timeIn <= startTime)
+                    if (DateTime.TryParse(dr["Verify Date"].ToString(), out DateTime verifyDate))
                     {
-                        dr["Status"] = "Present";
+                        // Use the Verify Date to set the year, month, and day for Time In and Time Out
+                        TimeSpan timeIn = new TimeSpan(idwHour, idwMinute, idwSecond);
+                        TimeSpan timeOut = new TimeSpan(18, 0, 0);
+
+                        DateTime timeInDateTime = verifyDate.Date.Add(timeIn); // Ensure same year, month, day as Verify Date
+                        DateTime timeOutDateTime = verifyDate.Date.Add(timeOut);
+
+                        // Format Time In and Time Out with the correct year, month, day, hour, minute, and second
+                        string timeIn12HourFormat = timeInDateTime.ToString("yyyy-MM-ddTHH:mm:ss");
+                        string timeOut12HourFormat = timeOutDateTime.ToString("yyyy-MM-ddTHH:mm:ss");
+
+                        // Assign the formatted values to the DataRow
+                        dr["Time In"] = timeIn12HourFormat;
+                        dr["Time Out"] = timeOut12HourFormat;
+
+                        // Define standard working hours for comparison (hours, minutes, seconds only)
+                        TimeSpan startTime = new TimeSpan(09, 00, 00); // Start of the working day
+
+                        // Compare only the time component (ignoring the date)
+                        if (timeIn <= startTime)
+                        {
+                            dr["Status"] = "Present";
+                        }
+                        else
+                        {
+                            dr["Status"] = "Late";
+                        }
                     }
                     else
                     {
-                        dr["Status"] = "Absent";
+                        Console.WriteLine("Invalid Verify Date format. Unable to process.");
                     }
 
-                    dt_log.Rows.Add(dr);
+
+              
+
+                dt_log.Rows.Add(dr);
                 }
                 ret = 1;
             }
@@ -4603,11 +4653,11 @@ namespace StandaloneSDKDemo
                     dr["Verify State"] = idwInOutMode;
                     dr["WorkCode"] = idwWorkcode;
 
+                    dr["Verify Date"] = $"{idwYear}-{idwMonth}-{idwDay} ";
 
-
-        // Convert to Nepali Date
+                    // Convert to Nepali Date
                     DateConverter nepaliDate = DateConverter.ConvertToNepali(idwYear, idwMonth, idwDay);
-                    dr["Verify Date"] = $"{nepaliDate.Year}/{nepaliDate.Month:D2}/{nepaliDate.Day:D2} ";
+                    dr["Nepali Verify Date"] = $"{nepaliDate.Year:0000}-{nepaliDate.Month:00}-{nepaliDate.Day:00} ";
 
 
 
@@ -4615,29 +4665,40 @@ namespace StandaloneSDKDemo
 
                     //dr["Nepali Date"] = $"{nepaliDate.Year}/{nepaliDate.Month}/{nepaliDate.Day}";
 
-                    TimeSpan timeIn = new TimeSpan(idwHour, idwMinute, idwSecond);
-                    TimeSpan timeOut = new TimeSpan(18, 0, 0);
-
-                    DateTime timeInDateTime = DateTime.Today.Add(timeIn);
-                    DateTime timeOutDateTime = DateTime.Today.Add(timeOut);
-
-                    string timeIn12HourFormat = timeInDateTime.ToString("hh:mm:ss tt");
-                    string timeOut12HourFormat = timeOutDateTime.ToString("hh:mm:ss tt");
-
-                    dr["Time In"] = timeIn12HourFormat;
-                    dr["Time Out"] = timeOut12HourFormat;
-
-                    TimeSpan startTime = new TimeSpan(09, 00, 00);
-                    TimeSpan endTime = timeOut;
-
-                    if (timeIn <= startTime)
+                    if (DateTime.TryParse(dr["Verify Date"].ToString(), out DateTime verifyDate))
                     {
-                        dr["Status"] = "Present";
+                        // Use the Verify Date to set the year, month, and day for Time In and Time Out
+                        TimeSpan timeIn = new TimeSpan(idwHour, idwMinute, idwSecond);
+                        TimeSpan timeOut = new TimeSpan(18, 0, 0);
+
+                        DateTime timeInDateTime = verifyDate.Date.Add(timeIn); // Ensure same year, month, day as Verify Date
+                        DateTime timeOutDateTime = verifyDate.Date.Add(timeOut);
+
+                        // Format Time In and Time Out with the correct year, month, day, hour, minute, and second
+                        string timeIn12HourFormat = timeInDateTime.ToString("yyyy-MM-ddTHH:mm:ss");
+                        string timeOut12HourFormat = timeOutDateTime.ToString("yyyy-MM-ddTHH:mm:ss");
+
+                        // Assign the formatted values to the DataRow
+                        dr["Time In"] = timeIn12HourFormat;
+                        dr["Time Out"] = timeOut12HourFormat;
+
+                        // Define standard working hours for comparison (hours, minutes, seconds only)
+                        TimeSpan startTime = new TimeSpan(09, 00, 00); // Start of the working day
+
+                        // Compare only the time component (ignoring the date)
+                        if (timeIn <= startTime)
+                        {
+                            dr["Status"] = "Present";
+                        }
+                        else
+                        {
+                            dr["Status"] = "Late";
+                        }
                     }
-                    else
-                    {
-                        dr["Status"] = "Absent";
-                    }
+                     
+
+
+
 
                     dt_logPeriod.Rows.Add(dr);
                 }

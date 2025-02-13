@@ -189,6 +189,7 @@
             this.label8 = new System.Windows.Forms.Label();
             this.label4 = new System.Windows.Forms.Label();
             this.groupBox3 = new System.Windows.Forms.GroupBox();
+            this.btnSubmit = new System.Windows.Forms.Button();
             this.txtDepartment = new System.Windows.Forms.TextBox();
             this.label41 = new System.Windows.Forms.Label();
             this.txtUserID = new System.Windows.Forms.TextBox();
@@ -239,7 +240,7 @@
             this.txtUserID1 = new System.Windows.Forms.TextBox();
             this.label30 = new System.Windows.Forms.Label();
             this.tabControl1 = new System.Windows.Forms.TabControl();
-            this.btnSubmit = new System.Windows.Forms.Button();
+            this.btnEmployee = new System.Windows.Forms.Button();
             this.tabPage4.SuspendLayout();
             this.tabControl3.SuspendLayout();
             this.tabPageUser.SuspendLayout();
@@ -2055,6 +2056,7 @@
             // 
             // groupBox3
             // 
+            this.groupBox3.Controls.Add(this.btnEmployee);
             this.groupBox3.Controls.Add(this.btnSubmit);
             this.groupBox3.Controls.Add(this.txtDepartment);
             this.groupBox3.Controls.Add(this.label41);
@@ -2087,6 +2089,17 @@
             this.groupBox3.TabStop = false;
             this.groupBox3.Text = "Upload the Card Number(part of users information)";
             this.groupBox3.Enter += new System.EventHandler(this.groupBox3_Enter);
+            // 
+            // btnSubmit
+            // 
+            this.btnSubmit.Location = new System.Drawing.Point(318, 270);
+            this.btnSubmit.Margin = new System.Windows.Forms.Padding(4);
+            this.btnSubmit.Name = "btnSubmit";
+            this.btnSubmit.Size = new System.Drawing.Size(102, 31);
+            this.btnSubmit.TabIndex = 80;
+            this.btnSubmit.Text = "Submit";
+            this.btnSubmit.UseVisualStyleBackColor = true;
+            this.btnSubmit.Click += new System.EventHandler(this.btnSubmit_Click);
             // 
             // txtDepartment
             // 
@@ -2185,10 +2198,10 @@
             // 
             // GetUserInfo
             // 
-            this.GetUserInfo.Location = new System.Drawing.Point(248, 270);
+            this.GetUserInfo.Location = new System.Drawing.Point(165, 270);
             this.GetUserInfo.Margin = new System.Windows.Forms.Padding(4);
             this.GetUserInfo.Name = "GetUserInfo";
-            this.GetUserInfo.Size = new System.Drawing.Size(129, 31);
+            this.GetUserInfo.Size = new System.Drawing.Size(102, 31);
             this.GetUserInfo.TabIndex = 69;
             this.GetUserInfo.Text = "GetUserInfo";
             this.GetUserInfo.UseVisualStyleBackColor = true;
@@ -2247,10 +2260,10 @@
             // 
             // btnSetUserInfo
             // 
-            this.btnSetUserInfo.Location = new System.Drawing.Point(85, 270);
+            this.btnSetUserInfo.Location = new System.Drawing.Point(11, 270);
             this.btnSetUserInfo.Margin = new System.Windows.Forms.Padding(4);
             this.btnSetUserInfo.Name = "btnSetUserInfo";
-            this.btnSetUserInfo.Size = new System.Drawing.Size(129, 31);
+            this.btnSetUserInfo.Size = new System.Drawing.Size(102, 31);
             this.btnSetUserInfo.TabIndex = 0;
             this.btnSetUserInfo.Text = "SetUserInfo";
             this.btnSetUserInfo.UseVisualStyleBackColor = true;
@@ -2681,16 +2694,16 @@
             this.tabControl1.Size = new System.Drawing.Size(1229, 622);
             this.tabControl1.TabIndex = 0;
             // 
-            // btnSubmit
+            // btnEmployee
             // 
-            this.btnSubmit.Location = new System.Drawing.Point(395, 270);
-            this.btnSubmit.Margin = new System.Windows.Forms.Padding(4);
-            this.btnSubmit.Name = "btnSubmit";
-            this.btnSubmit.Size = new System.Drawing.Size(129, 31);
-            this.btnSubmit.TabIndex = 80;
-            this.btnSubmit.Text = "Submit";
-            this.btnSubmit.UseVisualStyleBackColor = true;
-            this.btnSubmit.Click += new System.EventHandler(this.btnSubmit_Click);
+            this.btnEmployee.Location = new System.Drawing.Point(445, 270);
+            this.btnEmployee.Margin = new System.Windows.Forms.Padding(4);
+            this.btnEmployee.Name = "btnEmployee";
+            this.btnEmployee.Size = new System.Drawing.Size(117, 31);
+            this.btnEmployee.TabIndex = 81;
+            this.btnEmployee.Text = "EmployeeList";
+            this.btnEmployee.UseVisualStyleBackColor = true;
+            this.btnEmployee.Click += new System.EventHandler(this.button1_Click);
             // 
             // UserMngForm
             // 
@@ -2965,5 +2978,6 @@
         private System.Windows.Forms.TextBox txtUserID;
         private System.Windows.Forms.Label label42;
         private System.Windows.Forms.Button btnSubmit;
+        private System.Windows.Forms.Button btnEmployee;
     }
 }

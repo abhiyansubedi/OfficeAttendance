@@ -319,6 +319,12 @@
     <Compile Include="Department.Designer.cs">
       <DependentUpon>Department.cs</DependentUpon>
     </Compile>
+    <Compile Include="EmployeeList.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="EmployeeList.Designer.cs">
+      <DependentUpon>EmployeeList.cs</DependentUpon>
+    </Compile>
     <Compile Include="Employees.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -543,6 +549,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Department.resx">
       <DependentUpon>Department.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="EmployeeList.resx">
+      <DependentUpon>EmployeeList.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Employees.resx">
       <DependentUpon>Employees.cs</DependentUpon>
@@ -775,6 +784,7 @@
     <Content Include="image\delete-circular.png" />
     <Content Include="image\home-vector.png" />
     <None Include="Resources\images.png" />
+    <Content Include="image\unlock-vector.png" />
     <Content Include="SqlServerTypes\readme.htm" />
     <Content Include="SqlServerTypes\x64\msvcr120.dll">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
@@ -794,7 +804,6 @@
     <Content Include="Resources\ZKTeco_Gray_White.png" />
     <None Include="image\ZKTeco_Gray-White.png" />
     <None Include="image\settings-vector.png" />
-    <None Include="image\unlock-vector.png" />
     <None Include="image\update-vector.png" />
   </ItemGroup>
   <ItemGroup>

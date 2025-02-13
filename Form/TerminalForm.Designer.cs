@@ -74,6 +74,7 @@ namespace StandaloneSDKDemo
             this.label29 = new System.Windows.Forms.Label();
             this.tabControl2 = new System.Windows.Forms.TabControl();
             this.tabPage5 = new System.Windows.Forms.TabPage();
+            this.btnAttendance = new System.Windows.Forms.Button();
             this.txtCommKey1 = new System.Windows.Forms.TextBox();
             this.btnTCPConnect = new System.Windows.Forms.Button();
             this.label15 = new System.Windows.Forms.Label();
@@ -117,7 +118,6 @@ namespace StandaloneSDKDemo
             this.dataGridViewCheckBoxColumn5 = new System.Windows.Forms.DataGridViewCheckBoxColumn();
             this.dataGridViewTextBoxColumn9 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.dataGridViewTextBoxColumn10 = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.btnAttendance = new System.Windows.Forms.Button();
             this.TabTerminal.SuspendLayout();
             this.pDeviceInfo.SuspendLayout();
             this.groupBox2.SuspendLayout();
@@ -585,6 +585,19 @@ namespace StandaloneSDKDemo
             this.tabPage5.Text = "TCP/IP";
             this.tabPage5.UseVisualStyleBackColor = true;
             // 
+            // btnAttendance
+            // 
+            this.btnAttendance.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(72)))), ((int)(((byte)(86)))), ((int)(((byte)(160)))));
+            this.btnAttendance.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnAttendance.Font = new System.Drawing.Font("Corbel", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btnAttendance.Location = new System.Drawing.Point(606, 93);
+            this.btnAttendance.Name = "btnAttendance";
+            this.btnAttendance.Size = new System.Drawing.Size(148, 38);
+            this.btnAttendance.TabIndex = 18;
+            this.btnAttendance.Text = "Fetch Data";
+            this.btnAttendance.UseVisualStyleBackColor = false;
+            this.btnAttendance.Click += new System.EventHandler(this.btnAttendance_Click);
+            // 
             // txtCommKey1
             // 
             this.txtCommKey1.BackColor = System.Drawing.Color.White;
@@ -1044,19 +1057,6 @@ namespace StandaloneSDKDemo
             // 
             this.dataGridViewTextBoxColumn10.HeaderText = "Value";
             this.dataGridViewTextBoxColumn10.Name = "dataGridViewTextBoxColumn10";
-            // 
-            // btnAttendance
-            // 
-            this.btnAttendance.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(72)))), ((int)(((byte)(86)))), ((int)(((byte)(160)))));
-            this.btnAttendance.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btnAttendance.Font = new System.Drawing.Font("Corbel", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btnAttendance.Location = new System.Drawing.Point(606, 93);
-            this.btnAttendance.Name = "btnAttendance";
-            this.btnAttendance.Size = new System.Drawing.Size(148, 38);
-            this.btnAttendance.TabIndex = 18;
-            this.btnAttendance.Text = "Attendance";
-            this.btnAttendance.UseVisualStyleBackColor = false;
-            this.btnAttendance.Click += new System.EventHandler(this.btnAttendance_Click);
             // 
             // TerminalForm
             // 

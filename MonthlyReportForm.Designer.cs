@@ -529,6 +529,7 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.AutoSize = true;
             this.BackColor = System.Drawing.Color.White;
+            this.Controls.Add(this.gv_Attlog);
             this.Controls.Add(this.pictureBox1);
             this.Controls.Add(this.button3);
             this.Controls.Add(this.btnExport);
@@ -545,7 +546,6 @@
             this.Controls.Add(this.label1);
             this.Controls.Add(this.btnFilter);
             this.Controls.Add(this.button1);
-            this.Controls.Add(this.gv_Attlog);
             this.DoubleBuffered = true;
             this.Margin = new System.Windows.Forms.Padding(4);
             this.Name = "MonthlyReportForm";

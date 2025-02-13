@@ -274,6 +274,7 @@ namespace StandaloneSDKDemo
                 dt_periodLog.Columns.Add("User ID", typeof(string));
                 dt_periodLog.Columns.Add("User Name", typeof(string));
                 dt_periodLog.Columns.Add("Verify Date", typeof(string));
+                dt_periodLog.Columns.Add("Nepali Verify Date", typeof(string));
                 dt_periodLog.Columns.Add("Verify Type", typeof(int));
                 dt_periodLog.Columns.Add("Verify State", typeof(int));
                 dt_periodLog.Columns.Add("WorkCode", typeof(int));
@@ -312,8 +313,8 @@ namespace StandaloneSDKDemo
                     finalTable = dt_periodLog.Copy();
                 }
 
-                // Process the final table to merge rows with the same date if necessary
-                if (finalTable.Rows.Count > 0)
+                // Remove duplicate entries if a username is selected
+                if (!string.IsNullOrEmpty(txtBoxName.Text) && finalTable.Rows.Count > 0)
                 {
                     string previousDate = string.Empty;
                     List<DataRow> rowsToDelete = new List<DataRow>();
@@ -354,6 +355,7 @@ namespace StandaloneSDKDemo
                 MessageBox.Show("An error occurred: " + ex.Message);
             }
         }
+
 
 
         private RDLC rdlcForm;
@@ -534,7 +536,7 @@ namespace StandaloneSDKDemo
             dt_periodLog.Columns.Add("Organization_ID", System.Type.GetType("System.Int32"));
             dt_periodLog.Columns.Add("User ID", System.Type.GetType("System.String"));
             dt_periodLog.Columns.Add("User Name", System.Type.GetType("System.String"));
-
+            dt_periodLog.Columns.Add("Nepali Verify Date", System.Type.GetType("System.String"));
             dt_periodLog.Columns.Add("Verify Date", System.Type.GetType("System.String"));
             dt_periodLog.Columns.Add("Verify Type", System.Type.GetType("System.Int32"));
             dt_periodLog.Columns.Add("Verify State", System.Type.GetType("System.Int32"));

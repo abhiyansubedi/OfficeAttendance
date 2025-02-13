@@ -12,6 +12,10 @@ using System.Threading;
 using System.Management;
 using System.IO;
 using System.Data.SQLite;
+using System.Net.Http;
+using Newtonsoft.Json;
+using System.Threading.Tasks;
+using StandaloneSDKDemo.Helper;
 
 namespace StandaloneSDKDemo
 {
@@ -28,7 +32,7 @@ namespace StandaloneSDKDemo
         private Main Terminal;
         public zkemkeeper.CZKEMClass axCZKEM1 = new zkemkeeper.CZKEMClass();
         private static int iMachineNumber = 1;
-        
+
 
 
         #region ConnetDevice
@@ -88,48 +92,54 @@ namespace StandaloneSDKDemo
         private void btnTCPConnect_Click(object sender, EventArgs e)
         {
             Cursor = Cursors.WaitCursor;
-            int ret = Terminal.SDK.sta_ConnectTCP(Terminal.lbSysOutputInfo, txtIP.Text.Trim(), txtPort.Text.Trim(), txtCommKey1.Text.Trim());
 
-            if (Terminal.SDK.GetConnectState())
+            // Pre-defined local IP
+            string ipAddress = "192.168.1.201";
+
+            // Attempt to connect via TCP
+            int ret = Terminal.SDK.sta_ConnectTCP(Terminal.lbSysOutputInfo, ipAddress, txtPort.Text.Trim(), txtCommKey1.Text.Trim());
+
+            if (ret == 1) // Connection successful
             {
-                Terminal.SDK.sta_getBiometricType();
-            }
-            if (ret == 1)
-            {
-                this.txtIP.ReadOnly = true;
-                this.txtPort.ReadOnly = true;
-                this.txtCommKey1.ReadOnly = true;
+                txtIP.ReadOnly = true;
+                txtPort.ReadOnly = true;
+                txtCommKey1.ReadOnly = true;
 
-                this.btnRSConnect.Enabled = false;
-                this.btnUSBConnect.Enabled = false;
+                btnRSConnect.Enabled = false;
+                btnUSBConnect.Enabled = false;
 
-                this.btnGetSystemInfo.Enabled = true;
-                this.btnGetDataInfo.Enabled = true;
+                btnGetSystemInfo.Enabled = true;
+                btnGetDataInfo.Enabled = true;
 
                 getCapacityInfo();
                 getDeviceInfo();
 
-                btnTCPConnect.Text = "DisConnect";
+                btnTCPConnect.Text = "Disconnect";
                 btnTCPConnect.Refresh();
-
             }
-            else if (ret == -2)
+            else if (ret == -2) // Connection failed
             {
+                MessageBox.Show("Failed to connect to the device. Please check the port or device configuration.",
+                                "Connection Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+
                 btnTCPConnect.Text = "Connect";
                 btnTCPConnect.Refresh();
-                this.txtDeviceID1.ReadOnly = false;
-                this.txtIP.ReadOnly = false;
-                this.txtPort.ReadOnly = false;
-                this.txtCommKey1.ReadOnly = false;
 
-                this.btnRSConnect.Enabled = true;
-                this.btnUSBConnect.Enabled = true;
+                txtDeviceID1.ReadOnly = false;
+                txtIP.ReadOnly = false;
+                txtPort.ReadOnly = false;
+                txtCommKey1.ReadOnly = false;
 
-                this.btnGetSystemInfo.Enabled = false;
-                this.btnGetDataInfo.Enabled = false;
+                btnRSConnect.Enabled = true;
+                btnUSBConnect.Enabled = true;
+
+                btnGetSystemInfo.Enabled = false;
+                btnGetDataInfo.Enabled = false;
             }
+
             Cursor = Cursors.Default;
         }
+
 
         private void btnRSConnect_Click(object sender, EventArgs e)
         {
@@ -289,6 +299,7 @@ namespace StandaloneSDKDemo
             dt_periodLog.Columns.Add("User Name", System.Type.GetType("System.String"));
 
             dt_periodLog.Columns.Add("Verify Date", System.Type.GetType("System.String"));
+            dt_periodLog.Columns.Add("Nepali Verify Date", System.Type.GetType("System.String"));
             dt_periodLog.Columns.Add("Verify Type", System.Type.GetType("System.Int32"));
             dt_periodLog.Columns.Add("Verify State", System.Type.GetType("System.Int32"));
             dt_periodLog.Columns.Add("WorkCode", System.Type.GetType("System.Int32"));
@@ -299,7 +310,10 @@ namespace StandaloneSDKDemo
 
             MonthlyReport.SDK.sta_readAttLog(MonthlyReport.lbSysOutputInfo, dt_periodLog);
 
+           
             SaveAttendanceToDB(dt_periodLog);
+            PostAttendance();
+
 
             Cursor = Cursors.Default;
 
@@ -313,6 +327,7 @@ namespace StandaloneSDKDemo
             string connectionString = $"Data Source={dbFilePath};";
             int organization_id = 0;
 
+            // Retrieve Organization ID
             using (SQLiteConnection connection = new SQLiteConnection(connectionString))
             {
                 connection.Open();
@@ -328,32 +343,232 @@ namespace StandaloneSDKDemo
                 }
             }
 
+            // Process attendance records
             using (SQLiteConnection connection = new SQLiteConnection(connectionString))
             {
                 connection.Open();
 
                 foreach (DataRow row in dt_periodLog.Rows)
                 {
-                    using (SQLiteCommand command = new SQLiteCommand("INSERT INTO Attendance (organization_id,employee_id,checkin_time,checkout_time,verify_date,Posted_Date_Time) VALUES (@organization_id,@employee_id,@checkin_time,@checkout_time,@verify_date,@Posted_Date_Time)", connection))
+                    // Ensure "Time In" is not null and can be parsed into a DateTime
+                    if (row["Time In"] != DBNull.Value && DateTime.TryParse(row["Time In"].ToString(), out DateTime timeIn))
                     {
-                        command.Parameters.AddWithValue("@organization_id", organization_id);
-                        if (row["User ID"] != null && int.TryParse(row["User ID"].ToString(), out int employeeId))
+                        DateTime? maxPostedDateTime = null;
+
+                        // Fetch max Local_Date_Time (stored as TEXT in the "yyyy-MM-dd HH:mm:ss" format)
+                        using (SQLiteCommand command = new SQLiteCommand(
+                            "SELECT MAX(checkin_time) FROM Attendance WHERE Posted_Date_Time IS NOT NULL", connection))
                         {
-                            command.Parameters.AddWithValue("@employee_id", employeeId);
+                            object result = command.ExecuteScalar();
+                            if (result != DBNull.Value && DateTime.TryParse(result.ToString(), out DateTime parsedDateTime))
+                            {
+                                maxPostedDateTime = parsedDateTime;
+                            }
                         }
 
-                        command.Parameters.AddWithValue("@verify_date", row["Verify Date"].ToString());
-                        command.Parameters.AddWithValue("@checkin_time", row["Time In"].ToString());
-                        command.Parameters.AddWithValue("@checkout_time", row["Time Out"].ToString());
-                        command.Parameters.AddWithValue("@Posted_Date_Time", DateTime.Now.ToString());
+                        // Convert "Time In" string to match the format of Local_Date_Time (yyyy-MM-dd HH:mm:ss)
+                        string timeInFormatted = timeIn.ToString("yyyy-MM-dd HH:mm:ss");
 
-                        command.ExecuteNonQuery();
+                        // Compare Time In with maxLocalDateTime
+                        if (maxPostedDateTime == null || timeInFormatted.CompareTo(maxPostedDateTime.Value.ToString("yyyy-MM-dd HH:mm:ss")) > 0)
+                        {
+                            // Insert new attendance record
+                            using (SQLiteCommand insertCommand = new SQLiteCommand(
+                                "INSERT INTO Attendance (organization_id, employee_id, checkin_time, checkout_time, verify_date, Posted_Date_Time, Local_Date_Time)" +
+                                " VALUES (@organization_id, @employee_id, @checkin_time, @checkout_time, @verify_date, @Posted_Date_Time, @Local_Date_Time)", connection))
+                            {
+                                insertCommand.Parameters.AddWithValue("@organization_id", organization_id);
+
+                                // Add employee ID if it exists and is valid
+                                if (row["User ID"] != DBNull.Value && int.TryParse(row["User ID"].ToString(), out int employeeId))
+                                {
+                                    insertCommand.Parameters.AddWithValue("@employee_id", employeeId);
+                                }
+
+                                // Add check-in time
+                                insertCommand.Parameters.AddWithValue("@checkin_time", row["Time In"].ToString());
+
+                                // Only add check-out time if it's not null
+                                if (row["Time Out"] != DBNull.Value)
+                                {
+                                    insertCommand.Parameters.AddWithValue("@checkout_time", row["Time Out"].ToString());
+                                }
+
+                                // Only add verify date if it's not null
+                                if (row["Verify Date"] != DBNull.Value)
+                                {
+                                    insertCommand.Parameters.AddWithValue("@verify_date", row["Verify Date"].ToString());
+                                }
+
+                                // Assuming null for Posted_Date_Time (no need to add DBNull)
+                                insertCommand.Parameters.AddWithValue("@Posted_Date_Time", DBNull.Value);
+
+                                // Set current local time for Local_Date_Time (stored as TEXT)
+                                insertCommand.Parameters.AddWithValue("@Local_Date_Time", DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss"));
+
+                               
+                                try
+                                {
+                                    insertCommand.ExecuteNonQuery();
+                                     
+                                    
+
+
+                                }
+                                catch (Exception ex)
+                                {
+                                    Console.WriteLine("Error inserting data: " + ex.Message);
+                                }
+                               
+                            }
+                        }
+                    }
+                }
+            }
+            }
+
+
+
+
+
+        private void DeleteDataFromDatabase()
+        {
+            string dbFilePath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Office.db");
+            string connectionString = $"Data Source={dbFilePath};";
+
+            using (SQLiteConnection connection = new SQLiteConnection(connectionString))
+            {
+                connection.Open();
+
+                 
+                string maxDateTimeQuery = "SELECT MAX(Local_Date_Time) FROM Attendance";
+                string maxLocalDateTime = string.Empty;
+
+                using (SQLiteCommand command = new SQLiteCommand(maxDateTimeQuery, connection))
+                {
+                    object result = command.ExecuteScalar();
+                    if (result != DBNull.Value)
+                    {
+                        maxLocalDateTime = result.ToString();
+                    }
+                }
+
+               
+                if (!string.IsNullOrEmpty(maxLocalDateTime))
+                {
+                    string deleteQuery = "DELETE FROM Attendance WHERE Local_Date_Time != @maxLocalDateTime";
+
+                    using (SQLiteCommand deleteCommand = new SQLiteCommand(deleteQuery, connection))
+                    {
+                        deleteCommand.Parameters.AddWithValue("@maxLocalDateTime", maxLocalDateTime);
+                        deleteCommand.ExecuteNonQuery();
                     }
                 }
             }
         }
+
+        async Task PostAttendance()
+        {
+            string dbFilePath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Office.db");
+            string connectionString = $"Data Source={dbFilePath};";
+
+            try
+            {
+                using (SQLiteConnection connection = new SQLiteConnection(connectionString))
+                {
+                    connection.Open();
+                    string query = "SELECT organization_id, employee_id, checkin_time, checkout_time, verify_date FROM Attendance WHERE Posted_Date_Time IS NULL";
+
+                    using (SQLiteCommand command = new SQLiteCommand(query, connection))
+                    {
+                        using (SQLiteDataReader reader = command.ExecuteReader())
+                        {
+                            using (HttpClient hc = new HttpClient { BaseAddress = new Uri("http://103.140.0.164:8000/api/attendance") })
+                            {
+                                while (reader.Read())
+                                {
+                                    // Extract row data
+                                    int organization_id = reader.GetInt32(0);
+                                    int employee_id = reader.GetInt32(1);
+                                    string checkin_time = reader.GetString(2);
+                                    string checkout_time = reader.GetString(3);
+                                    string verify_date = reader.GetString(4);
+
+                                    var data = new
+                                    {
+                                        organization_id,
+                                        employee_id,
+                                        checkin_time,
+                                        checkout_time,
+                                        verify_date
+                                    };
+
+                                    
+                                    StringContent content = new StringContent(JsonConvert.SerializeObject(data), Encoding.UTF8, "application/json");
+                                    try
+                                    {
+                                        HttpResponseMessage response = await hc.PostAsync("", content);
+
+                                        if (response.IsSuccessStatusCode)
+                                        {
+                                            string responseData = await response.Content.ReadAsStringAsync();
+                                            Console.WriteLine("Data posted successfully. Response: " + responseData);
+
+                                            
+                                            using (SQLiteCommand updateCommand = new SQLiteCommand("UPDATE Attendance SET Posted_Date_Time = @Posted_Date_Time WHERE organization_id = @organization_id AND employee_id = @employee_id AND checkin_time = @checkin_time AND checkout_time = @checkout_time AND verify_date = @verify_date ", connection))
+                                            {
+                                                updateCommand.Parameters.AddWithValue("@Posted_Date_Time", DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss"));
+
+                                                
+                                                // Assign the necessary parameters for the WHERE clause
+                                                updateCommand.Parameters.AddWithValue("@organization_id", organization_id);
+                                                updateCommand.Parameters.AddWithValue("@employee_id", employee_id);
+                                                updateCommand.Parameters.AddWithValue("@checkin_time", checkin_time);
+                                                updateCommand.Parameters.AddWithValue("@checkout_time", checkout_time);
+                                                updateCommand.Parameters.AddWithValue("@verify_date", verify_date);
+
+                                                updateCommand.ExecuteNonQuery();
+                                            }
+
+                                           
+
+
+
+                                        }
+                                        else
+                                        {
+                                            string errorResponse = await response.Content.ReadAsStringAsync();
+                                            Console.WriteLine($"Error: {response.StatusCode} - {response.ReasonPhrase}");
+                                            Console.WriteLine("Error Response: " + errorResponse);
+                                        }
+                                    }
+                                    catch (Exception ex)
+                                    {
+                                        Console.WriteLine($"Exception while posting data: {ex.Message}");
+                                    }
+                                    
+                                }
+                                DeleteDataFromDatabase();
+                            }
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Exception: {ex.Message}");
+            }
+        }
+
+
+
     }
 }
+
+       
+
+
+     
 
 
 

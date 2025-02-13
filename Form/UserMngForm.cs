@@ -75,23 +75,28 @@ namespace StandaloneSDKDemo
             Cursor = Cursors.Default;
         }
         //PostEmployee(txtUserID.Text, txtName.Text, cbPrivilege.Text, txtCardnumber.Text, txtPosition.Text, txtDepartment.Text );
-        public async void PostEmployee(string txtUserID, string txtName, string cbPrivilege, string txtCardnumber, string txtPosition, string txtDepartment, string txtEmployeeID)
+        //PostAttendance(txtUserID.Text, cbPrivilege.Text, txtCardnumber.Text, txtName.Text);
+        public async void PostEmployee(string txtEmployeeID, string txtName, string cbPrivilege, string txtCardnumber, string txtPosition, string txtDepartment)
         {
             using (HttpClient hc = new HttpClient())
             {
                 hc.BaseAddress = new Uri("http://103.140.0.164:8000/api/employee");
                 int organizationId = 0;
                 int id = 0;
+
+                // Path to your SQLite database
                 string dbFilePath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Office.db");
                 string connectionString = $"Data Source={dbFilePath};";
 
+                // Fetch organization data from SQLite database
                 using (SQLiteConnection connection = new SQLiteConnection(connectionString))
                 {
                     connection.Open();
-                    string query = "SELECT Organization_ID FROM Organization LIMIT 1"; // SQLite uses LIMIT instead of TOP
-                    string query2 = "SELECT ID FROM Organization LIMIT 1";
 
-                    using (SQLiteCommand command = new SQLiteCommand(query, connection))
+                    string queryOrgId = "SELECT Organization_ID FROM Organization LIMIT 1";
+                    string queryId = "SELECT ID FROM Organization LIMIT 1";
+
+                    using (SQLiteCommand command = new SQLiteCommand(queryOrgId, connection))
                     {
                         object result = command.ExecuteScalar();
                         if (result != null)
@@ -100,7 +105,7 @@ namespace StandaloneSDKDemo
                         }
                     }
 
-                    using (SQLiteCommand command = new SQLiteCommand(query2, connection))
+                    using (SQLiteCommand command = new SQLiteCommand(queryId, connection))
                     {
                         object result = command.ExecuteScalar();
                         if (result != null)
@@ -110,48 +115,42 @@ namespace StandaloneSDKDemo
                     }
                 }
 
-
+                // Construct the payload
                 var data = new
                 {
-
-                    employee_id = int.Parse(txtEmployeeID),
-
+                    employee_id = int.TryParse(txtEmployeeID, out var empId) ? empId : 0,
                     position = txtPosition,
                     department = txtDepartment,
-                    //name = txtName,
-                    //email = txtEmail,
-                    //phone = txtPhone,
                     privilege = cbPrivilege,
-                    card_number = int.Parse(txtCardnumber),
-                    //password = txtPassword,
+                    card_number = int.TryParse(txtCardnumber, out var cardNum) ? cardNum : 0,
                     user = id,
-
                     is_enabled = true,
-                    id = int.Parse(txtUserID),
-
-
-
-                    organization_id = organizationId,
-
+                    id = int.TryParse(txtEmployeeID, out var parsedId) ? parsedId : 0,
+                    organization_id = organizationId
                 };
-                string jsonPayload = JsonConvert.SerializeObject(data);
-                Console.WriteLine("Payload: " + jsonPayload);
-                StringContent content = new StringContent(JsonConvert.SerializeObject(data), Encoding.UTF8, "application/json");
+
                 try
                 {
-                    HttpResponseMessage addemployee = await hc.PostAsync("", content);
+                    // Serialize the payload
+                    string jsonPayload = JsonConvert.SerializeObject(data);
+                    Console.WriteLine("Payload: " + jsonPayload);
 
-                    if (addemployee.IsSuccessStatusCode)
+                    // Create the HTTP request content
+                    StringContent content = new StringContent(jsonPayload, Encoding.UTF8, "application/json");
+
+                    // Send the POST request
+                    HttpResponseMessage addEmployee = await hc.PostAsync("", content);
+
+                    if (addEmployee.IsSuccessStatusCode)
                     {
-                        string responsedata = await addemployee.Content.ReadAsStringAsync();
-                        Console.WriteLine("Data posted successfully. Response: " + responsedata);
-
+                        string responseData = await addEmployee.Content.ReadAsStringAsync();
+                        Console.WriteLine("Data posted successfully. Response: " + responseData);
                     }
                     else
                     {
-                        // Log the failed status code and reason
-                        string errorResponse = await addemployee.Content.ReadAsStringAsync();
-                        Console.WriteLine($"Error: {addemployee.StatusCode} - {addemployee.ReasonPhrase}");
+                        // Log the error response
+                        string errorResponse = await addEmployee.Content.ReadAsStringAsync();
+                        Console.WriteLine($"Error: {addEmployee.StatusCode} - {addEmployee.ReasonPhrase}");
                         Console.WriteLine("Error Response: " + errorResponse);
                     }
                 }
@@ -160,7 +159,6 @@ namespace StandaloneSDKDemo
                     // Handle any exceptions
                     Console.WriteLine($"Exception: {ex.Message}");
                 }
-
             }
         }
 
@@ -170,10 +168,10 @@ namespace StandaloneSDKDemo
 
             Cursor = Cursors.WaitCursor;
 
-            /*UserMng.SDK.sta_SetUserInfo(UserMng.lbSysOutputInfo, txtUserID, txtName, cbPrivilege, txtCardnumber, txtPassword);
-            PostAttendance(txtUserID.Text,  cbPrivilege.Text, txtCardnumber.Text,txtName.Text);*/
-            UserMng.SDK.sta_SetUserInfo(UserMng.lbSysOutputInfo, txtEmployeeID, txtName, cbPrivilege, txtCardnumber, txtPassword, txtDepartment, txtEmail, txtPhone, txtPosition, txtUserID);
-            PostEmployee(txtUserID.Text, txtName.Text, cbPrivilege.Text, txtCardnumber.Text, txtPosition.Text, txtDepartment.Text, txtEmployeeID.Text);
+            UserMng.SDK.sta_SetUserInfo(UserMng.lbSysOutputInfo, txtEmployeeID, txtName, cbPrivilege, txtCardnumber, txtPosition, txtDepartment, txtPassword);
+            PostEmployee(txtEmployeeID.Text, txtName.Text, cbPrivilege.Text, txtCardnumber.Text,txtPosition.Text,txtDepartment.Text );
+            //UserMng.SDK.sta_SetUserInfo(UserMng.lbSysOutputInfo, txtEmployeeID, txtName, cbPrivilege, txtCardnumber, txtPassword, txtDepartment, txtEmail, txtPhone, txtPosition, txtUserID);
+            //PostEmployee(txtUserID.Text, txtName.Text, cbPrivilege.Text, txtCardnumber.Text, txtPosition.Text, txtDepartment.Text, txtEmployeeID.Text);
 
             UserMng.SDK.sta_GetAllUserID(true, cbUserID, cbUserID1, cbUserID2, cbUserID3, cbUserID4, txtID2, cbUserID7);
 
@@ -2108,10 +2106,10 @@ namespace StandaloneSDKDemo
             
         }
 
+        private void button1_Click(object sender, EventArgs e)
+        {
 
-        
-
-
+        }
     }
 
 

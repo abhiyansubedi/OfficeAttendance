@@ -158,6 +158,7 @@ namespace StandaloneSDKDemo
             dt_periodLog.Columns.Add("User ID", System.Type.GetType("System.String"));
             dt_periodLog.Columns.Add("User Name", System.Type.GetType("System.String"));
             dt_periodLog.Columns.Add("Verify Date", System.Type.GetType("System.String"));
+            dt_periodLog.Columns.Add("Nepali Verify Date", System.Type.GetType("System.String"));
             dt_periodLog.Columns.Add("Verify Type", System.Type.GetType("System.Int32"));
             dt_periodLog.Columns.Add("Verify State", System.Type.GetType("System.Int32"));
             dt_periodLog.Columns.Add("WorkCode", System.Type.GetType("System.Int32"));
@@ -424,6 +425,7 @@ namespace StandaloneSDKDemo
                 dt_periodLog.Columns.Add("User ID", System.Type.GetType("System.String"));
                 dt_periodLog.Columns.Add("User Name", System.Type.GetType("System.String"));
                 dt_periodLog.Columns.Add("Verify Date", System.Type.GetType("System.String"));
+                dt_periodLog.Columns.Add("Nepali Verify Date", System.Type.GetType("System.String"));
                 dt_periodLog.Columns.Add("Verify Type", System.Type.GetType("System.Int32"));
                 dt_periodLog.Columns.Add("Verify State", System.Type.GetType("System.Int32"));
                 dt_periodLog.Columns.Add("WorkCode", System.Type.GetType("System.Int32"));

@@ -5,7 +5,7 @@ VisualStudioVersion = 15.0.26730.12
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "StandaloneSDKDemo", "StandaloneSDKDemo.csproj", "{18AF2E37-B203-400B-8188-606899C00933}"
 EndProject
-Project("{54435603-DBB4-11D2-8724-00A0C9A8B90C}") = "Office Attendance", "..\Office Attendance\Office Attendance.vdproj", "{72EBC2DE-C6DB-4086-A550-D6E8920C2643}"
+Project("{54435603-DBB4-11D2-8724-00A0C9A8B90C}") = "Office Setup", "..\Office Setup\Office Setup.vdproj", "{1D9EA6E1-997B-4C95-83AC-B8D57973FC75}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -29,12 +29,12 @@ Global
 		{18AF2E37-B203-400B-8188-606899C00933}.Release|x64.Build.0 = Release|x64
 		{18AF2E37-B203-400B-8188-606899C00933}.Release|x86.ActiveCfg = Release|x86
 		{18AF2E37-B203-400B-8188-606899C00933}.Release|x86.Build.0 = Release|x86
-		{72EBC2DE-C6DB-4086-A550-D6E8920C2643}.Debug|Any CPU.ActiveCfg = Debug
-		{72EBC2DE-C6DB-4086-A550-D6E8920C2643}.Debug|x64.ActiveCfg = Debug
-		{72EBC2DE-C6DB-4086-A550-D6E8920C2643}.Debug|x86.ActiveCfg = Debug
-		{72EBC2DE-C6DB-4086-A550-D6E8920C2643}.Release|Any CPU.ActiveCfg = Release
-		{72EBC2DE-C6DB-4086-A550-D6E8920C2643}.Release|x64.ActiveCfg = Release
-		{72EBC2DE-C6DB-4086-A550-D6E8920C2643}.Release|x86.ActiveCfg = Release
+		{1D9EA6E1-997B-4C95-83AC-B8D57973FC75}.Debug|Any CPU.ActiveCfg = Debug
+		{1D9EA6E1-997B-4C95-83AC-B8D57973FC75}.Debug|x64.ActiveCfg = Debug
+		{1D9EA6E1-997B-4C95-83AC-B8D57973FC75}.Debug|x86.ActiveCfg = Debug
+		{1D9EA6E1-997B-4C95-83AC-B8D57973FC75}.Release|Any CPU.ActiveCfg = Release
+		{1D9EA6E1-997B-4C95-83AC-B8D57973FC75}.Release|x64.ActiveCfg = Release
+		{1D9EA6E1-997B-4C95-83AC-B8D57973FC75}.Release|x86.ActiveCfg = Release
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
