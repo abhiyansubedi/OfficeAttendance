@@ -160,9 +160,6 @@
             this.columnHeader8 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.columnHeader9 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.columnHeader10 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
-            this.cbBatchUpload = new System.Windows.Forms.CheckBox();
-            this.btnSetAllUserFPInfo = new System.Windows.Forms.Button();
-            this.btnGetAllUserFPInfo = new System.Windows.Forms.Button();
             this.tabPage1 = new System.Windows.Forms.TabPage();
             this.tabControl2 = new System.Windows.Forms.TabControl();
             this.tabPage5 = new System.Windows.Forms.TabPage();
@@ -189,6 +186,7 @@
             this.label8 = new System.Windows.Forms.Label();
             this.label4 = new System.Windows.Forms.Label();
             this.groupBox3 = new System.Windows.Forms.GroupBox();
+            this.btnEmployee = new System.Windows.Forms.Button();
             this.btnSubmit = new System.Windows.Forms.Button();
             this.txtDepartment = new System.Windows.Forms.TextBox();
             this.label41 = new System.Windows.Forms.Label();
@@ -240,7 +238,9 @@
             this.txtUserID1 = new System.Windows.Forms.TextBox();
             this.label30 = new System.Windows.Forms.Label();
             this.tabControl1 = new System.Windows.Forms.TabControl();
-            this.btnEmployee = new System.Windows.Forms.Button();
+            this.btnGetAllUserFPInfo = new System.Windows.Forms.Button();
+            this.btnSetAllUserFPInfo = new System.Windows.Forms.Button();
+            this.cbBatchUpload = new System.Windows.Forms.CheckBox();
             this.tabPage4.SuspendLayout();
             this.tabControl3.SuspendLayout();
             this.tabPageUser.SuspendLayout();
@@ -1643,6 +1643,9 @@
             // 
             // lvUserInfo
             // 
+            this.lvUserInfo.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.lvUserInfo.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
             this.columnHeader1,
             this.columnHeader2,
@@ -1671,12 +1674,12 @@
             // 
             // columnHeader2
             // 
-            this.columnHeader2.Text = "Enable";
+            this.columnHeader2.Text = "Name";
             this.columnHeader2.Width = 50;
             // 
             // columnHeader3
             // 
-            this.columnHeader3.Text = "Name";
+            this.columnHeader3.Text = "Enable";
             this.columnHeader3.Width = 100;
             // 
             // columnHeader4
@@ -1708,39 +1711,6 @@
             // 
             this.columnHeader10.Text = "Privilege";
             this.columnHeader10.Width = 75;
-            // 
-            // cbBatchUpload
-            // 
-            this.cbBatchUpload.AutoSize = true;
-            this.cbBatchUpload.Location = new System.Drawing.Point(364, 467);
-            this.cbBatchUpload.Margin = new System.Windows.Forms.Padding(4);
-            this.cbBatchUpload.Name = "cbBatchUpload";
-            this.cbBatchUpload.Size = new System.Drawing.Size(102, 21);
-            this.cbBatchUpload.TabIndex = 81;
-            this.cbBatchUpload.Text = "High speed";
-            this.cbBatchUpload.UseVisualStyleBackColor = true;
-            // 
-            // btnSetAllUserFPInfo
-            // 
-            this.btnSetAllUserFPInfo.Location = new System.Drawing.Point(188, 461);
-            this.btnSetAllUserFPInfo.Margin = new System.Windows.Forms.Padding(4);
-            this.btnSetAllUserFPInfo.Name = "btnSetAllUserFPInfo";
-            this.btnSetAllUserFPInfo.Size = new System.Drawing.Size(153, 31);
-            this.btnSetAllUserFPInfo.TabIndex = 79;
-            this.btnSetAllUserFPInfo.Text = "SetAllUserFPInfo";
-            this.btnSetAllUserFPInfo.UseVisualStyleBackColor = true;
-            this.btnSetAllUserFPInfo.Click += new System.EventHandler(this.btnSetAllUserFPInfo_Click);
-            // 
-            // btnGetAllUserFPInfo
-            // 
-            this.btnGetAllUserFPInfo.Location = new System.Drawing.Point(21, 461);
-            this.btnGetAllUserFPInfo.Margin = new System.Windows.Forms.Padding(4);
-            this.btnGetAllUserFPInfo.Name = "btnGetAllUserFPInfo";
-            this.btnGetAllUserFPInfo.Size = new System.Drawing.Size(145, 31);
-            this.btnGetAllUserFPInfo.TabIndex = 78;
-            this.btnGetAllUserFPInfo.Text = "GetAllUserFPInfo";
-            this.btnGetAllUserFPInfo.UseVisualStyleBackColor = true;
-            this.btnGetAllUserFPInfo.Click += new System.EventHandler(this.btnGetAllUserFPInfo_Click);
             // 
             // tabPage1
             // 
@@ -2089,6 +2059,17 @@
             this.groupBox3.TabStop = false;
             this.groupBox3.Text = "Upload the Card Number(part of users information)";
             this.groupBox3.Enter += new System.EventHandler(this.groupBox3_Enter);
+            // 
+            // btnEmployee
+            // 
+            this.btnEmployee.Location = new System.Drawing.Point(445, 270);
+            this.btnEmployee.Margin = new System.Windows.Forms.Padding(4);
+            this.btnEmployee.Name = "btnEmployee";
+            this.btnEmployee.Size = new System.Drawing.Size(117, 31);
+            this.btnEmployee.TabIndex = 81;
+            this.btnEmployee.Text = "EmployeeList";
+            this.btnEmployee.UseVisualStyleBackColor = true;
+            this.btnEmployee.Click += new System.EventHandler(this.button1_Click);
             // 
             // btnSubmit
             // 
@@ -2694,16 +2675,38 @@
             this.tabControl1.Size = new System.Drawing.Size(1229, 622);
             this.tabControl1.TabIndex = 0;
             // 
-            // btnEmployee
+            // btnGetAllUserFPInfo
             // 
-            this.btnEmployee.Location = new System.Drawing.Point(445, 270);
-            this.btnEmployee.Margin = new System.Windows.Forms.Padding(4);
-            this.btnEmployee.Name = "btnEmployee";
-            this.btnEmployee.Size = new System.Drawing.Size(117, 31);
-            this.btnEmployee.TabIndex = 81;
-            this.btnEmployee.Text = "EmployeeList";
-            this.btnEmployee.UseVisualStyleBackColor = true;
-            this.btnEmployee.Click += new System.EventHandler(this.button1_Click);
+            this.btnGetAllUserFPInfo.Location = new System.Drawing.Point(21, 461);
+            this.btnGetAllUserFPInfo.Margin = new System.Windows.Forms.Padding(4);
+            this.btnGetAllUserFPInfo.Name = "btnGetAllUserFPInfo";
+            this.btnGetAllUserFPInfo.Size = new System.Drawing.Size(145, 31);
+            this.btnGetAllUserFPInfo.TabIndex = 78;
+            this.btnGetAllUserFPInfo.Text = "GetAllUserFPInfo";
+            this.btnGetAllUserFPInfo.UseVisualStyleBackColor = true;
+            this.btnGetAllUserFPInfo.Click += new System.EventHandler(this.btnGetAllUserFPInfo_Click);
+            // 
+            // btnSetAllUserFPInfo
+            // 
+            this.btnSetAllUserFPInfo.Location = new System.Drawing.Point(188, 461);
+            this.btnSetAllUserFPInfo.Margin = new System.Windows.Forms.Padding(4);
+            this.btnSetAllUserFPInfo.Name = "btnSetAllUserFPInfo";
+            this.btnSetAllUserFPInfo.Size = new System.Drawing.Size(153, 31);
+            this.btnSetAllUserFPInfo.TabIndex = 79;
+            this.btnSetAllUserFPInfo.Text = "SetAllUserFPInfo";
+            this.btnSetAllUserFPInfo.UseVisualStyleBackColor = true;
+            this.btnSetAllUserFPInfo.Click += new System.EventHandler(this.btnSetAllUserFPInfo_Click);
+            // 
+            // cbBatchUpload
+            // 
+            this.cbBatchUpload.AutoSize = true;
+            this.cbBatchUpload.Location = new System.Drawing.Point(364, 467);
+            this.cbBatchUpload.Margin = new System.Windows.Forms.Padding(4);
+            this.cbBatchUpload.Name = "cbBatchUpload";
+            this.cbBatchUpload.Size = new System.Drawing.Size(102, 21);
+            this.cbBatchUpload.TabIndex = 81;
+            this.cbBatchUpload.Text = "High speed";
+            this.cbBatchUpload.UseVisualStyleBackColor = true;
             // 
             // UserMngForm
             // 
@@ -2898,9 +2901,6 @@
         private System.Windows.Forms.ColumnHeader columnHeader8;
         private System.Windows.Forms.ColumnHeader columnHeader9;
         private System.Windows.Forms.ColumnHeader columnHeader10;
-        private System.Windows.Forms.CheckBox cbBatchUpload;
-        private System.Windows.Forms.Button btnSetAllUserFPInfo;
-        private System.Windows.Forms.Button btnGetAllUserFPInfo;
         private System.Windows.Forms.TabPage tabPage1;
         private System.Windows.Forms.TabControl tabControl2;
         private System.Windows.Forms.TabPage tabPage5;
@@ -2979,5 +2979,8 @@
         private System.Windows.Forms.Label label42;
         private System.Windows.Forms.Button btnSubmit;
         private System.Windows.Forms.Button btnEmployee;
+        private System.Windows.Forms.CheckBox cbBatchUpload;
+        private System.Windows.Forms.Button btnSetAllUserFPInfo;
+        private System.Windows.Forms.Button btnGetAllUserFPInfo;
     }
 }

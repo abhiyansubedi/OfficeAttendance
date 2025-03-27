@@ -221,7 +221,7 @@ namespace StandaloneSDKDemo
                 int idwMonth = 1;
                 int idwDay = 1;
 
-                // Fetch selected year, month, and day from the combo boxes
+                // Fetch selected year, month, and day from combo boxes
                 if (comboBoxYear.SelectedItem != null && int.TryParse(comboBoxYear.SelectedItem.ToString(), out int selectedYear))
                 {
                     idwYear = selectedYear;
@@ -238,36 +238,38 @@ namespace StandaloneSDKDemo
                     idwDay = selectedDay;
                 }
 
-                // Set fromDate and toDate based on selected values
+                // Convert Nepali date to English date
                 DateConverter englishDateFrom;
                 DateConverter englishDateTo;
-                string fromDate = string.Empty; // Initialize with default value
-                string toDate = string.Empty; // Initialize with default value
+                string fromDate = string.Empty;
+                string toDate = string.Empty;
 
                 if (comboBox1Date.SelectedItem != null && comboBoxMonth.SelectedItem != null && comboBoxYear.SelectedItem != null) // Year, Month, and Day selected
                 {
                     englishDateFrom = DateConverter.ConvertToEnglish(idwYear, idwMonth, idwDay);
                     englishDateTo = DateConverter.ConvertToEnglish(idwYear, idwMonth, idwDay);
-
-                    fromDate = $"{englishDateFrom.Year}-{englishDateFrom.Month:D2}-{englishDateFrom.Day:D2} 00:00:00";
-                    toDate = $"{englishDateTo.Year}-{englishDateTo.Month:D2}-{englishDateTo.Day:D2} 23:59:59";
                 }
                 else if (comboBoxMonth.SelectedItem != null && comboBoxYear.SelectedItem != null) // Year and Month selected
                 {
                     englishDateFrom = DateConverter.ConvertToEnglish(idwYear, idwMonth, 1);
                     englishDateTo = DateConverter.ConvertToEnglish(idwYear, idwMonth, DateTime.DaysInMonth(idwYear, idwMonth));
-                    fromDate = $"{englishDateFrom.Year}-{englishDateFrom.Month:D2}-{englishDateFrom.Day:D2} 00:00:00";
-                    toDate = $"{englishDateTo.Year}-{englishDateTo.Month:D2}-{englishDateTo.Day:D2} 23:59:59";
                 }
-                else // Only Year selected
+                else if (comboBoxYear.SelectedItem != null) // Only Year selected
                 {
                     englishDateFrom = DateConverter.ConvertToEnglish(idwYear, 1, 1);
                     englishDateTo = DateConverter.ConvertToEnglish(idwYear, 12, 31);
-                    fromDate = $"{englishDateFrom.Year}-{englishDateFrom.Month:D2}-{englishDateFrom.Day:D2} 00:00:00";
-                    toDate = $"{englishDateTo.Year}-{englishDateTo.Month:D2}-{englishDateTo.Day:D2} 23:59:59";
+                }
+                else
+                {
+                    englishDateFrom = DateConverter.ConvertToEnglish(idwYear, idwMonth, idwDay);
+                    englishDateTo = DateConverter.ConvertToEnglish(idwYear, idwMonth, idwDay);
                 }
 
-                // Fetch data
+                // Format date range
+                fromDate = $"{englishDateFrom.Year:0000}-{englishDateFrom.Month:00}-{englishDateFrom.Day:00} 00:00:00";
+                toDate = $"{englishDateTo.Year:0000}-{englishDateTo.Month:00}-{englishDateTo.Day:00} 23:59:59";
+
+                // Fetch data from SDK
                 DataTable dt_periodLog = new DataTable("dt_periodLog");
                 gv_Attlog.Columns.Clear();
                 dt_periodLog.Columns.Add("Organization_ID", typeof(int));
@@ -282,7 +284,6 @@ namespace StandaloneSDKDemo
                 dt_periodLog.Columns.Add("Time Out", typeof(string));
                 dt_periodLog.Columns.Add("Status", typeof(string));
 
-                // Ensure that fromDate and toDate have been set before calling sta_readLogByPeriod
                 if (!string.IsNullOrEmpty(fromDate) && !string.IsNullOrEmpty(toDate))
                 {
                     MonthlyReport.SDK.sta_readLogByPeriod(MonthlyReport.lbSysOutputInfo, dt_periodLog, fromDate, toDate);
@@ -293,13 +294,13 @@ namespace StandaloneSDKDemo
                     return;
                 }
 
-                // Create a final table to hold filtered results
+                // Create final filtered table
                 DataTable finalTable = dt_periodLog.Clone();
 
-                // Check if a username has been provided; if not, add all records
+                // Filter by username if provided
                 if (!string.IsNullOrEmpty(txtBoxName.Text))
                 {
-                    string selectedUserName = txtBoxName.Text.ToString();
+                    string selectedUserName = txtBoxName.Text;
                     DataRow[] filteredRows = dt_periodLog.Select($"[User Name] = '{selectedUserName}'");
 
                     foreach (DataRow row in filteredRows)
@@ -309,41 +310,50 @@ namespace StandaloneSDKDemo
                 }
                 else
                 {
-                    // If no username is provided, include all entries from the period log
                     finalTable = dt_periodLog.Copy();
                 }
 
-                // Remove duplicate entries if a username is selected
-                if (!string.IsNullOrEmpty(txtBoxName.Text) && finalTable.Rows.Count > 0)
+                // Remove duplicate rows based on User ID and Verify Date
+                HashSet<string> uniqueCombinations = new HashSet<string>();
+                List<DataRow> rowsToDelete = new List<DataRow>();
+
+                foreach (DataRow row in finalTable.Rows)
                 {
-                    string previousDate = string.Empty;
-                    List<DataRow> rowsToDelete = new List<DataRow>();
+                    string userId = row["User ID"].ToString();
+                    string verifyDate = row["Verify Date"].ToString();
 
-                    foreach (DataRow row in finalTable.Rows)
+                    // Ensure valid date parsing
+                    if (DateTime.TryParse(verifyDate, out DateTime currentDateTime))
                     {
-                        DateTime currentDateTime = DateTime.Parse(row["Verify Date"].ToString());
                         string currentDate = currentDateTime.ToString("yyyy-MM-dd");
+                        string combination = $"{userId}_{currentDate}";
 
-                        if (currentDate == previousDate)
+                        if (uniqueCombinations.Contains(combination))
                         {
                             rowsToDelete.Add(row);
                         }
                         else
                         {
-                            previousDate = currentDate;
+                            uniqueCombinations.Add(combination);
                         }
                     }
-
-                    foreach (DataRow row in rowsToDelete)
+                    else
                     {
-                        finalTable.Rows.Remove(row);
+                        Console.WriteLine($"Invalid date format found: {verifyDate}");
                     }
-                    finalTable.AcceptChanges();
                 }
 
+                // Remove duplicate rows
+                foreach (DataRow row in rowsToDelete)
+                {
+                    finalTable.Rows.Remove(row);
+                }
+                finalTable.AcceptChanges();
+
+                // Display filtered data
                 gv_Attlog.DataSource = finalTable;
 
-                // Call database methods only if there are records to insert
+                // Save data if records exist
                 if (finalTable.Rows.Count > 0)
                 {
                     DeleteDataFromDatabase();
@@ -493,6 +503,8 @@ namespace StandaloneSDKDemo
                     command.ExecuteNonQuery();
                 }
             }
+
+
         }
 
         private void InsertDataIntoDatabase(DataTable dt_periodLog)
@@ -528,29 +540,55 @@ namespace StandaloneSDKDemo
 
         private void button1_Click(object sender, EventArgs e)
         {
-            Cursor = Cursors.WaitCursor;
+            try
+            {
+                Cursor = Cursors.WaitCursor;
 
-            DataTable dt_periodLog = new DataTable("dt_periodLog");
-            gv_Attlog.AutoGenerateColumns = true;
-            gv_Attlog.Columns.Clear();
-            dt_periodLog.Columns.Add("Organization_ID", System.Type.GetType("System.Int32"));
-            dt_periodLog.Columns.Add("User ID", System.Type.GetType("System.String"));
-            dt_periodLog.Columns.Add("User Name", System.Type.GetType("System.String"));
-            dt_periodLog.Columns.Add("Nepali Verify Date", System.Type.GetType("System.String"));
-            dt_periodLog.Columns.Add("Verify Date", System.Type.GetType("System.String"));
-            dt_periodLog.Columns.Add("Verify Type", System.Type.GetType("System.Int32"));
-            dt_periodLog.Columns.Add("Verify State", System.Type.GetType("System.Int32"));
-            dt_periodLog.Columns.Add("WorkCode", System.Type.GetType("System.Int32"));
-            dt_periodLog.Columns.Add("Time In", System.Type.GetType("System.String"));
-            dt_periodLog.Columns.Add("Time Out", System.Type.GetType("System.String"));
-            dt_periodLog.Columns.Add("Status", System.Type.GetType("System.String"));
-            gv_Attlog.DataSource = dt_periodLog;
+                // Calculate the date range: last 365 days from the current date
+                DateTime current = DateTime.Now; // Current date and time
+                DateTime from = current.AddDays(-365); // Subtract 365 days from the current date
 
-            MonthlyReport.SDK.sta_readAttLog(MonthlyReport.lbSysOutputInfo, dt_periodLog);
-            DeleteDataFromDatabase();
-            InsertDataIntoDatabase(dt_periodLog);
+                // Format the dates as strings
+                string fromDate = from.ToString("yyyy-MM-dd 00:00:00");
+                string toDate = current.ToString("yyyy-MM-dd 23:59:59");
 
-            Cursor = Cursors.Default;
+                // Create a DataTable to store the logs
+                DataTable dt_periodLog = new DataTable("dt_periodLog");
+                gv_Attlog.AutoGenerateColumns = true;
+                gv_Attlog.Columns.Clear();
+
+                // Define columns for the DataTable
+                dt_periodLog.Columns.Add("Organization_ID", typeof(int));
+                dt_periodLog.Columns.Add("User ID", typeof(string));
+                dt_periodLog.Columns.Add("User Name", typeof(string));
+                dt_periodLog.Columns.Add("Nepali Verify Date", typeof(string));
+                dt_periodLog.Columns.Add("Verify Date", typeof(string));
+                dt_periodLog.Columns.Add("Verify Type", typeof(int));
+                dt_periodLog.Columns.Add("Verify State", typeof(int));
+                dt_periodLog.Columns.Add("WorkCode", typeof(int));
+                dt_periodLog.Columns.Add("Time In", typeof(string));
+                dt_periodLog.Columns.Add("Time Out", typeof(string));
+                dt_periodLog.Columns.Add("Status", typeof(string));
+
+                // Set the DataTable as the data source for the grid view
+               
+                // Fetch data from the SDK using the calculated date range
+                MonthlyReport.SDK.sta_readAttLog(MonthlyReport.lbSysOutputInfo, dt_periodLog);
+               
+         
+
+                // Display filtered data
+                gv_Attlog.DataSource = dt_periodLog;
+
+                DeleteDataFromDatabase();
+                InsertDataIntoDatabase(dt_periodLog);
+                // Save data if records exist
+               
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("An error occurred: " + ex.Message);
+            }
         }
 
         private void MonthlyReport2_Load(object sender, EventArgs e)

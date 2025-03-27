@@ -1625,103 +1625,78 @@ namespace StandaloneSDKDemo
             bool bEnabled = false;
             string sName = "";
             string sPassword = "";
-            int iPrivilege = 0;
-            string sFPTmpData = "";
             string sCardnumber = "";
-            int idwFingerIndex = 0;
-            int iFlag = 0;
-            int iFPTmpLength = 0;
-            int i = 0;
+            int iPrivilege = 0;
             int num = 0;
-            int iFpCount = 0;
-            int index = 0;
-            int xx = 1;
 
             lvUserInfo.Items.Clear();
 
             axCZKEM1.EnableDevice(iMachineNumber, false);
-            axCZKEM1.ReadAllUserID(iMachineNumber);//read all the user information to the memory  except fingerprint Templates
-            axCZKEM1.ReadAllTemplate(iMachineNumber);//read all the users' fingerprint templates to the memory
-            while (axCZKEM1.SSR_GetAllUserInfo(iMachineNumber, out sEnrollNumber, out sName, out sPassword, out iPrivilege, out bEnabled))//get all the users' information from the memory
+            axCZKEM1.ReadAllUserID(iMachineNumber);
+            axCZKEM1.ReadAllTemplate(iMachineNumber);
+            DeleteDataFromDatabase();
+            string dbFilePath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Office.db");
+            string connectionString = $"Data Source={dbFilePath};";
+
+            using (SQLiteConnection conn = new SQLiteConnection(connectionString))
             {
-                axCZKEM1.GetStrCardNumber(out sCardnumber);//get the card number from the memory             
+                conn.Open();
 
-                lvUserInfo.Items.Add(sEnrollNumber);
-
-                if (bEnabled == true)
+                while (axCZKEM1.SSR_GetAllUserInfo(iMachineNumber, out sEnrollNumber, out sName, out sPassword, out iPrivilege, out bEnabled))
                 {
-                    lvUserInfo.Items[index].SubItems.Add("true");
-                }
-                else
-                {
-                    lvUserInfo.Items[index].SubItems.Add("false");
-                }
+                    axCZKEM1.GetStrCardNumber(out sCardnumber);
 
-                lvUserInfo.Items[index].SubItems.Add(sName);
-                lvUserInfo.Items[index].SubItems.Add(sCardnumber);
-                lvUserInfo.Items[index].SubItems.Add(sPassword);
+                    lvUserInfo.Items.Add(sEnrollNumber);
+                    lvUserInfo.Items[num].SubItems.Add(sName);
+                    lvUserInfo.Items[num].SubItems.Add(sCardnumber);
+                    lvUserInfo.Items[num].SubItems.Add(sPassword);
+                    lvUserInfo.Items[num].SubItems.Add(iPrivilege.ToString());
 
-                i = 0;
-                xx = 1;
-                for (idwFingerIndex = 0; idwFingerIndex < 10; idwFingerIndex++)
-                {
-                    if (axCZKEM1.GetUserTmpExStr(iMachineNumber, sEnrollNumber, idwFingerIndex, out iFlag, out sFPTmpData, out iFPTmpLength))//get the corresponding templates string and length from the memory
+                    // **Insert into SQLite**
+                    string query = @"
+                INSERT OR IGNORE INTO Employee (UserID, Name, CardNo, Password, Privilege) 
+                VALUES (@UserID, @Name, @CardNo, @Password, @Privilege);";
+
+                    using (SQLiteCommand cmd = new SQLiteCommand(query, conn))
                     {
-                        if (xx == 1)
-                        {
-                            lvUserInfo.Items[index].SubItems.Add(idwFingerIndex.ToString());
-                            lvUserInfo.Items[index].SubItems.Add(iFlag.ToString());
-                            lvUserInfo.Items[index].SubItems.Add(sFPTmpData);
-                            lvUserInfo.Items[index].SubItems.Add(iPrivilege.ToString());
-                        }
-                        else
-                        {
-                            lvUserInfo.Items.Add(sEnrollNumber);
-                            if (bEnabled == true)
-                            {
-                                lvUserInfo.Items[index].SubItems.Add("true");
-                            }
-                            else
-                            {
-                                lvUserInfo.Items[index].SubItems.Add("false");
-                            }
+                        cmd.Parameters.AddWithValue("@UserID", Convert.ToInt64(sEnrollNumber));
+                        cmd.Parameters.AddWithValue("@Name", sName);
+                        cmd.Parameters.AddWithValue("@CardNo",  sCardnumber);
+                        cmd.Parameters.AddWithValue("@Password", sPassword);
+                        cmd.Parameters.AddWithValue("@Privilege", iPrivilege.ToString());
 
-                            lvUserInfo.Items[index].SubItems.Add(sName);
-                            lvUserInfo.Items[index].SubItems.Add(sCardnumber);
-                            lvUserInfo.Items[index].SubItems.Add(sPassword);
-                            lvUserInfo.Items[index].SubItems.Add(idwFingerIndex.ToString());
-                            lvUserInfo.Items[index].SubItems.Add(iFlag.ToString());
-                            lvUserInfo.Items[index].SubItems.Add(sFPTmpData);
-                            lvUserInfo.Items[index].SubItems.Add(iPrivilege.ToString());
-                        }
+                        cmd.ExecuteNonQuery();
+                    }
 
-                        index++;
-                        xx = 0;
-                        iFpCount++;
-                    }
-                    else
-                    {
-                        i++;
-                    }
+                    num++;
+                    prgSta.Value = num % 100;
                 }
 
-                if (i == 10)
-                {
-                    lvUserInfo.Items[index].SubItems.Add("");
-                    lvUserInfo.Items[index].SubItems.Add("");
-                    lvUserInfo.Items[index].SubItems.Add("");
-                    lvUserInfo.Items[index].SubItems.Add(iPrivilege.ToString());
-                    index++;
-                }
-                num++;
-                prgSta.Value = num % 100;
+                conn.Close();
             }
+
             prgSta.Value = 100;
-            lblOutputInfo.Items.Add("Download user count : " + num.ToString() + " ,  fingerprint count : " + iFpCount.ToString());
+            lblOutputInfo.Items.Add($"Download user count: {num}");
             axCZKEM1.EnableDevice(iMachineNumber, true);
+
             return 1;
         }
 
+        private void DeleteDataFromDatabase()
+        {
+            string dbFilePath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Office.db");
+            string connectionString = $"Data Source={dbFilePath};";
+
+            using (SQLiteConnection connection = new SQLiteConnection(connectionString))
+            {
+                connection.Open();
+
+                using (SQLiteCommand command = new SQLiteCommand("DELETE FROM Employee", connection))
+                {
+                    command.ExecuteNonQuery();
+                } 
+            }
+        }
         public int sta_SetAllUserFPInfo(ListBox lblOutputInfo, ProgressBar prgSta, ListView lvUserInfo)
         {
             if (GetConnectState() == false)
@@ -4309,19 +4284,20 @@ namespace StandaloneSDKDemo
             }
 
             int ret = 0;
-
-            axCZKEM1.EnableDevice(GetMachineNumber(), false); //disable the device
+            axCZKEM1.EnableDevice(GetMachineNumber(), false);
 
             string sdwEnrollNumber = "";
             int idwVerifyMode = 0;
             int idwInOutMode = 0;
+
             int idwYear = 0;
             int idwMonth = 0;
             int idwDay = 0;
             int idwHour = 0;
             int idwMinute = 0;
             int idwSecond = 0;
-            int idwWorkcode = 0;
+        
+          int idwWorkcode = 0;
             string sdwName = "";
             string strPassword = "";
             int iPrivilege = 0;
@@ -4329,8 +4305,8 @@ namespace StandaloneSDKDemo
 
             string dbFilePath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Office.db");
             string connectionString = $"Data Source={dbFilePath};";
+            HashSet<string> employeeNames = new HashSet<string>();
             object organizationID = null;
-
             using (SQLiteConnection connection = new SQLiteConnection(connectionString))
             {
                 connection.Open();
@@ -4342,45 +4318,114 @@ namespace StandaloneSDKDemo
                 }
             }
 
+            using (SQLiteConnection connection = new SQLiteConnection(connectionString))
+            {
+                connection.Open();
+                string query = "SELECT Name FROM Employee";
+                using (SQLiteCommand command = new SQLiteCommand(query, connection))
+                using (SQLiteDataReader reader = command.ExecuteReader())
+                {
+                    while (reader.Read())
+                    {
+                        employeeNames.Add(reader["Name"].ToString());
+                    }
+                }
+            }
+
+            HashSet<string> presentEmployees = new HashSet<string>();
 
             if (axCZKEM1.ReadGeneralLogData(GetMachineNumber()))
             {
                 while (axCZKEM1.SSR_GetGeneralLogData(GetMachineNumber(), out sdwEnrollNumber, out idwVerifyMode,
-                            out idwInOutMode, out idwYear, out idwMonth, out idwDay, out idwHour, out idwMinute, out idwSecond, ref idwWorkcode)) //get records from the memory
+                            out idwInOutMode, out idwYear, out idwMonth, out idwDay, out idwHour, out idwMinute, out idwSecond, ref idwWorkcode))
                 {
-                    axCZKEM1.SSR_GetUserInfo(GetMachineNumber(), sdwEnrollNumber, out sdwName, out strPassword, out iPrivilege, out bEnabled);//upload the user's information(card number included)
-
+                    axCZKEM1.SSR_GetUserInfo(GetMachineNumber(), sdwEnrollNumber, out sdwName, out strPassword, out iPrivilege, out bEnabled);
+                    presentEmployees.Add(sdwName);
 
                     DataRow dr = dt_log.NewRow();
                     dr["Organization_ID"] = organizationID;
                     dr["User ID"] = sdwEnrollNumber;
                     dr["User Name"] = sdwName;
+                    
                     dr["Verify Type"] = idwVerifyMode;
                     dr["Verify State"] = idwInOutMode;
-                    dr["WorkCode"] = idwWorkcode;
-
-                    dr["Verify Date"] = $"{idwYear:0000}-{idwMonth:00}-{idwDay:00}";
-                    //dr["Posted_Date_Time"] = null;
-                    // Convert to Nepali Date
+                    dr["Verify Date"] = $"{idwYear}-{idwMonth}-{idwDay} ";
                     DateConverter nepaliDate = DateConverter.ConvertToNepali(idwYear, idwMonth, idwDay);
-                    dr["Nepali Verify Date"] = $"{nepaliDate.Year:0000}-{nepaliDate.Month:00}-{nepaliDate.Day:00}  " ;
+                    dr["Nepali Verify Date"] = $"{nepaliDate.Year:0000}-{nepaliDate.Month:00}-{nepaliDate.Day:00} ";
 
-                    
+                    if (DateTime.TryParse(dr["Verify Date"].ToString(), out DateTime verifyDate))
+                    {
+                        // Use the Verify Date to set the year, month, and day for Time In and Time Out
+                        TimeSpan timeIn = new TimeSpan(idwHour, idwMinute, idwSecond);
+                        TimeSpan timeOut = new TimeSpan(18, 0, 0);
 
-                    bool isLeapYear = IsLeapYear(nepaliDate.Year);
+                        DateTime timeInDateTime = verifyDate.Date.Add(timeIn); // Ensure same year, month, day as Verify Date
+                        DateTime timeOutDateTime = verifyDate.Date.Add(timeOut);
 
-                    //if ((nepaliDate.Year == int.Parse(nepaliDate.Year)) && (nepaliDate.Month == monthNumber))
-                    //{
-                    //    if (nepaliDate.Month == 12 && nepaliDate.Day == 30 && !isLeapYear)
-                    //    {
-                    //        dr.Delete();
-                    //    }
-                    //}
-                    //else
-                    //{
-                    //    dr.Delete();
-                    //    continue;
-                    //}
+                        // Format Time In and Time Out with the correct year, month, day, hour, minute, and second
+                        string timeIn12HourFormat = timeInDateTime.ToString("HH:mm:ss");
+                        string timeOut12HourFormat = timeOutDateTime.ToString("HH:mm:ss");
+
+                        // Assign the formatted values to the DataRow
+                        dr["Time In"] = timeIn12HourFormat;
+                        dr["Time Out"] = timeOut12HourFormat;
+
+                        // Define standard working hours for comparison (hours, minutes, seconds only)
+                        TimeSpan startTime = new TimeSpan(09, 00, 00); // Start of the working day
+
+                        // Compare only the time component (ignoring the date)
+                        
+
+
+                    }
+                    dr["WorkCode"] = idwWorkcode;
+                    dr["Status"] = "Present";
+
+                    dt_log.Rows.Add(dr);
+                }
+                ret = 1;
+            }
+            else
+            {
+                axCZKEM1.GetLastError(ref idwErrorCode);
+                ret = idwErrorCode;
+                lblOutputInfo.Items.Add(idwErrorCode != 0 ? "*Read attlog failed, ErrorCode: " + idwErrorCode.ToString() : "No data from terminal returns!");
+            }
+
+            foreach (string employeeName in employeeNames)
+            {
+                if (!presentEmployees.Contains(employeeName))
+                {
+
+                    string dbFilePath2 = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Office.db");
+                    string connectionString2 = $"Data Source={dbFilePath2};";
+                    string userId = null;
+                    using (SQLiteConnection connection = new SQLiteConnection(connectionString2))
+                    {
+                        connection.Open();
+                        string query = "SELECT UserID FROM Employee WHERE Name = @EmployeeName LIMIT 1"; // Get UserID where Name matches
+
+                        using (SQLiteCommand command = new SQLiteCommand(query, connection))
+                        {
+                            command.Parameters.AddWithValue("@EmployeeName", employeeName);
+                            object result = command.ExecuteScalar();
+                            if (result != null)
+                            {
+                                userId = result.ToString(); // Assign fetched UserID
+                            }
+                        }
+                    }
+                    DataRow dr = dt_log.NewRow();
+                    dr["Organization_ID"] = organizationID;
+                    dr["User Id"] = userId;
+                    dr["User Name"] = employeeName;
+                    dr["Time In"] = $"{idwMinute:D2}:{idwSecond:D2}";
+                    dr["Time Out"] = $" {"06"}:{"00"}:{"00"}";
+                    dr["Verify Type"] = DBNull.Value;
+                    dr["Verify State"] = DBNull.Value;
+                    dr["Verify Date"] = $"{idwYear}-{idwMonth}-{idwDay} ";
+                    DateConverter nepaliDate = DateConverter.ConvertToNepali(idwYear, idwMonth, idwDay);
+                    dr["Nepali Verify Date"] = $"{nepaliDate.Year:0000}-{nepaliDate.Month:00}-{nepaliDate.Day:00} ";
 
                     if (DateTime.TryParse(dr["Verify Date"].ToString(), out DateTime verifyDate))
                     {
@@ -4396,6 +4441,139 @@ namespace StandaloneSDKDemo
                         string timeOut12HourFormat = timeOutDateTime.ToString("yyyy-MM-ddTHH:mm:ss");
 
                         // Assign the formatted values to the DataRow
+                        dr["Time In"] = "-";
+                        dr["Time Out"] = "-";
+
+                        // Define standard working hours for comparison (hours, minutes, seconds only)
+                        TimeSpan startTime = new TimeSpan(09, 00, 00); // Start of the working day
+
+                        // Compare only the time component (ignoring the date)
+
+
+
+                    }
+                    else
+                    {
+                        dr["Time In"] = "null";
+                        dr["Time Out"] = "null";
+
+                    }
+                    dr["WorkCode"] = DBNull.Value;
+                    dr["Status"] = "Absent";
+                    dt_log.Rows.Add(dr);
+                }
+            }
+
+            axCZKEM1.EnableDevice(GetMachineNumber(), true);
+            return ret;
+        }
+
+        public int sta_readLogByPeriod(ListBox lblOutputInfo, DataTable dt_logPeriod, string fromTime, string toTime)
+        {
+            if (GetConnectState() == false)
+            {
+                lblOutputInfo.Items.Add("*Please connect first!");
+                return -1024;
+            }
+
+            int ret = 0;
+            int idwErrorCode = 0;
+
+            axCZKEM1.EnableDevice(GetMachineNumber(), false); //disable the device
+
+            string sdwEnrollNumber = "";
+
+            int idwVerifyMode = 0;
+            int idwInOutMode = 0;
+            int idwYear = 0;
+            int idwMonth = 0;
+            int idwDay = 0;
+            int idwHour = 0;
+            int idwMinute = 0;
+            int idwSecond = 0;
+            int idwWorkcode = 0;
+            string sdwName = "";
+            string strPassword = "";
+            int iPrivilege = 0;
+            Boolean bEnabled = true;
+            string dbFilePath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Office.db");
+            string connectionString = $"Data Source={dbFilePath};";
+            HashSet<string> employeeNames = new HashSet<string>();
+            object organizationID = null;
+
+            using (SQLiteConnection connection = new SQLiteConnection(connectionString))
+            {
+                connection.Open();
+                string query = "SELECT Organization_ID FROM Organization LIMIT 1"; // Adjusted for SQLite
+
+                using (SQLiteCommand command = new SQLiteCommand(query, connection))
+                {
+                    organizationID = command.ExecuteScalar();
+                }
+            }
+
+
+            using (SQLiteConnection connection = new SQLiteConnection(connectionString))
+            {
+                connection.Open();
+                string query = "SELECT Name FROM Employee";
+                using (SQLiteCommand command = new SQLiteCommand(query, connection))
+                using (SQLiteDataReader reader = command.ExecuteReader())
+                {
+                    while (reader.Read())
+                    {
+                        employeeNames.Add(reader["Name"].ToString());
+                    }
+                }
+            }
+
+            HashSet<string> presentEmployees = new HashSet<string>();
+
+
+            if (axCZKEM1.ReadTimeGLogData(GetMachineNumber(), fromTime, toTime))
+            {
+                while (axCZKEM1.SSR_GetGeneralLogData(GetMachineNumber(), out sdwEnrollNumber, out idwVerifyMode,
+                            out idwInOutMode, out idwYear, out idwMonth, out idwDay, out idwHour, out idwMinute, out idwSecond, ref idwWorkcode)) //get records from the memory
+                {
+                    axCZKEM1.SSR_GetUserInfo(GetMachineNumber(), sdwEnrollNumber, out sdwName, out strPassword, out iPrivilege, out bEnabled);//upload the user's information(card number included)
+
+
+
+
+                    DataRow dr = dt_logPeriod.NewRow();
+                    dr["Organization_ID"] = organizationID;
+                    dr["User ID"] = sdwEnrollNumber;
+                    dr["User Name"] = sdwName;
+                    dr["Verify Type"] = idwVerifyMode;
+                    dr["Verify State"] = idwInOutMode;
+                    dr["WorkCode"] = idwWorkcode;
+
+                    dr["Verify Date"] = $"{idwYear:0000}-{idwMonth:00}-{idwDay:00} ";
+
+                    // Convert to Nepali Date
+                    DateConverter nepaliDate = DateConverter.ConvertToNepali(idwYear, idwMonth, idwDay);
+                    dr["Nepali Verify Date"] = $"{nepaliDate.Year:0000}-{nepaliDate.Month:00}-{nepaliDate.Day:00} ";
+
+                   
+
+                    bool isLeapYear = IsLeapYear(nepaliDate.Year);
+
+                    //dr["Nepali Date"] = $"{nepaliDate.Year}/{nepaliDate.Month}/{nepaliDate.Day}";
+
+                    if (DateTime.TryParse(dr["Verify Date"].ToString(), out DateTime verifyDate))
+                    {
+                        // Use the Verify Date to set the year, month, and day for Time In and Time Out
+                        TimeSpan timeIn = new TimeSpan(idwHour, idwMinute, idwSecond);
+                        TimeSpan timeOut = new TimeSpan(18, 0, 0);
+
+                        DateTime timeInDateTime = verifyDate.Date.Add(timeIn); // Ensure same year, month, day as Verify Date
+                        DateTime timeOutDateTime = verifyDate.Date.Add(timeOut);
+
+                        // Format Time In and Time Out with the correct year, month, day, hour, minute, and second
+                        string timeIn12HourFormat = timeInDateTime.ToString("HH:mm:ss");
+                        string timeOut12HourFormat = timeOutDateTime.ToString("HH:mm:ss");
+
+                        // Assign the formatted values to the DataRow
                         dr["Time In"] = timeIn12HourFormat;
                         dr["Time Out"] = timeOut12HourFormat;
 
@@ -4403,24 +4581,14 @@ namespace StandaloneSDKDemo
                         TimeSpan startTime = new TimeSpan(09, 00, 00); // Start of the working day
 
                         // Compare only the time component (ignoring the date)
-                        if (timeIn <= startTime)
-                        {
-                            dr["Status"] = "Present";
-                        }
-                        else
-                        {
-                            dr["Status"] = "Late";
-                        }
-                    }
-                    else
-                    {
-                        Console.WriteLine("Invalid Verify Date format. Unable to process.");
+                       
+                        
                     }
 
+                     
+                    dr["Status"] = "Present";
 
-              
-
-                dt_log.Rows.Add(dr);
+                    dt_logPeriod.Rows.Add(dr);
                 }
                 ret = 1;
             }
@@ -4431,7 +4599,7 @@ namespace StandaloneSDKDemo
 
                 if (idwErrorCode != 0)
                 {
-                    lblOutputInfo.Items.Add("*Read attlog failed, ErrorCode: " + idwErrorCode.ToString());
+                    lblOutputInfo.Items.Add("*Read attlog by period failed,ErrorCode: " + idwErrorCode.ToString());
                 }
                 else
                 {
@@ -4439,6 +4607,79 @@ namespace StandaloneSDKDemo
                 }
             }
 
+
+            foreach (string employeeName in employeeNames)
+            {
+                if (!presentEmployees.Contains(employeeName))
+                {
+                    string dbFilePath2 = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Office.db");
+                    string connectionString2 = $"Data Source={dbFilePath2};";
+                    string userId = null;
+                    using (SQLiteConnection connection = new SQLiteConnection(connectionString2))
+                    {
+                        connection.Open();
+                        string query = "SELECT UserID FROM Employee WHERE Name = @EmployeeName LIMIT 1"; // Get UserID where Name matches
+
+                        using (SQLiteCommand command = new SQLiteCommand(query, connection))
+                        {
+                            command.Parameters.AddWithValue("@EmployeeName", employeeName);
+                            object result = command.ExecuteScalar();
+                            if (result != null)
+                            {
+                                userId = result.ToString(); // Assign fetched UserID
+                            }
+                        }
+                    }
+
+                    DataRow dr = dt_logPeriod.NewRow();
+                    dr["Organization_ID"] = organizationID;
+                    dr["User Id"] = userId;
+                    dr["User Name"] = employeeName;
+
+                    dr["Time In"] = $" {idwHour:D2}:{idwMinute:D2}:{idwSecond:D2}";
+                    dr["Time Out"] = $" {"06"}:{"00"}:{"00"}";
+                    dr["Verify Type"] = DBNull.Value;
+                    dr["Verify State"] = DBNull.Value;
+                    dr["WorkCode"] = DBNull.Value;
+                    dr["Status"] = "Absent";
+                  
+                    dr["Verify Type"] = DBNull.Value;
+                    dr["Verify State"] = DBNull.Value;
+                    dr["Verify Date"] = $"{idwYear}-{idwMonth}-{idwDay} ";
+                    DateConverter nepaliDate = DateConverter.ConvertToNepali(idwYear, idwMonth, idwDay);
+                    dr["Nepali Verify Date"] = $"{nepaliDate.Year:0000}-{nepaliDate.Month:00}-{nepaliDate.Day:00} ";
+
+                    if (DateTime.TryParse(dr["Verify Date"].ToString(), out DateTime verifyDate))
+                    {
+                        // Use the Verify Date to set the year, month, and day for Time In and Time Out
+                        TimeSpan timeIn = new TimeSpan(idwHour, idwMinute, idwSecond);
+                        TimeSpan timeOut = new TimeSpan(18, 0, 0);
+
+                        DateTime timeInDateTime = verifyDate.Date.Add(timeIn); // Ensure same year, month, day as Verify Date
+                        DateTime timeOutDateTime = verifyDate.Date.Add(timeOut);
+
+                        // Format Time In and Time Out with the correct year, month, day, hour, minute, and second
+                        string timeIn12HourFormat = timeInDateTime.ToString("HH:mm:ss");
+                        string timeOut12HourFormat = timeOutDateTime.ToString("HH:mm:ss");
+
+                        // Assign the formatted values to the DataRow
+                        dr["Time In"] = "-";
+                        dr["Time Out"] = "-";
+
+                        // Define standard working hours for comparison (hours, minutes, seconds only)
+                        TimeSpan startTime = new TimeSpan(09, 00, 00); // Start of the working day
+
+                        // Compare only the time component (ignoring the date)
+
+
+
+                    }
+                    dr["Status"] = "Absent";
+                    dt_logPeriod.Rows.Add(dr);
+                }
+            }
+
+            //lblOutputInfo.Items.Add("[func ReadTimeGLogData]Temporarily unsupported");
             axCZKEM1.EnableDevice(GetMachineNumber(), true); //enable the device
 
             return ret;
@@ -4512,218 +4753,10 @@ namespace StandaloneSDKDemo
             return ret;
         }
 
-        //public int sta_readLogByTime(ListBox lblOutputInfo, DataTable dt_logPeriod, string TimePeriod)
-        //{
-        //    if (GetConnectState() == false)
-        //    {
-        //        lblOutputInfo.Items.Add("*Please connect first!");
-        //        return -1024;
-        //    }
-
-        //    int ret = 0;
-
-        //    axCZKEM1.EnableDevice(GetMachineNumber(), false); // Disable the device
-
-        //    string sdwEnrollNumber = "";
-        //    int idwVerifyMode = 0;
-        //    int idwInOutMode = 0;
-        //    int idwYear = 0;
-        //    int idwMonth = 0;
-        //    int idwDay = 0;
-        //    int idwHour = 0;
-        //    int idwMinute = 0;
-        //    int idwSecond = 0;
-        //    int idwWorkcode = 0;
-
-        //    // Call the appropriate method for reading log data
-        //    if (axCZKEM1.ReadTimePeriod(GetMachineNumber(), TimePeriod)) // Ensure the TimePeriod parameter is correctly passed
-        //    {
-        //        while (axCZKEM1.SSR_GetGeneralLogData(GetMachineNumber(), out sdwEnrollNumber, out idwVerifyMode,
-        //                    out idwInOutMode, out idwYear, out idwMonth, out idwDay, out idwHour, out idwMinute, out idwSecond, ref idwWorkcode))
-        //        {
-        //            DataRow dr = dt_logPeriod.NewRow();
-        //            dr["User ID"] = sdwEnrollNumber;
-        //            dr["Verify Date"] = idwYear + "-" + idwMonth + "-" + idwDay + " " + idwHour + ":" + idwMinute + ":" + idwSecond;
-        //            dr["Verify Type"] = idwVerifyMode;
-        //            dr["Verify State"] = idwInOutMode;
-        //            dr["WorkCode"] = idwWorkcode;
-
-        //            TimeSpan timeIn = new TimeSpan(idwHour, idwMinute, idwSecond);
-        //            TimeSpan timeOut = new TimeSpan(18, 0, 0);
-
-        //            DateTime timeInDateTime = DateTime.Today.Add(timeIn);
-        //            DateTime timeOutDateTime = DateTime.Today.Add(timeOut);
-
-        //            string timeIn12HourFormat = timeInDateTime.ToString("hh:mm:ss tt");
-        //            string timeOut12HourFormat = timeOutDateTime.ToString("hh:mm:ss tt");
-
-        //            dr["Time In"] = timeIn12HourFormat;
-        //            dr["Time Out"] = timeOut12HourFormat;
-
-        //            TimeSpan startTime = new TimeSpan(09, 00, 00);
-        //            TimeSpan endTime = timeOut;
-
-        //            dr["Status"] = timeIn <= startTime ? "Present" : "Absent";
-
-        //            dt_logPeriod.Rows.Add(dr);
-        //        }
-        //        ret = 1;
-        //    }
-        //    else
-        //    {
-        //        int idwErrorCode = 0;
-        //        axCZKEM1.GetLastError(ref idwErrorCode);
-        //        ret = idwErrorCode;
-
-        //        if (idwErrorCode != 0)
-        //        {
-        //            lblOutputInfo.Items.Add("*Read attlog by period failed, ErrorCode: " + idwErrorCode.ToString());
-        //        }
-        //        else
-        //        {
-        //            lblOutputInfo.Items.Add("No data from terminal returns!");
-        //        }
-        //    }
-
-        //    axCZKEM1.EnableDevice(GetMachineNumber(), true); // Enable the device
-
-        //    return ret;
-        //}
+       
 
 
-        public int sta_readLogByPeriod(ListBox lblOutputInfo, DataTable dt_logPeriod, string fromTime, string toTime)
-        {
-            if (GetConnectState() == false)
-            {
-                lblOutputInfo.Items.Add("*Please connect first!");
-                return -1024;
-            }
-
-            int ret = 0;
-            int idwErrorCode = 0;
-
-            axCZKEM1.EnableDevice(GetMachineNumber(), false); //disable the device
-
-            string sdwEnrollNumber = "";
-          
-            int idwVerifyMode = 0;
-            int idwInOutMode = 0;
-            int idwYear = 0;
-            int idwMonth = 0;
-            int idwDay = 0;
-            int idwHour = 0;
-            int idwMinute = 0;
-            int idwSecond = 0;
-            int idwWorkcode = 0;
-            string sdwName = "";
-            string strPassword = "";
-            int iPrivilege = 0;
-            Boolean bEnabled = true;
-            string dbFilePath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Office.db");
-            string connectionString = $"Data Source={dbFilePath};";
-            object organizationID = null;
-
-            using (SQLiteConnection connection = new SQLiteConnection(connectionString))
-            {
-                connection.Open();
-                string query = "SELECT Organization_ID FROM Organization LIMIT 1"; // Adjusted for SQLite
-
-                using (SQLiteCommand command = new SQLiteCommand(query, connection))
-                {
-                    organizationID = command.ExecuteScalar();
-                }
-            }
-
-
-            if (axCZKEM1.ReadTimeGLogData(GetMachineNumber(), fromTime, toTime))
-            {
-                while (axCZKEM1.SSR_GetGeneralLogData(GetMachineNumber(), out sdwEnrollNumber, out idwVerifyMode,
-                            out idwInOutMode, out idwYear, out idwMonth, out idwDay, out idwHour, out idwMinute, out idwSecond, ref idwWorkcode)) //get records from the memory
-                {
-                    axCZKEM1.SSR_GetUserInfo(GetMachineNumber(), sdwEnrollNumber, out sdwName, out strPassword, out iPrivilege, out bEnabled);//upload the user's information(card number included)
-
-
-                  
-                   
-                    DataRow dr = dt_logPeriod.NewRow();
-                    dr["Organization_ID"] = organizationID;
-                    dr["User ID"] = sdwEnrollNumber;
-                    dr["User Name"] = sdwName;
-                    dr["Verify Type"] = idwVerifyMode;
-                    dr["Verify State"] = idwInOutMode;
-                    dr["WorkCode"] = idwWorkcode;
-
-                    dr["Verify Date"] = $"{idwYear}-{idwMonth}-{idwDay} ";
-
-                    // Convert to Nepali Date
-                    DateConverter nepaliDate = DateConverter.ConvertToNepali(idwYear, idwMonth, idwDay);
-                    dr["Nepali Verify Date"] = $"{nepaliDate.Year:0000}-{nepaliDate.Month:00}-{nepaliDate.Day:00} ";
-
-
-
-                    bool isLeapYear = IsLeapYear(nepaliDate.Year);
-
-                    //dr["Nepali Date"] = $"{nepaliDate.Year}/{nepaliDate.Month}/{nepaliDate.Day}";
-
-                    if (DateTime.TryParse(dr["Verify Date"].ToString(), out DateTime verifyDate))
-                    {
-                        // Use the Verify Date to set the year, month, and day for Time In and Time Out
-                        TimeSpan timeIn = new TimeSpan(idwHour, idwMinute, idwSecond);
-                        TimeSpan timeOut = new TimeSpan(18, 0, 0);
-
-                        DateTime timeInDateTime = verifyDate.Date.Add(timeIn); // Ensure same year, month, day as Verify Date
-                        DateTime timeOutDateTime = verifyDate.Date.Add(timeOut);
-
-                        // Format Time In and Time Out with the correct year, month, day, hour, minute, and second
-                        string timeIn12HourFormat = timeInDateTime.ToString("yyyy-MM-ddTHH:mm:ss");
-                        string timeOut12HourFormat = timeOutDateTime.ToString("yyyy-MM-ddTHH:mm:ss");
-
-                        // Assign the formatted values to the DataRow
-                        dr["Time In"] = timeIn12HourFormat;
-                        dr["Time Out"] = timeOut12HourFormat;
-
-                        // Define standard working hours for comparison (hours, minutes, seconds only)
-                        TimeSpan startTime = new TimeSpan(09, 00, 00); // Start of the working day
-
-                        // Compare only the time component (ignoring the date)
-                        if (timeIn <= startTime)
-                        {
-                            dr["Status"] = "Present";
-                        }
-                        else
-                        {
-                            dr["Status"] = "Late";
-                        }
-                    }
-                     
-
-
-
-
-                    dt_logPeriod.Rows.Add(dr);
-                }
-                ret = 1;
-            }
-            else
-            {
-                axCZKEM1.GetLastError(ref idwErrorCode);
-                ret = idwErrorCode;
-
-                if (idwErrorCode != 0)
-                {
-                    lblOutputInfo.Items.Add("*Read attlog by period failed,ErrorCode: " + idwErrorCode.ToString());
-                }
-                else
-                {
-                    lblOutputInfo.Items.Add("No data from terminal returns!");
-                }
-            }
-
-            //lblOutputInfo.Items.Add("[func ReadTimeGLogData]Temporarily unsupported");
-            axCZKEM1.EnableDevice(GetMachineNumber(), true); //enable the device
-
-            return ret;
-        }
+       
 
         public int sta_DeleteAttLog(ListBox lblOutputInfo)
         {
